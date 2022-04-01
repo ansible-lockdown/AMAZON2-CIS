@@ -18,7 +18,7 @@ python2_bin: /bin/python2.7
 
 ## Benchmark name used by audting control role
 # The audit variable found at the base
-benchmark: AMZNLNX2-CIS
+benchmark: AMAZON2-CIS
 
 # If set true uses the tmp.mount service else using fstab configuration
 amazon2cis_tmp_svc: true
