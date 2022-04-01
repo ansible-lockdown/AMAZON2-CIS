@@ -9,8 +9,8 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_xwindows_required
-      - amznlnx2cis_rule_2_1_2
+      - not amazon2cis_xwindows_required
+      - amazon2cis_rule_2_1_2
   tags:
       - level1
       - automated
@@ -33,9 +33,9 @@
                 - avahi-autoipd
             state: absent
   when:
-      - not amznlnx2cis_avahi_server
+      - not amazon2cis_avahi_server
       - "'avahi' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_3
+      - amazon2cis_rule_2_1_3
   tags:
       - level1
       - automated
@@ -51,9 +51,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_cups_server
+      - not amazon2cis_cups_server
       - "'cups' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_4
+      - amazon2cis_rule_2_1_4
   tags:
       - level1
       - automated
@@ -69,9 +69,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_dhcp_server
+      - not amazon2cis_dhcp_server
       - "'dhcp' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_5
+      - amazon2cis_rule_2_1_5
   tags:
       - level1
       - automated
@@ -87,9 +87,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_ldap_server
+      - not amazon2cis_ldap_server
       - "'openldap-servers' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_6
+      - amazon2cis_rule_2_1_6
   tags:
       - level1
       - automated
@@ -105,9 +105,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_named_server
+      - not amazon2cis_named_server
       - "'bind' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_7
+      - amazon2cis_rule_2_1_7
   tags:
       - level1
       - automated
@@ -123,9 +123,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_vsftpd_server
+      - not amazon2cis_vsftpd_server
       - "'vsftpd' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_8
+      - amazon2cis_rule_2_1_8
   tags:
       - level1
       - autoamted
@@ -141,9 +141,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_httpd_server
+      - not amazon2cis_httpd_server
       - "'httpd' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_9
+      - amazon2cis_rule_2_1_9
   tags:
       - level1
       - automated
@@ -159,9 +159,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_dovecot_server
+      - not amazon2cis_dovecot_server
       - "'dovecot' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_10
+      - amazon2cis_rule_2_1_10
   tags:
       - level1
       - automated
@@ -177,9 +177,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_smb_server
+      - not amazon2cis_smb_server
       - "'samba' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_11
+      - amazon2cis_rule_2_1_11
   tags:
       - level1
       - automated
@@ -195,9 +195,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_squid_server
+      - not amazon2cis_squid_server
       - "'squid' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_12
+      - amazon2cis_rule_2_1_12
   tags:
       - level1
       - scored
@@ -213,9 +213,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_snmp_server
+      - not amazon2cis_snmp_server
       - "'net-snmp' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_13
+      - amazon2cis_rule_2_1_13
   tags:
       - level1
       - automated
@@ -231,9 +231,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_nis_server
+      - not amazon2cis_nis_server
       - "'ypserv' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_14
+      - amazon2cis_rule_2_1_14
   tags:
       - level1
       - automated
@@ -249,9 +249,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_telnet_server
+      - not amazon2cis_telnet_server
       - "'telnet-server' in ansible_facts.packages"
-      - amznlnx2cis_rule_2.1_15
+      - amazon2cis_rule_2.1_15
   tags:
       - level1
       - automated
@@ -267,9 +267,9 @@
       line: "inet_interfaces = loopback-only"
   notify: restart postfix
   when:
-      - not amznlnx2cis_is_mail_server
+      - not amazon2cis_is_mail_server
       - "'postfix' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_16
+      - amazon2cis_rule_2_1_16
   tags:
       - level1
       - automated
@@ -286,19 +286,19 @@
         vars:
             ansible_python_interpreter: /bin/python
         when:
-            - not amznlnx2cis_nfs_rpc_server
-            - not amznlnx2cis_nfs_server
+            - not amazon2cis_nfs_rpc_server
+            - not amazon2cis_nfs_server
 
       - name: "2.1.17 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | nfs-server "
         systemd:
             name: nfs-server
             masked: true
         when:
-            - amznlnx2cis_nfs_rpc_server
-            - not amznlnx2cis_nfs_server
+            - amazon2cis_nfs_rpc_server
+            - not amazon2cis_nfs_server
   when:
       - "'nfs-utils' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_17
+      - amazon2cis_rule_2_1_17
   tags:
       - level1
       - automated
@@ -316,19 +316,19 @@
         vars:
             ansible_python_interpreter: /bin/python
         when:
-            - not amznlnx2cis_nfs_rpc_server
-            - not amznlnx2cis_rpc_server
+            - not amazon2cis_nfs_rpc_server
+            - not amazon2cis_rpc_server
 
       - name: "2.1.18 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | rpcbind-server"
         systemd:
             name: rpcbind.socket
             masked: true
         when:
-            - amznlnx2cis_nfs_rpc_server
-            - not amznlnx2cis_rpc_server
+            - amazon2cis_nfs_rpc_server
+            - not amazon2cis_rpc_server
   when:
       - "'rpcbind' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_18
+      - amazon2cis_rule_2_1_18
   tags:
       - level1
       - automated
@@ -344,9 +344,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_rsyncd_server
+      - not amazon2cis_rsyncd_server
       - "'rsync' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_1_19
+      - amazon2cis_rule_2_1_19
   tags:
       - level1
       - automated

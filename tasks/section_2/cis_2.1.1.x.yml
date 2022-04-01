@@ -4,14 +4,14 @@
   block:
       - name: "2.1.1.1 | PATCH | Ensure time synchronization is in use | service install"
         package:
-            name: "{{ amznlnx2cis_time_synchronization }}"
+            name: "{{ amazon2cis_time_synchronization }}"
             state: present
         vars:
             ansible_python_interpreter: /bin/python
 
       - name: "2.1.1.1 | PATCH | Ensure time synchronization is in use | service start"
         service:
-            name: "{{ amznlnx2cis_time_synchronization }}d"
+            name: "{{ amazon2cis_time_synchronization }}d"
             state: started
             enabled: true
 
@@ -22,17 +22,17 @@
             enabled: false
         when:
             - "'ntp' in ansible_facts.packages"
-            - amznlnx2cis_time_synchronization == "chrony"
+            - amazon2cis_time_synchronization == "chrony"
 
       - name: "2.1.1.1 | PATCH | Ensure time synchronization is in use | service stop chrony"
         service:
             name: chronyds
         when:
             - "'chrony' in ansible_facts.packages"
-            - amznlnx2cis_time_synchronization == "ntp"
+            - amazon2cis_time_synchronization == "ntp"
   when:
-      - amznlnx2cis_rule_2_1_1_1
-      - not amznlnx2cis_system_is_container
+      - amazon2cis_rule_2_1_1_1
+      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated
@@ -61,9 +61,9 @@
             mode: 0640
             create: true
   when:
-      - amznlnx2cis_rule_2_1_1_2
-      - amznlnx2cis_time_synchronization == "chrony"
-      - not amznlnx2cis_system_is_container
+      - amazon2cis_rule_2_1_1_2
+      - amazon2cis_time_synchronization == "chrony"
+      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated
@@ -95,9 +95,9 @@
             line: "ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS"
         notify: systemd daemon reload
   when:
-      - amznlnx2cis_rule_2_1_1_3
-      - amznlnx2cis_time_synchronization == "ntp"
-      - not amznlnx2cis_system_is_container
+      - amazon2cis_rule_2_1_1_3
+      - amazon2cis_time_synchronization == "ntp"
+      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated

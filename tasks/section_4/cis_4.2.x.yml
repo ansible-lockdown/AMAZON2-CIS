@@ -5,20 +5,20 @@
       - name: "4.2.3 | AUDIT | Ensure logrotate is configured"
         find:
             paths: /etc/logrotate.d/
-        register: amznlnx2cis_4_2_3_log_rotates
+        register: amazon2cis_4_2_3_log_rotates
 
       - name: "4.2.3 | PATCH | Ensure logrotate is configured"
         replace:
             path: "{{ item.path }}"
             regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
-            replace: "\\1{{ amznlnx2cis_logrotate }}"
+            replace: "\\1{{ amazon2cis_logrotate }}"
         with_items:
-            - "{{ amznlnx2cis_4_2_3_log_rotates.files }}"
-            - {path: "/etc/logrotate.conf"}
+            - "{{ amazon2cis_4_2_3_log_rotates.files }}"
+            - { path: "/etc/logrotate.conf" }
         loop_control:
             label: "{{ item.path }}"
   when:
-      - amznlnx2cis_rule_4_2_3
+      - amazon2cis_rule_4_2_3
   tags:
       - level1
       - manual
@@ -31,7 +31,7 @@
   changed_when: false
   failed_when: false
   when:
-      - amznlnx2cis_rule_4_2_4
+      - amazon2cis_rule_4_2_4
   tags:
       - level1
       - manual

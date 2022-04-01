@@ -6,24 +6,24 @@
         shell: sed -e 's/^\([a-zA-Z0-9_]*\):[^:]*:/\1:x:/' -i /etc/passwd
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_1_shadow
+        register: amazon2_6_2_1_shadow
         args:
             warn: false
 
       - name: "6.2.1 | PATCH | Ensure accounts in /etc/passwd use shadow passwords | Good News"
         debug:
             msg: "Good News!!  No Unshadowed passwords have been found"
-        when: amznlnx2_6_2_1_shadow.stdout | length == 0
+        when: amazon2_6_2_1_shadow.stdout | length == 0
 
       - name: "6.2.1 | PATCH | Ensure accounts in /etc/passwd use shadow passwords | Alert on no shadow passwords"
         debug:
             msg:
                 - "ALERT! There are users that are not using shadow passwords. Please address to conform to CIS standards"
                 - "The users below are the out of compliance users"
-                - "{{ amznlnx2_6_2_1_shadow.stdout_lines }}"
-        when: amznlnx2_6_2_1_shadow.stdout | length > 0
+                - "{{ amazon2_6_2_1_shadow.stdout_lines }}"
+        when: amazon2_6_2_1_shadow.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_1
+      - amazon2cis_rule_6_2_1
   tags:
       - level1
       - automated
@@ -39,7 +39,7 @@
       - "{{ empty_password_accounts.stdout_lines }}"
   when:
       - empty_password_accounts.rc
-      - amznlnx2cis_rule_6_2_2
+      - amazon2cis_rule_6_2_2
   tags:
       - level1
       - automated
@@ -54,20 +54,20 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: amznlnx2_6_2_3_passwd_gid_check
+        register: amazon2_6_2_3_passwd_gid_check
 
       - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Print message that all groups match between passwd and group files"
         debug:
             msg: "Good News! There are no users that have non-existent GUIDs (Groups)"
-        when: amznlnx2_6_2_3_passwd_gid_check.stdout | length == 0
+        when: amazon2_6_2_3_passwd_gid_check.stdout | length == 0
 
       - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Print warning about users with invalid GIDs missing GID entries in /etc/group"
         debug:
-            msg: "WARNING: The following users have non-existent GIDs (Groups): {{ amznlnx2_6_2_3_passwd_gid_check.stdout_lines | join (', ') }}"
+            msg: "WARNING: The following users have non-existent GIDs (Groups): {{ amazon2_6_2_3_passwd_gid_check.stdout_lines | join (', ') }}"
         changed_when: false
-        when: amznlnx2_6_2_3_passwd_gid_check.stdout | length > 0
+        when: amazon2_6_2_3_passwd_gid_check.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_3
+      - amazon2cis_rule_6_2_3
   tags:
       - level1
       - automated
@@ -81,19 +81,19 @@
         shell: "grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group"
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_4_users_in_shadow_group
+        register: amazon2_6_2_4_users_in_shadow_group
 
       - name: "6.2.4 | AUDIT | Ensure shadow group is empty | Print no user in shadow group"
         debug:
             msg: "Good News! There are no users in the shadow group"
-        when: amznlnx2_6_2_4_users_in_shadow_group.stdout | length == 0
+        when: amazon2_6_2_4_users_in_shadow_group.stdout | length == 0
 
       - name: "6.2.4 | AUDIT | Ensure shadow group is empty | Print no user in shadow group"
         debug:
-            msg: "Warning: The following users are in the shadow group: {{ amznlnx2_6_2_4_users_in_shadow_group.stdout_lines }}"
-        when: amznlnx2_6_2_4_users_in_shadow_group.stdout | length > 0
+            msg: "Warning: The following users are in the shadow group: {{ amazon2_6_2_4_users_in_shadow_group.stdout_lines }}"
+        when: amazon2_6_2_4_users_in_shadow_group.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_4
+      - amazon2cis_rule_6_2_4
   tags:
       - level1
       - automated
@@ -107,19 +107,19 @@
         shell: "pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd"
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_5_user_username_check
+        register: amazon2_6_2_5_user_username_check
 
       - name: "6.2.5 | AUDIT | Ensure no duplicate user names exist | Print message that no duplicate user names exist"
         debug:
             msg: "Good News! There are no duplicate user names in the system"
-        when: amznlnx2_6_2_5_user_username_check.stdout | length == 0
+        when: amazon2_6_2_5_user_username_check.stdout | length == 0
 
       - name: "6.2.5 | AUDIT | Ensure no duplicate user names exist | Print warning about users with duplicate User Names"
         debug:
-            msg: "Warning: The following user names are duplicates: {{ amznlnx2_6_2_5_user_username_check.stdout_lines }}"
-        when: amznlnx2_6_2_5_user_username_check.stdout | length > 0
+            msg: "Warning: The following user names are duplicates: {{ amazon2_6_2_5_user_username_check.stdout_lines }}"
+        when: amazon2_6_2_5_user_username_check.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_5
+      - amazon2cis_rule_6_2_5
   tags:
       - level1
       - automated
@@ -133,19 +133,19 @@
         shell: 'getent passwd | cut -d: -f1 | sort -n | uniq -d'
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_6_group_group_check
+        register: amazon2_6_2_6_group_group_check
 
       - name: "6.2.6 | AUDIT | Ensure no duplicate group names exist | Print message that no duplicate groups exist"
         debug:
             msg: "Good News! There are no duplicate group names in the system"
-        when: amznlnx2_6_2_6_group_group_check.stdout | length == 0
+        when: amazon2_6_2_6_group_group_check.stdout | length == 0
 
       - name: "6.2.6 | AUDIT | Ensure no duplicate group names exist | Print warning about users with duplicate group names"
         debug:
-            msg: "Warning: The following group names are duplicates: {{ amznlnx2_6_2_6_group_group_check.stdout_lines }}"
-        when: amznlnx2_6_2_6_group_group_check.stdout | length > 0
+            msg: "Warning: The following group names are duplicates: {{ amazon2_6_2_6_group_group_check.stdout_lines }}"
+        when: amazon2_6_2_6_group_group_check.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_6
+      - amazon2cis_rule_6_2_6
   tags:
       - level1
       - automated
@@ -159,19 +159,19 @@
         shell: "pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd"
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_7_user_uid_check
+        register: amazon2_6_2_7_user_uid_check
 
       - name: "6.2.7 | AUDIT | Ensure no duplicate UIDs exist | Print message that no duplicate UIDs exist"
         debug:
             msg: "Good News! There are no duplicate UID's in the system"
-        when: amznlnx2_6_2_7_user_uid_check.stdout | length == 0
+        when: amazon2_6_2_7_user_uid_check.stdout | length == 0
 
       - name: "6.2.7 | AUDIT | Ensure no duplicate UIDs exist | Print warning about users with duplicate UIDs"
         debug:
-            msg: "Warning: The following users have UIDs that are duplicates: {{ amznlnx2_6_2_7_user_uid_check.stdout_lines }}"
-        when: amznlnx2_6_2_7_user_uid_check.stdout | length > 0
+            msg: "Warning: The following users have UIDs that are duplicates: {{ amazon2_6_2_7_user_uid_check.stdout_lines }}"
+        when: amazon2_6_2_7_user_uid_check.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_7
+      - amazon2cis_rule_6_2_7
   tags:
       - level1
       - automated
@@ -185,19 +185,19 @@
         shell: "pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group"
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_2_8_user_user_check
+        register: amazon2_6_2_8_user_user_check
 
       - name: "6.2.8 | AUDIT | Ensure no duplicate GIDs exist | Print message that no duplicate GID's exist"
         debug:
             msg: "Good News! There are no duplicate GIDs in the system"
-        when: amznlnx2_6_2_8_user_user_check.stdout | length == 0
+        when: amazon2_6_2_8_user_user_check.stdout | length == 0
 
       - name: "6.2.8 | AUDIT | Ensure no duplicate GIDs exist | Print warning about users with duplicate GIDs"
         debug:
-            msg: "Warning: The following groups have duplicate GIDs: {{ amznlnx2_6_2_8_user_user_check.stdout_lines }}"
-        when: amznlnx2_6_2_8_user_user_check.stdout | length > 0
+            msg: "Warning: The following groups have duplicate GIDs: {{ amazon2_6_2_8_user_user_check.stdout_lines }}"
+        when: amazon2_6_2_8_user_user_check.stdout | length > 0
   when:
-      - amznlnx2cis_rule_6_2_8
+      - amazon2cis_rule_6_2_8
   tags:
       - level1
       - automated
@@ -213,7 +213,7 @@
       - "{{ uid_zero_accounts_except_root.stdout_lines }}"
   when:
       - uid_zero_accounts_except_root.rc
-      - amznlnx2cis_rule_6_2_9
+      - amazon2cis_rule_6_2_9
   tags:
       - level1
       - automated
@@ -227,27 +227,27 @@
       - name: "6.2.10 | AUDIT | Ensure root PATH Integrity | Determine empty value"
         shell: 'echo $PATH | grep ::'
         changed_when: false
-        failed_when: amznlnx2_6_2_10_path_colon.rc == 0
-        register: amznlnx2_6_2_10_path_colon
+        failed_when: amazon2_6_2_10_path_colon.rc == 0
+        register: amazon2_6_2_10_path_colon
 
       - name: "6.2.10 | AUDIT | Ensure root PATH Integrity | Determin colon end"
         shell: 'echo $PATH | grep :$'
         changed_when: false
-        failed_when: amznlnx2_6_2_10_path_colon_end.rc == 0
-        register: amznlnx2_6_2_10_path_colon_end
+        failed_when: amazon2_6_2_10_path_colon_end.rc == 0
+        register: amazon2_6_2_10_path_colon_end
 
       - name: "6.2.10 | AUDIT | Ensure root PATH Integrity | Determine dot in path"
         shell: "/bin/bash --login -c 'env | grep ^PATH=' | grep ^PATH | sed -e 's/PATH=//' -e 's/::/:/' -e 's/:$//' -e 's/:/\\n/g'"
         changed_when: false
-        failed_when: '"." in amznlnx2_6_2_10_dot_in_path.stdout_lines'
-        register: amznlnx2_6_2_10_dot_in_path
+        failed_when: '"." in amazon2_6_2_10_dot_in_path.stdout_lines'
+        register: amazon2_6_2_10_dot_in_path
 
       - name: "6.2.10 | AUDIT | Ensure root PATH Integrity | Alert on empty value, colon end, and dot in path"
         debug:
             msg:
-                - "The following paths have an empty value: {{ amznlnx2_6_2_10_path_colon.stdout_lines }}"
-                - "The following paths have colon end: {{ amznlnx2_6_2_10_path_colon_end.stdout_lines }}"
-                - "The following paths have a dot in the path: {{ amznlnx2_6_2_10_dot_in_path.stdout_lines }}"
+                - "The following paths have an empty value: {{ amazon2_6_2_10_path_colon.stdout_lines }}"
+                - "The following paths have colon end: {{ amazon2_6_2_10_path_colon_end.stdout_lines }}"
+                - "The following paths have a dot in the path: {{ amazon2_6_2_10_dot_in_path.stdout_lines }}"
 
       - name: "6.2.10 | PATCH | Ensure root PATH Integrity (AUTOMATED) | Determine rights and owner"
         file:
@@ -257,9 +257,9 @@
             mode: 'o-w,g-w'
             follow: true
         with_items:
-            - "{{ amznlnx2_6_2_10_dot_in_path.stdout_lines }}"
+            - "{{ amazon2_6_2_10_dot_in_path.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_6_2_10
+      - amazon2cis_rule_6_2_10
   tags:
       - level1
       - automated
@@ -272,18 +272,18 @@
       - name: "6.2.11 | PATCH | Ensure all users' home directories exist | Check for paths"
         stat:
             path: "{{ item }}"
-        register: amznlnx2_6_2_11_audit
+        register: amazon2_6_2_11_audit
         with_items:
-            - "{{ amznlnx2cis_passwd | selectattr('uid', '>=', amznlnx2cis_int_gid) | selectattr('uid', '!=', 65534) | map(attribute='dir') | list }}"
+            - "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_int_gid) | selectattr('uid', '!=', 65534) | map(attribute='dir') | list }}"
 
       - name: "6.2.11 | PATCH | Ensure all users' home directories exist"
         shell: find -H {{ item.0 | quote }} -not -type l -perm /027
-        changed_when: amznlnx2_6_2_11_patch_audit | length > 0
+        changed_when: amazon2_6_2_11_patch_audit | length > 0
         check_mode: false
-        register: amznlnx2_6_2_11_patch_audit
+        register: amazon2_6_2_11_patch_audit
         with_together:
-            - "{{ amznlnx2_6_2_11_audit.results | map(attribute='item') | list }}"
-            - "{{ amznlnx2_6_2_11_audit.results | map(attribute='stat') | list  }}"
+            - "{{ amazon2_6_2_11_audit.results | map(attribute='item') | list }}"
+            - "{{ amazon2_6_2_11_audit.results | map(attribute='stat') | list  }}"
         loop_control:
             label: "{{ item.0 }}"
         when:
@@ -295,10 +295,10 @@
             path: "{{ item.0 }}"
             mode: a-st,g-w,o-rwx
             recurse: true
-        register: amznlnx2_6_2_11_patch
+        register: amazon2_6_2_11_patch
         with_together:
-            - "{{ amznlnx2_6_2_11_audit.results | map(attribute='item') | list }}"
-            - "{{ amznlnx2_6_2_11_audit.results | map(attribute='stat') | list  }}"
+            - "{{ amazon2_6_2_11_audit.results | map(attribute='item') | list }}"
+            - "{{ amazon2_6_2_11_audit.results | map(attribute='stat') | list  }}"
         loop_control:
             label: "{{ item.0 }}"
         when:
@@ -315,13 +315,13 @@
             etype: "{{ item.1.etype }}"
             permissions: "{{ item.1.mode }}"
         with_nested:
-            - "{{ (ansible_check_mode | ternary(amznlnx2_6_2_11_patch_audit, amznlnx2_6_2_11_patch)).results |
+            - "{{ (ansible_check_mode | ternary(amazon2_6_2_11_patch_audit, amazon2_6_2_11_patch)).results |
               rejectattr('skipped', 'defined') | map(attribute='item') | map('first') | list }}"
             -
                 - { etype: group, mode: rx }
                 - { etype: other, mode: '0' }
   when:
-      - amznlnx2cis_rule_6_2_11
+      - amazon2cis_rule_6_2_11
   tags:
       - level1
       - automated
@@ -335,11 +335,11 @@
       owner: "{{ item.id }}"
       state: directory
   with_items:
-      - "{{ amznlnx2cis_passwd | selectattr('uid', '>=', 1000) | selectattr('uid', '!=', 65534) | list }}"
+      - "{{ amazon2cis_passwd | selectattr('uid', '>=', 1000) | selectattr('uid', '!=', 65534) | list }}"
   loop_control:
-      label: "{{ amznlnx2cis_passwd_label }}"
+      label: "{{ amazon2cis_passwd_label }}"
   when:
-      - amznlnx2cis_rule_6_2_12
+      - amazon2cis_rule_6_2_12
   tags:
       - level1
       - automated
@@ -353,18 +353,18 @@
       - name: "6.2.13 | AUDIT | Ensure users' home directories permissions are 750 or more restrictive"
         stat:
             path: "{{ item }}"
-        with_items: "{{ amznlnx2cis_passwd | selectattr('uid', '>=', 1000) | selectattr('uid', '!=', 65534) | map(attribute='dir') | list }}"
-        register: amznlnx2_6_2_13_audit
+        with_items: "{{ amazon2cis_passwd | selectattr('uid', '>=', 1000) | selectattr('uid', '!=', 65534) | map(attribute='dir') | list }}"
+        register: amazon2_6_2_13_audit
 
       - name: "6.2.13 | AUDIT | Ensure users' home directories permissions are 750 or more restrictive"
         command: find -H {{ item.0 | quote }} -not -type l -perm /027
-        changed_when: amznlnx2_6_2_13_patch_audit.stdout != ""
+        changed_when: amazon2_6_2_13_patch_audit.stdout != ""
         failed_when: false
         check_mode: false
-        register: amznlnx2_6_2_13_patch_audit
+        register: amazon2_6_2_13_patch_audit
         with_together:
-            - "{{ amznlnx2_6_2_13_audit.results | map(attribute='item') | list }}"
-            - "{{ amznlnx2_6_2_13_audit.results | map(attribute='stat') | list }}"
+            - "{{ amazon2_6_2_13_audit.results | map(attribute='item') | list }}"
+            - "{{ amazon2_6_2_13_audit.results | map(attribute='stat') | list }}"
         loop_control:
             label: "{{ item.0 }}"
         when:
@@ -376,10 +376,10 @@
             path: "{{ item.0 }}"
             recurse: true
             mode: a-st,g-w,o-rwx
-        register: amznlnx2_6_2_13_patch
+        register: amazon2_6_2_13_patch
         with_together:
-            - "{{ amznlnx2_6_2_13_audit.results | map(attribute='item') | list }}"
-            - "{{ amznlnx2_6_2_13_audit.results | map(attribute='stat') | list }}"
+            - "{{ amazon2_6_2_13_audit.results | map(attribute='item') | list }}"
+            - "{{ amazon2_6_2_13_audit.results | map(attribute='stat') | list }}"
         loop_control:
             label: "{{ item.0 }}"
         when:
@@ -396,14 +396,14 @@
             etype: "{{ item.1.etype }}"
             permissions: "{{ item.1.mode }}"
         with_nested:
-            - "{{ (ansible_check_mode | ternary(amznlnx2_6_2_13_patch_audit, amznlnx2_6_2_13_patch)).results |
+            - "{{ (ansible_check_mode | ternary(amazon2_6_2_13_patch_audit, amazon2_6_2_13_patch)).results |
               rejectattr('skipped', 'defined') | map(attribute='item') | map('first') | list }}"
             -
                 - { etype: group, mode: rx }
                 - { etype: other, mode: '0' }
-        when: not amznlnx2cis_system_is_container
+        when: not amazon2cis_system_is_container
   when:
-      - amznlnx2cis_rule_6_2_13
+      - amazon2cis_rule_6_2_13
   tags:
       - level1
       - automated
@@ -417,26 +417,26 @@
         shell: find /home/ -name "\.*" -perm /g+w,o+w
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_6_2_14_audit
+        register: amazon2cis_6_2_14_audit
 
       - name: "6.2.14 | AUDIT | Ensure users' dot files are not group or world-writable | Alert on files found"
         debug:
             msg: "Good news! We have not found any group or world-writable dot files on your sytem"
         failed_when: false
         changed_when: false
-        when: amznlnx2cis_6_2_14_audit.stdout | length == 0
+        when: amazon2cis_6_2_14_audit.stdout | length == 0
 
       - name: "6.2.14 | PATCH | Ensure users' dot files are not group or world-writable | Changes files if configured"
         file:
             path: '{{ item }}'
             mode: go-w
         with_items:
-            - "{{ amznlnx2cis_6_2_14_audit.stdout_lines }}"
+            - "{{ amazon2cis_6_2_14_audit.stdout_lines }}"
         when:
-            - amznlnx2cis_6_2_14_audit.stdout | length > 0
-            - amznlnx2cis_dotperm_ansibleManaged
+            - amazon2cis_6_2_14_audit.stdout | length > 0
+            - amazon2cis_dotperm_ansibleManaged
   when:
-      - amznlnx2cis_rule_6_2_14
+      - amazon2cis_rule_6_2_14
   tags:
       - level1
       - automated
@@ -451,7 +451,7 @@
   with_items:
       - "{{ users.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_6_2_15
+      - amazon2cis_rule_6_2_15
   tags:
       - level1
       - automated
@@ -466,7 +466,7 @@
   with_items:
       - "{{ users.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_6_2_16
+      - amazon2cis_rule_6_2_16
   tags:
       - level1
       - automated
@@ -481,7 +481,7 @@
   with_items:
       - "{{ users.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_6_2_17
+      - amazon2cis_rule_6_2_17
   tags:
       - level1
       - automated

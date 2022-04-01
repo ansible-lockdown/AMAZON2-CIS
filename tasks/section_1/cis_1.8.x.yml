@@ -7,7 +7,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_1_8
+      - amazon2cis_rule_1_8
   tags:
       - level1
       - automated

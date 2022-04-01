@@ -6,29 +6,29 @@
         shell: rpm -Va --nomtime --nosize --nomd5 --nolinkto
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_6_1_1_packages_rpm
+        register: amazon2cis_6_1_1_packages_rpm
         tags:
             - skip_ansible_lint
 
       - name: "6.1.1 | AUDIT | Audit system file permissions | Add file discrepancy list to system"
         copy:
-            dest: "{{ amznlnx2cis_rpm_audit_file }}"
-            content: "{{ amznlnx2cis_6_1_1_packages_rpm.stdout }}"
-        changed_when: amznlnx2cis_6_1_1_packages_rpm.stdout|length > 0
+            dest: "{{ amazon2cis_rpm_audit_file }}"
+            content: "{{ amazon2cis_6_1_1_packages_rpm.stdout }}"
+        changed_when: amazon2cis_6_1_1_packages_rpm.stdout|length > 0
 
       - name: "6.1.1 | AUDIT | Audit system file permissions | Message out alert for package descrepancies"
         debug:
             msg:
                 - Warning! You have some package descrepancies issues.
-                - "The file list can be found in {{ amznlnx2cis_rpm_audit_file }}"
-        when: amznlnx2cis_6_1_1_packages_rpm.stdout|length > 0
+                - "The file list can be found in {{ amazon2cis_rpm_audit_file }}"
+        when: amazon2cis_6_1_1_packages_rpm.stdout|length > 0
 
       - name: "6.1.1 | AUDIT | Audit system file permissions | Message out no package descrepancies"
         debug:
             msg: "Good News! There are no package descrepancies"
-        when: amznlnx2cis_6_1_1_packages_rpm.stdout|length == 0
+        when: amazon2cis_6_1_1_packages_rpm.stdout|length == 0
   when:
-      - amznlnx2cis_rule_6_1_1
+      - amazon2cis_rule_6_1_1
   tags:
       - level2
       - manual
@@ -43,7 +43,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_6_1_2
+      - amazon2cis_rule_6_1_2
   tags:
       - level1
       - automated
@@ -58,7 +58,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_6_1_3
+      - amazon2cis_rule_6_1_3
   tags:
       - level1
       - automated
@@ -73,7 +73,7 @@
       group: root
       mode: 0000
   when:
-      - amznlnx2cis_rule_6_1_4
+      - amazon2cis_rule_6_1_4
   tags:
       - level1
       - automated
@@ -88,7 +88,7 @@
       group: root
       mode: 0000
   when:
-      - amznlnx2cis_rule_6_1_5
+      - amazon2cis_rule_6_1_5
   tags:
       - level1
       - automated
@@ -103,7 +103,7 @@
       group: root
       mode: 0000
   when:
-      - amznlnx2cis_rule_6_1_6
+      - amazon2cis_rule_6_1_6
   tags:
       - level1
       - automated
@@ -118,7 +118,7 @@
       group: root
       mode: 0000
   when:
-      - amznlnx2cis_rule_6_1_7
+      - amazon2cis_rule_6_1_7
   tags:
       - level1
       - automated
@@ -133,7 +133,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_6_1_8
+      - amazon2cis_rule_6_1_8
   tags:
       - level1
       - automated
@@ -148,7 +148,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_6_1_9
+      - amazon2cis_rule_6_1_9
   tags:
       - level1
       - automated
@@ -162,12 +162,12 @@
         shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_1_10_perms_results
+        register: amazon2_6_1_10_perms_results
 
       - name: "6.1.10 | AUDIT | Ensure no world writable files exist | Alert no world-writable files exist"
         debug:
             msg: "Good news! We have not found any world-writable files on your system"
-        when: amznlnx2_6_1_10_perms_results.stdout is not defined
+        when: amazon2_6_1_10_perms_results.stdout is not defined
 
       - name: "6.1.10 | PATCH | Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)"
         file:
@@ -175,12 +175,12 @@
             mode: o-w
             state: touch
         with_items:
-            - "{{ amznlnx2_6_1_10_perms_results.stdout_lines }}"
+            - "{{ amazon2_6_1_10_perms_results.stdout_lines }}"
         when:
-            - amznlnx2_6_1_10_perms_results.stdout_lines is defined
-            - amznlnx2cis_no_world_write_adjust
+            - amazon2_6_1_10_perms_results.stdout_lines is defined
+            - amazon2cis_no_world_write_adjust
   when:
-      - amznlnx2cis_rule_6_1_10
+      - amazon2cis_rule_6_1_10
   tags:
       - level1
       - automated
@@ -195,7 +195,7 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: amznlnx2_6_1_11_audit
+        register: amazon2_6_1_11_audit
         with_items:
             - "{{ ansible_mounts }}"
         loop_control:
@@ -209,9 +209,9 @@
             - item.stdout_lines is defined
             - item.stdout_lines | length > 0
         with_items:
-            - "{{ amznlnx2_6_1_11_audit.results }}"
+            - "{{ amazon2_6_1_11_audit.results }}"
   when:
-      - amznlnx2cis_rule_6_1_11
+      - amazon2cis_rule_6_1_11
   tags:
       - level1
       - automated
@@ -226,7 +226,7 @@
         changed_when: false
         failed_when: false
         check_mode: false
-        register: amznlnx2_6_1_12_audit
+        register: amazon2_6_1_12_audit
         with_items:
             - "{{ ansible_mounts }}"
         loop_control:
@@ -237,10 +237,10 @@
         debug:
             msg: "Warning - Manual intervention is required -- missing group on items in {{ item }}!"
         with_items:
-            - "{{ amznlnx2_6_1_12_audit.results | map(attribute='stdout_lines') }}"
+            - "{{ amazon2_6_1_12_audit.results | map(attribute='stdout_lines') }}"
         when: item | length > 0
   when:
-      - amznlnx2cis_rule_6_1_12
+      - amazon2cis_rule_6_1_12
   tags:
       - level1
       - automated
@@ -254,7 +254,7 @@
         shell: df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -4000
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_1_13_perms_results
+        register: amazon2_6_1_13_perms_results
         with_items:
             - "{{ ansible_mounts }}"
         loop_control:
@@ -263,15 +263,15 @@
       - name: "6.1.13 | AUDIT | Audit SUID executables |  Alert no SUID executables exist"
         debug:
             msg: "Good news! We have not found any SUID executable files on your system"
-        when: amznlnx2_6_1_13_perms_results.stdout is not defined
+        when: amazon2_6_1_13_perms_results.stdout is not defined
 
       - name: "6.1.13 | AUDIT | Audit SUID executables |  Alert SUID executables exist"
         debug:
             msg: "Warning - Manual intervention is required -- SUID set on items in {{ item.item.mount }}: {{ item.stout_lines | join(', ') }}"
-        with_items: "{{ amznlnx2_6_1_13_perms_results.stdout_lines }}"
-        when: amznlnx2_6_1_13_perms_results.stdout is defined
+        with_items: "{{ amazon2_6_1_13_perms_results.stdout_lines }}"
+        when: amazon2_6_1_13_perms_results.stdout is defined
   when:
-      - amznlnx2cis_rule_6_1_13
+      - amazon2cis_rule_6_1_13
   tags:
       - level1
       - manual
@@ -285,7 +285,7 @@
         shell: df {{ item.mount }} -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -2000
         changed_when: false
         failed_when: false
-        register: amznlnx2_6_1_14_perms_results
+        register: amazon2_6_1_14_perms_results
         with_items:
             - "{{ ansible_mounts }}"
         loop_control:
@@ -294,16 +294,16 @@
       - name: "6.1.14 | AUDIT | Audit SGID executables |  Alert no SGID executables exist"
         debug:
             msg: "Good news! We have not found any SGID executable files on your system"
-        when: amznlnx2_6_1_14_perms_results.stdout is not defined
+        when: amazon2_6_1_14_perms_results.stdout is not defined
 
       - name: "6.1.14 | AUDIT | Audit SGID executables |  Alert SGID executables exist"
         debug:
             msg: "Warning - Manual intervention is required -- SGID set on items in {{ item.item.mount }}: {{ item.stout_lines | join(', ') }}"
         with_items:
-            - "{{ amznlnx2_6_1_14_perms_results.stdout_lines }}"
-        when: amznlnx2_6_1_14_perms_results.stdout is defined
+            - "{{ amazon2_6_1_14_perms_results.stdout_lines }}"
+        when: amazon2_6_1_14_perms_results.stdout is defined
   when:
-      - amznlnx2cis_rule_6_1_14
+      - amazon2cis_rule_6_1_14
   tags:
       - level1
       - manual

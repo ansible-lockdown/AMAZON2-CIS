@@ -18,8 +18,8 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_config_aide
-      - amznlnx2cis_rule_1_3_1
+      - amazon2cis_config_aide
+      - amazon2cis_rule_1_3_1
   tags:
       - level1
       - automated
@@ -30,14 +30,14 @@
 - name: "1.3.2 | PATCH | Ensure filesystem integrity is regularly checked"
   cron:
       name: Run AIDE integrity check
-      minute: "{{ amznlnx2cis_aide_cron['aide_minute'] | default('0') }}"
-      hour: "{{ amznlnx2cis_aide_cron['aide_hour'] | default('5') }}"
-      day: "{{ amznlnx2cis_aide_cron['aide_day'] | default('*') }}"
-      month: "{{ amznlnx2cis_aide_cron['aide_month'] | default('*') }}"
-      weekday: "{{ amznlnx2cis_aide_cron['aide_weekday'] | default('*') }}"
-      job: "{{ amznlnx2cis_aide_cron['aide_job'] }}"
+      minute: "{{ amazon2cis_aide_cron['aide_minute'] | default('0') }}"
+      hour: "{{ amazon2cis_aide_cron['aide_hour'] | default('5') }}"
+      day: "{{ amazon2cis_aide_cron['aide_day'] | default('*') }}"
+      month: "{{ amazon2cis_aide_cron['aide_month'] | default('*') }}"
+      weekday: "{{ amazon2cis_aide_cron['aide_weekday'] | default('*') }}"
+      job: "{{ amazon2cis_aide_cron['aide_job'] }}"
   when:
-      - amznlnx2cis_rule_1_3_2
+      - amazon2cis_rule_1_3_2
   tags:
       - level1
       - automated

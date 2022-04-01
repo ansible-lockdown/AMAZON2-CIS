@@ -10,7 +10,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_3_1_1
+      - amazon2cis_rule_3_5_3_1_1
   tags:
       - level1
       - automated
@@ -26,7 +26,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_3_1_2
+      - amazon2cis_rule_3_5_3_1_2
   tags:
       - level1
       - automated
@@ -42,7 +42,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_3_1_3
+      - amazon2cis_rule_3_5_3_1_3
   tags:
       - level1
       - automated

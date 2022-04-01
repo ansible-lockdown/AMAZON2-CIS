@@ -7,7 +7,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_1_1
+      - amazon2cis_rule_3_5_1_1
   tags:
       - level1
       - automated
@@ -23,7 +23,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_1_2
+      - amazon2cis_rule_3_5_1_2
   tags:
       - level1
       - automated
@@ -39,7 +39,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_3_5_1_3
+      - amazon2cis_rule_3_5_1_3
   tags:
       - level1
       - automated
@@ -54,7 +54,7 @@
       state: started
       enabled: true
   when:
-      - amznlnx2cis_rule_3_5_1_4
+      - amazon2cis_rule_3_5_1_4
   tags:
       - level1
       - automated
@@ -68,14 +68,14 @@
       - name: "3.5.1.5 | AUDIT | Ensure default zone is set"
         command: firewall-cmd --get-default-zone
         changed_when: false
-        register: amznlnx2cis_3_5_1_5_current_default_zone
+        register: amazon2cis_3_5_1_5_current_default_zone
 
       - name: "3.5.1.5 | PATCH | Ensure default zone is set"
-        command: firewall-cmd --set-default-zone="{{ amznlnx2cis_default_zone }}"
+        command: firewall-cmd --set-default-zone="{{ amazon2cis_default_zone }}"
         when:
-            - amznlnx2cis_3_5_1_5_current_default_zone.stdout != amznlnx2cis_default_zone
+            - amazon2cis_3_5_1_5_current_default_zone.stdout != amazon2cis_default_zone
   when:
-      - amznlnx2cis_rule_3_5_1_5
+      - amazon2cis_rule_3_5_1_5
   tags:
       - level1
       - automated
@@ -89,15 +89,15 @@
         shell: "nmcli -t connection show | awk -F: '{ if($4){print $4} }' | while read INT; do firewall-cmd --get-active-zones | grep -B1 $INT; done"
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_3_5_1_6_interfacepolicy
+        register: amazon2cis_3_5_1_6_interfacepolicy
 
       - name: "3.5.1.6 | AUDIT | Ensure network interfaces are assigned to appropriate zone | Get list of interfaces and policies | Show the interface to policy"
         debug:
             msg:
                 - "The items below are the policies tied to the interfaces, please correct as needed"
-                - "{{ amznlnx2cis_3_5_1_6_interfacepolicy.stdout_lines }}"
+                - "{{ amazon2cis_3_5_1_6_interfacepolicy.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_3_5_1_6
+      - amazon2cis_rule_3_5_1_6
   tags:
       - level1
       - manual
@@ -111,15 +111,15 @@
         shell: "firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done"
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_3_5_1_7_servicesport
+        register: amazon2cis_3_5_1_7_servicesport
 
       - name: "3.5.1.7 | AUDIT | Ensure firewalld drops unnecessary services and ports | Show services and ports"
         debug:
             msg:
                 - "The items below are the services and ports that are accepted, please correct as needed"
-                - "{{ amznlnx2cis_3_5_1_7_servicesport.stdout_lines }}"
+                - "{{ amazon2cis_3_5_1_7_servicesport.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_3_5_1_7
+      - amazon2cis_rule_3_5_1_7
   tags:
       - level1
       - manual

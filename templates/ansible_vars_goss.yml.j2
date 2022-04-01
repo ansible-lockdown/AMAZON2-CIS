@@ -8,427 +8,427 @@ host_os_distribution: {{ ansible_distribution }}
 timeout_ms: {{ audit_cmd_timeout }}
 
 # Taken from LE rhel8-cis
-amznlnx2cis_section1: {{ amznlnx2cis_section1 }}
-amznlnx2cis_section2: {{ amznlnx2cis_section2 }}
-amznlnx2cis_section3: {{ amznlnx2cis_section3 }}
-amznlnx2cis_section4: {{ amznlnx2cis_section4 }}
-amznlnx2cis_section5: {{ amznlnx2cis_section5 }}
-amznlnx2cis_section6: {{ amznlnx2cis_section6 }}
+amazon2cis_section1: {{ amazon2cis_section1 }}
+amazon2cis_section2: {{ amazon2cis_section2 }}
+amazon2cis_section3: {{ amazon2cis_section3 }}
+amazon2cis_section4: {{ amazon2cis_section4 }}
+amazon2cis_section5: {{ amazon2cis_section5 }}
+amazon2cis_section6: {{ amazon2cis_section6 }}
 
-amznlnx2cis_level1: true
-amznlnx2cis_level2: true
+amazon2cis_level1: true
+amazon2cis_level2: true
 
-amznlnx2cis_selinux_disable: {{ amznlnx2cis_selinux_disable }}
-amznlnx2cis_selinux_state: {{ amznlnx2cis_selinux_state }}
+amazon2cis_selinux_disable: {{ amazon2cis_selinux_disable }}
+amazon2cis_selinux_state: {{ amazon2cis_selinux_state }}
 
 # to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
-amznlnx2cis_run_heavy_tests: true
-{% if amznlnx2cis_legacy_boot is defined %}
-amznlnx2cis_legacy_boot: {{ amznlnx2cis_legacy_boot }}
+amazon2cis_run_heavy_tests: true
+{% if amazon2cis_legacy_boot is defined %}
+amazon2cis_legacy_boot: {{ amazon2cis_legacy_boot }}
 {% endif %}
 # if Bios boot
-amznlnx2cis_bootloader_file: /boot/grub2/grub.cfg
+amazon2cis_bootloader_file: /boot/grub2/grub.cfg
 
-amznlnx2cis_set_boot_pass: false
+amazon2cis_set_boot_pass: false
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
 # PLEASE NOTE: These work in coordination with the section # group variables and tags.
 # You must enable an entire section in order for the variables below to take effect.
 # Section 1 rules
-amznlnx2cis_rule_1_1_1_1: {{ amznlnx2cis_rule_1_1_1_1 }}
-amznlnx2cis_rule_1_1_1_2: {{ amznlnx2cis_rule_1_1_1_2 }}
-amznlnx2cis_rule_1_1_1_3: {{ amznlnx2cis_rule_1_1_1_3 }}
-amznlnx2cis_rule_1_1_2: {{ amznlnx2cis_rule_1_1_2 }}
-amznlnx2cis_rule_1_1_3: {{ amznlnx2cis_rule_1_1_3 }}
-amznlnx2cis_rule_1_1_4: {{ amznlnx2cis_rule_1_1_4 }}
-amznlnx2cis_rule_1_1_5: {{ amznlnx2cis_rule_1_1_5 }}
-amznlnx2cis_rule_1_1_6: {{ amznlnx2cis_rule_1_1_6 }}
-amznlnx2cis_rule_1_1_7: {{ amznlnx2cis_rule_1_1_7 }}
-amznlnx2cis_rule_1_1_8: {{ amznlnx2cis_rule_1_1_8 }}
-amznlnx2cis_rule_1_1_9: {{ amznlnx2cis_rule_1_1_9 }}
-amznlnx2cis_rule_1_1_10: {{ amznlnx2cis_rule_1_1_10 }}
-amznlnx2cis_rule_1_1_11: {{ amznlnx2cis_rule_1_1_11 }}
-amznlnx2cis_rule_1_1_12: {{ amznlnx2cis_rule_1_1_12 }}
-amznlnx2cis_rule_1_1_13: {{ amznlnx2cis_rule_1_1_13 }}
-amznlnx2cis_rule_1_1_14: {{ amznlnx2cis_rule_1_1_14 }}
-amznlnx2cis_rule_1_1_15: {{ amznlnx2cis_rule_1_1_15 }}
-amznlnx2cis_rule_1_1_16: {{ amznlnx2cis_rule_1_1_16 }}
-amznlnx2cis_rule_1_1_17: {{ amznlnx2cis_rule_1_1_17 }}
-amznlnx2cis_rule_1_1_18: {{ amznlnx2cis_rule_1_1_18 }}
-amznlnx2cis_rule_1_1_19: {{ amznlnx2cis_rule_1_1_19 }}
-amznlnx2cis_rule_1_1_20: {{ amznlnx2cis_rule_1_1_20 }}
-amznlnx2cis_rule_1_1_21: {{ amznlnx2cis_rule_1_1_21 }}
-amznlnx2cis_rule_1_1_22: {{ amznlnx2cis_rule_1_1_22 }}
-amznlnx2cis_rule_1_1_23: {{ amznlnx2cis_rule_1_1_23 }}
-amznlnx2cis_rule_1_1_24: {{ amznlnx2cis_rule_1_1_24 }}
+amazon2cis_rule_1_1_1_1: {{ amazon2cis_rule_1_1_1_1 }}
+amazon2cis_rule_1_1_1_2: {{ amazon2cis_rule_1_1_1_2 }}
+amazon2cis_rule_1_1_1_3: {{ amazon2cis_rule_1_1_1_3 }}
+amazon2cis_rule_1_1_2: {{ amazon2cis_rule_1_1_2 }}
+amazon2cis_rule_1_1_3: {{ amazon2cis_rule_1_1_3 }}
+amazon2cis_rule_1_1_4: {{ amazon2cis_rule_1_1_4 }}
+amazon2cis_rule_1_1_5: {{ amazon2cis_rule_1_1_5 }}
+amazon2cis_rule_1_1_6: {{ amazon2cis_rule_1_1_6 }}
+amazon2cis_rule_1_1_7: {{ amazon2cis_rule_1_1_7 }}
+amazon2cis_rule_1_1_8: {{ amazon2cis_rule_1_1_8 }}
+amazon2cis_rule_1_1_9: {{ amazon2cis_rule_1_1_9 }}
+amazon2cis_rule_1_1_10: {{ amazon2cis_rule_1_1_10 }}
+amazon2cis_rule_1_1_11: {{ amazon2cis_rule_1_1_11 }}
+amazon2cis_rule_1_1_12: {{ amazon2cis_rule_1_1_12 }}
+amazon2cis_rule_1_1_13: {{ amazon2cis_rule_1_1_13 }}
+amazon2cis_rule_1_1_14: {{ amazon2cis_rule_1_1_14 }}
+amazon2cis_rule_1_1_15: {{ amazon2cis_rule_1_1_15 }}
+amazon2cis_rule_1_1_16: {{ amazon2cis_rule_1_1_16 }}
+amazon2cis_rule_1_1_17: {{ amazon2cis_rule_1_1_17 }}
+amazon2cis_rule_1_1_18: {{ amazon2cis_rule_1_1_18 }}
+amazon2cis_rule_1_1_19: {{ amazon2cis_rule_1_1_19 }}
+amazon2cis_rule_1_1_20: {{ amazon2cis_rule_1_1_20 }}
+amazon2cis_rule_1_1_21: {{ amazon2cis_rule_1_1_21 }}
+amazon2cis_rule_1_1_22: {{ amazon2cis_rule_1_1_22 }}
+amazon2cis_rule_1_1_23: {{ amazon2cis_rule_1_1_23 }}
+amazon2cis_rule_1_1_24: {{ amazon2cis_rule_1_1_24 }}
 
 
-amznlnx2cis_rule_1_2_1: {{ amznlnx2cis_rule_1_2_1 }}
-amznlnx2cis_rule_1_2_2: {{ amznlnx2cis_rule_1_2_2 }}
-amznlnx2cis_rule_1_2_3: {{ amznlnx2cis_rule_1_2_3 }}
+amazon2cis_rule_1_2_1: {{ amazon2cis_rule_1_2_1 }}
+amazon2cis_rule_1_2_2: {{ amazon2cis_rule_1_2_2 }}
+amazon2cis_rule_1_2_3: {{ amazon2cis_rule_1_2_3 }}
 
 
-amznlnx2cis_rule_1_3_1: {{ amznlnx2cis_rule_1_3_1 }}
-amznlnx2cis_rule_1_3_2: {{ amznlnx2cis_rule_1_3_2 }}
+amazon2cis_rule_1_3_1: {{ amazon2cis_rule_1_3_1 }}
+amazon2cis_rule_1_3_2: {{ amazon2cis_rule_1_3_2 }}
 
-amznlnx2cis_rule_1_4_1: {{ amznlnx2cis_rule_1_4_1 }}
-amznlnx2cis_rule_1_4_2: {{ amznlnx2cis_rule_1_4_2 }}
+amazon2cis_rule_1_4_1: {{ amazon2cis_rule_1_4_1 }}
+amazon2cis_rule_1_4_2: {{ amazon2cis_rule_1_4_2 }}
 
-amznlnx2cis_rule_1_5_1: {{ amznlnx2cis_rule_1_5_1 }}
-amznlnx2cis_rule_1_5_2: {{ amznlnx2cis_rule_1_5_2 }}
-amznlnx2cis_rule_1_5_3: {{ amznlnx2cis_rule_1_5_3 }}
-amznlnx2cis_rule_1_5_4: {{ amznlnx2cis_rule_1_5_4 }}
+amazon2cis_rule_1_5_1: {{ amazon2cis_rule_1_5_1 }}
+amazon2cis_rule_1_5_2: {{ amazon2cis_rule_1_5_2 }}
+amazon2cis_rule_1_5_3: {{ amazon2cis_rule_1_5_3 }}
+amazon2cis_rule_1_5_4: {{ amazon2cis_rule_1_5_4 }}
 
-amznlnx2cis_rule_1_6_1_1: {{ amznlnx2cis_rule_1_6_1_1 }}
-amznlnx2cis_rule_1_6_1_2: {{ amznlnx2cis_rule_1_6_1_2 }}
-amznlnx2cis_rule_1_6_1_3: {{ amznlnx2cis_rule_1_6_1_3 }}
-amznlnx2cis_rule_1_6_1_4: {{ amznlnx2cis_rule_1_6_1_4 }}
-amznlnx2cis_rule_1_6_1_5: {{ amznlnx2cis_rule_1_6_1_5 }}
-amznlnx2cis_rule_1_6_1_6: {{ amznlnx2cis_rule_1_6_1_6 }}
-amznlnx2cis_rule_1_6_1_7: {{ amznlnx2cis_rule_1_6_1_7 }}
-amznlnx2cis_rule_1_6_1_8: {{ amznlnx2cis_rule_1_6_1_8 }}
+amazon2cis_rule_1_6_1_1: {{ amazon2cis_rule_1_6_1_1 }}
+amazon2cis_rule_1_6_1_2: {{ amazon2cis_rule_1_6_1_2 }}
+amazon2cis_rule_1_6_1_3: {{ amazon2cis_rule_1_6_1_3 }}
+amazon2cis_rule_1_6_1_4: {{ amazon2cis_rule_1_6_1_4 }}
+amazon2cis_rule_1_6_1_5: {{ amazon2cis_rule_1_6_1_5 }}
+amazon2cis_rule_1_6_1_6: {{ amazon2cis_rule_1_6_1_6 }}
+amazon2cis_rule_1_6_1_7: {{ amazon2cis_rule_1_6_1_7 }}
+amazon2cis_rule_1_6_1_8: {{ amazon2cis_rule_1_6_1_8 }}
 
-amznlnx2cis_rule_1_7_1: {{ amznlnx2cis_rule_1_7_1 }}
-amznlnx2cis_rule_1_7_2: {{ amznlnx2cis_rule_1_7_2 }}
-amznlnx2cis_rule_1_7_3: {{ amznlnx2cis_rule_1_7_3 }}
-amznlnx2cis_rule_1_7_4: {{ amznlnx2cis_rule_1_7_4 }}
-amznlnx2cis_rule_1_7_5: {{ amznlnx2cis_rule_1_7_5 }}
-amznlnx2cis_rule_1_7_6: {{ amznlnx2cis_rule_1_7_6 }}
+amazon2cis_rule_1_7_1: {{ amazon2cis_rule_1_7_1 }}
+amazon2cis_rule_1_7_2: {{ amazon2cis_rule_1_7_2 }}
+amazon2cis_rule_1_7_3: {{ amazon2cis_rule_1_7_3 }}
+amazon2cis_rule_1_7_4: {{ amazon2cis_rule_1_7_4 }}
+amazon2cis_rule_1_7_5: {{ amazon2cis_rule_1_7_5 }}
+amazon2cis_rule_1_7_6: {{ amazon2cis_rule_1_7_6 }}
 
-amznlnx2cis_rule_1_8: {{ amznlnx2cis_rule_1_8 }}
+amazon2cis_rule_1_8: {{ amazon2cis_rule_1_8 }}
 
 
 # section 2 rules
-amznlnx2cis_rule_2_1_1_1: {{ amznlnx2cis_rule_2_1_1_1 }}
-amznlnx2cis_rule_2_1_1_2: {{ amznlnx2cis_rule_2_1_1_2 }}
-amznlnx2cis_rule_2_1_1_3: {{ amznlnx2cis_rule_2_1_1_3 }}
+amazon2cis_rule_2_1_1_1: {{ amazon2cis_rule_2_1_1_1 }}
+amazon2cis_rule_2_1_1_2: {{ amazon2cis_rule_2_1_1_2 }}
+amazon2cis_rule_2_1_1_3: {{ amazon2cis_rule_2_1_1_3 }}
 
 
-amznlnx2cis_rule_2_1_2: {{ amznlnx2cis_rule_2_1_2 }}
-amznlnx2cis_rule_2_1_3: {{ amznlnx2cis_rule_2_1_3 }}
-amznlnx2cis_rule_2_1_4: {{ amznlnx2cis_rule_2_1_4 }}
-amznlnx2cis_rule_2_1_5: {{ amznlnx2cis_rule_2_1_5 }}
-amznlnx2cis_rule_2_1_6: {{ amznlnx2cis_rule_2_1_6 }}
-amznlnx2cis_rule_2_1_7: {{ amznlnx2cis_rule_2_1_7 }}
-amznlnx2cis_rule_2_1_8: {{ amznlnx2cis_rule_2_1_8 }}
-amznlnx2cis_rule_2_1_9: {{ amznlnx2cis_rule_2_1_9 }}
-amznlnx2cis_rule_2_1_10: {{ amznlnx2cis_rule_2_1_10 }}
-amznlnx2cis_rule_2_1_11: {{ amznlnx2cis_rule_2_1_11 }}
-amznlnx2cis_rule_2_1_12: {{ amznlnx2cis_rule_2_1_12 }}
-amznlnx2cis_rule_2_1_13: {{ amznlnx2cis_rule_2_1_13 }}
-amznlnx2cis_rule_2_1_14: {{ amznlnx2cis_rule_2_1_14 }}
-amznlnx2cis_rule_2_1_15: {{ amznlnx2cis_rule_2_1_15 }}
-amznlnx2cis_rule_2_1_16: {{ amznlnx2cis_rule_2_1_16 }}
-amznlnx2cis_rule_2_1_17: {{ amznlnx2cis_rule_2_1_17 }}
-amznlnx2cis_rule_2_1_18: {{ amznlnx2cis_rule_2_1_18 }}
-amznlnx2cis_rule_2_1_19: {{ amznlnx2cis_rule_2_1_19 }}
+amazon2cis_rule_2_1_2: {{ amazon2cis_rule_2_1_2 }}
+amazon2cis_rule_2_1_3: {{ amazon2cis_rule_2_1_3 }}
+amazon2cis_rule_2_1_4: {{ amazon2cis_rule_2_1_4 }}
+amazon2cis_rule_2_1_5: {{ amazon2cis_rule_2_1_5 }}
+amazon2cis_rule_2_1_6: {{ amazon2cis_rule_2_1_6 }}
+amazon2cis_rule_2_1_7: {{ amazon2cis_rule_2_1_7 }}
+amazon2cis_rule_2_1_8: {{ amazon2cis_rule_2_1_8 }}
+amazon2cis_rule_2_1_9: {{ amazon2cis_rule_2_1_9 }}
+amazon2cis_rule_2_1_10: {{ amazon2cis_rule_2_1_10 }}
+amazon2cis_rule_2_1_11: {{ amazon2cis_rule_2_1_11 }}
+amazon2cis_rule_2_1_12: {{ amazon2cis_rule_2_1_12 }}
+amazon2cis_rule_2_1_13: {{ amazon2cis_rule_2_1_13 }}
+amazon2cis_rule_2_1_14: {{ amazon2cis_rule_2_1_14 }}
+amazon2cis_rule_2_1_15: {{ amazon2cis_rule_2_1_15 }}
+amazon2cis_rule_2_1_16: {{ amazon2cis_rule_2_1_16 }}
+amazon2cis_rule_2_1_17: {{ amazon2cis_rule_2_1_17 }}
+amazon2cis_rule_2_1_18: {{ amazon2cis_rule_2_1_18 }}
+amazon2cis_rule_2_1_19: {{ amazon2cis_rule_2_1_19 }}
 
-amznlnx2cis_rule_2_2_1: {{ amznlnx2cis_rule_2_2_1 }}
-amznlnx2cis_rule_2_2_2: {{ amznlnx2cis_rule_2_2_2 }}
-amznlnx2cis_rule_2_2_3: {{ amznlnx2cis_rule_2_2_3 }}
-amznlnx2cis_rule_2_2_4: {{ amznlnx2cis_rule_2_2_4 }}
-amznlnx2cis_rule_2_2_5: {{ amznlnx2cis_rule_2_2_5 }}
+amazon2cis_rule_2_2_1: {{ amazon2cis_rule_2_2_1 }}
+amazon2cis_rule_2_2_2: {{ amazon2cis_rule_2_2_2 }}
+amazon2cis_rule_2_2_3: {{ amazon2cis_rule_2_2_3 }}
+amazon2cis_rule_2_2_4: {{ amazon2cis_rule_2_2_4 }}
+amazon2cis_rule_2_2_5: {{ amazon2cis_rule_2_2_5 }}
 
-amznlnx2cis_rule_2_3: {{ amznlnx2cis_rule_2_3 }}
+amazon2cis_rule_2_3: {{ amazon2cis_rule_2_3 }}
 
 # Section 3 rules
-amznlnx2cis_rule_3_1_1: {{ amznlnx2cis_rule_3_1_1 }}
-amznlnx2cis_rule_3_1_2: {{ amznlnx2cis_rule_3_1_2 }}
+amazon2cis_rule_3_1_1: {{ amazon2cis_rule_3_1_1 }}
+amazon2cis_rule_3_1_2: {{ amazon2cis_rule_3_1_2 }}
 
-amznlnx2cis_rule_3_2_1: {{ amznlnx2cis_rule_3_2_1 }}
-amznlnx2cis_rule_3_2_2: {{ amznlnx2cis_rule_3_2_2 }}
+amazon2cis_rule_3_2_1: {{ amazon2cis_rule_3_2_1 }}
+amazon2cis_rule_3_2_2: {{ amazon2cis_rule_3_2_2 }}
 
-amznlnx2cis_rule_3_3_1: {{ amznlnx2cis_rule_3_3_1 }}
-amznlnx2cis_rule_3_3_2: {{ amznlnx2cis_rule_3_3_2 }}
-amznlnx2cis_rule_3_3_3: {{ amznlnx2cis_rule_3_3_3 }}
-amznlnx2cis_rule_3_3_4: {{ amznlnx2cis_rule_3_3_4 }}
-amznlnx2cis_rule_3_3_5: {{ amznlnx2cis_rule_3_3_5 }}
-amznlnx2cis_rule_3_3_6: {{ amznlnx2cis_rule_3_3_6 }}
-amznlnx2cis_rule_3_3_7: {{ amznlnx2cis_rule_3_3_7 }}
-amznlnx2cis_rule_3_3_8: {{ amznlnx2cis_rule_3_3_8 }}
-amznlnx2cis_rule_3_3_9: {{ amznlnx2cis_rule_3_3_9 }}
+amazon2cis_rule_3_3_1: {{ amazon2cis_rule_3_3_1 }}
+amazon2cis_rule_3_3_2: {{ amazon2cis_rule_3_3_2 }}
+amazon2cis_rule_3_3_3: {{ amazon2cis_rule_3_3_3 }}
+amazon2cis_rule_3_3_4: {{ amazon2cis_rule_3_3_4 }}
+amazon2cis_rule_3_3_5: {{ amazon2cis_rule_3_3_5 }}
+amazon2cis_rule_3_3_6: {{ amazon2cis_rule_3_3_6 }}
+amazon2cis_rule_3_3_7: {{ amazon2cis_rule_3_3_7 }}
+amazon2cis_rule_3_3_8: {{ amazon2cis_rule_3_3_8 }}
+amazon2cis_rule_3_3_9: {{ amazon2cis_rule_3_3_9 }}
 
-amznlnx2cis_rule_3_4_1: {{ amznlnx2cis_rule_3_4_1 }}
-amznlnx2cis_rule_3_4_2: {{ amznlnx2cis_rule_3_4_2 }}
+amazon2cis_rule_3_4_1: {{ amazon2cis_rule_3_4_1 }}
+amazon2cis_rule_3_4_2: {{ amazon2cis_rule_3_4_2 }}
 
-amznlnx2cis_rule_3_5_1_1: {{ amznlnx2cis_rule_3_5_1_1 }}
-amznlnx2cis_rule_3_5_1_2: {{ amznlnx2cis_rule_3_5_1_2 }}
-amznlnx2cis_rule_3_5_1_3: {{ amznlnx2cis_rule_3_5_1_3 }}
-amznlnx2cis_rule_3_5_1_4: {{ amznlnx2cis_rule_3_5_1_4 }}
-amznlnx2cis_rule_3_5_1_5: {{ amznlnx2cis_rule_3_5_1_5 }}
-amznlnx2cis_rule_3_5_1_6: {{ amznlnx2cis_rule_3_5_1_6 }}
-amznlnx2cis_rule_3_5_1_7: {{ amznlnx2cis_rule_3_5_1_7 }}
+amazon2cis_rule_3_5_1_1: {{ amazon2cis_rule_3_5_1_1 }}
+amazon2cis_rule_3_5_1_2: {{ amazon2cis_rule_3_5_1_2 }}
+amazon2cis_rule_3_5_1_3: {{ amazon2cis_rule_3_5_1_3 }}
+amazon2cis_rule_3_5_1_4: {{ amazon2cis_rule_3_5_1_4 }}
+amazon2cis_rule_3_5_1_5: {{ amazon2cis_rule_3_5_1_5 }}
+amazon2cis_rule_3_5_1_6: {{ amazon2cis_rule_3_5_1_6 }}
+amazon2cis_rule_3_5_1_7: {{ amazon2cis_rule_3_5_1_7 }}
 
-amznlnx2cis_rule_3_5_2_1: {{ amznlnx2cis_rule_3_5_2_1 }}
-amznlnx2cis_rule_3_5_2_2: {{ amznlnx2cis_rule_3_5_2_2 }}
-amznlnx2cis_rule_3_5_2_3: {{ amznlnx2cis_rule_3_5_2_3 }}
-amznlnx2cis_rule_3_5_2_4: {{ amznlnx2cis_rule_3_5_2_4 }}
-amznlnx2cis_rule_3_5_2_5: {{ amznlnx2cis_rule_3_5_2_5 }}
-amznlnx2cis_rule_3_5_2_6: {{ amznlnx2cis_rule_3_5_2_6 }}
-amznlnx2cis_rule_3_5_2_7: {{ amznlnx2cis_rule_3_5_2_7 }}
-amznlnx2cis_rule_3_5_2_8: {{ amznlnx2cis_rule_3_5_2_8 }}
-amznlnx2cis_rule_3_5_2_9: {{ amznlnx2cis_rule_3_5_2_9 }}
-amznlnx2cis_rule_3_5_2_10: {{ amznlnx2cis_rule_3_5_2_10 }}
-amznlnx2cis_rule_3_5_2_11: {{ amznlnx2cis_rule_3_5_2_11 }}
+amazon2cis_rule_3_5_2_1: {{ amazon2cis_rule_3_5_2_1 }}
+amazon2cis_rule_3_5_2_2: {{ amazon2cis_rule_3_5_2_2 }}
+amazon2cis_rule_3_5_2_3: {{ amazon2cis_rule_3_5_2_3 }}
+amazon2cis_rule_3_5_2_4: {{ amazon2cis_rule_3_5_2_4 }}
+amazon2cis_rule_3_5_2_5: {{ amazon2cis_rule_3_5_2_5 }}
+amazon2cis_rule_3_5_2_6: {{ amazon2cis_rule_3_5_2_6 }}
+amazon2cis_rule_3_5_2_7: {{ amazon2cis_rule_3_5_2_7 }}
+amazon2cis_rule_3_5_2_8: {{ amazon2cis_rule_3_5_2_8 }}
+amazon2cis_rule_3_5_2_9: {{ amazon2cis_rule_3_5_2_9 }}
+amazon2cis_rule_3_5_2_10: {{ amazon2cis_rule_3_5_2_10 }}
+amazon2cis_rule_3_5_2_11: {{ amazon2cis_rule_3_5_2_11 }}
 
-amznlnx2cis_rule_3_5_3_1_1: {{ amznlnx2cis_rule_3_5_3_1_1 }}
-amznlnx2cis_rule_3_5_3_1_2: {{ amznlnx2cis_rule_3_5_3_1_2 }}
-amznlnx2cis_rule_3_5_3_1_3: {{ amznlnx2cis_rule_3_5_3_1_3 }}
+amazon2cis_rule_3_5_3_1_1: {{ amazon2cis_rule_3_5_3_1_1 }}
+amazon2cis_rule_3_5_3_1_2: {{ amazon2cis_rule_3_5_3_1_2 }}
+amazon2cis_rule_3_5_3_1_3: {{ amazon2cis_rule_3_5_3_1_3 }}
 
 # To be Written
-amznlnx2cis_rule_3_5_3_2_1: false
-#amznlnx2cis_rule_3_5_3_2_2: false
-#amznlnx2cis_rule_3_5_3_2_3: false
-#amznlnx2cis_rule_3_5_3_2_4: false
-#amznlnx2cis_rule_3_5_3_2_5: false
-#amznlnx2cis_rule_3_5_3_2_6: false
+amazon2cis_rule_3_5_3_2_1: false
+#amazon2cis_rule_3_5_3_2_2: false
+#amazon2cis_rule_3_5_3_2_3: false
+#amazon2cis_rule_3_5_3_2_4: false
+#amazon2cis_rule_3_5_3_2_5: false
+#amazon2cis_rule_3_5_3_2_6: false
 
-#amznlnx2cis_rule_3_4_3_3_1: false
-#amznlnx2cis_rule_3_4_3_3_2: false
-#amznlnx2cis_rule_3_4_3_3_3: false
-#amznlnx2cis_rule_3_4_3_3_4: false
-#amznlnx2cis_rule_3_4_3_3_5: false
-#amznlnx2cis_rule_3_4_3_3_6: false
+#amazon2cis_rule_3_4_3_3_1: false
+#amazon2cis_rule_3_4_3_3_2: false
+#amazon2cis_rule_3_4_3_3_3: false
+#amazon2cis_rule_3_4_3_3_4: false
+#amazon2cis_rule_3_4_3_3_5: false
+#amazon2cis_rule_3_4_3_3_6: false
 
 
 # Section 4 rules
-amznlnx2cis_rule_4_1_1_1: {{ amznlnx2cis_rule_4_1_1_1 }}
-amznlnx2cis_rule_4_1_1_2: {{ amznlnx2cis_rule_4_1_1_2 }}
-amznlnx2cis_rule_4_1_1_3: {{ amznlnx2cis_rule_4_1_1_3 }}
+amazon2cis_rule_4_1_1_1: {{ amazon2cis_rule_4_1_1_1 }}
+amazon2cis_rule_4_1_1_2: {{ amazon2cis_rule_4_1_1_2 }}
+amazon2cis_rule_4_1_1_3: {{ amazon2cis_rule_4_1_1_3 }}
 
-amznlnx2cis_rule_4_1_2_1: {{ amznlnx2cis_rule_4_1_2_1 }}
-amznlnx2cis_rule_4_1_2_2: {{ amznlnx2cis_rule_4_1_2_2 }}
-amznlnx2cis_rule_4_1_2_3: {{ amznlnx2cis_rule_4_1_2_3 }}
-amznlnx2cis_rule_4_1_2_4: {{ amznlnx2cis_rule_4_1_2_4 }}
+amazon2cis_rule_4_1_2_1: {{ amazon2cis_rule_4_1_2_1 }}
+amazon2cis_rule_4_1_2_2: {{ amazon2cis_rule_4_1_2_2 }}
+amazon2cis_rule_4_1_2_3: {{ amazon2cis_rule_4_1_2_3 }}
+amazon2cis_rule_4_1_2_4: {{ amazon2cis_rule_4_1_2_4 }}
 
-amznlnx2cis_rule_4_1_3: {{ amznlnx2cis_rule_4_1_3 }}
-amznlnx2cis_rule_4_1_4: {{ amznlnx2cis_rule_4_1_4 }}
-amznlnx2cis_rule_4_1_5: {{ amznlnx2cis_rule_4_1_5 }}
-amznlnx2cis_rule_4_1_6: {{ amznlnx2cis_rule_4_1_6 }}
-amznlnx2cis_rule_4_1_7: {{ amznlnx2cis_rule_4_1_7 }}
-amznlnx2cis_rule_4_1_8: {{ amznlnx2cis_rule_4_1_8 }}
-amznlnx2cis_rule_4_1_9: {{ amznlnx2cis_rule_4_1_9 }}
-amznlnx2cis_rule_4_1_10: {{ amznlnx2cis_rule_4_1_10 }}
-amznlnx2cis_rule_4_1_11: {{ amznlnx2cis_rule_4_1_11 }}
-amznlnx2cis_rule_4_1_12: {{ amznlnx2cis_rule_4_1_12 }}
-amznlnx2cis_rule_4_1_13: {{ amznlnx2cis_rule_4_1_13 }}
-amznlnx2cis_rule_4_1_14: {{ amznlnx2cis_rule_4_1_14 }}
-amznlnx2cis_rule_4_1_15: {{ amznlnx2cis_rule_4_1_15 }}
-amznlnx2cis_rule_4_1_16: {{ amznlnx2cis_rule_4_1_16 }}
-amznlnx2cis_rule_4_1_17: {{ amznlnx2cis_rule_4_1_17 }}
+amazon2cis_rule_4_1_3: {{ amazon2cis_rule_4_1_3 }}
+amazon2cis_rule_4_1_4: {{ amazon2cis_rule_4_1_4 }}
+amazon2cis_rule_4_1_5: {{ amazon2cis_rule_4_1_5 }}
+amazon2cis_rule_4_1_6: {{ amazon2cis_rule_4_1_6 }}
+amazon2cis_rule_4_1_7: {{ amazon2cis_rule_4_1_7 }}
+amazon2cis_rule_4_1_8: {{ amazon2cis_rule_4_1_8 }}
+amazon2cis_rule_4_1_9: {{ amazon2cis_rule_4_1_9 }}
+amazon2cis_rule_4_1_10: {{ amazon2cis_rule_4_1_10 }}
+amazon2cis_rule_4_1_11: {{ amazon2cis_rule_4_1_11 }}
+amazon2cis_rule_4_1_12: {{ amazon2cis_rule_4_1_12 }}
+amazon2cis_rule_4_1_13: {{ amazon2cis_rule_4_1_13 }}
+amazon2cis_rule_4_1_14: {{ amazon2cis_rule_4_1_14 }}
+amazon2cis_rule_4_1_15: {{ amazon2cis_rule_4_1_15 }}
+amazon2cis_rule_4_1_16: {{ amazon2cis_rule_4_1_16 }}
+amazon2cis_rule_4_1_17: {{ amazon2cis_rule_4_1_17 }}
 
 
-amznlnx2cis_rule_4_2_1_1: {{ amznlnx2cis_rule_4_2_1_1 }}
-amznlnx2cis_rule_4_2_1_2: {{ amznlnx2cis_rule_4_2_1_2 }}
-amznlnx2cis_rule_4_2_1_3: {{ amznlnx2cis_rule_4_2_1_3 }}
-amznlnx2cis_rule_4_2_1_4: {{ amznlnx2cis_rule_4_2_1_4 }}
-amznlnx2cis_rule_4_2_1_5: {{ amznlnx2cis_rule_4_2_1_5 }}
-amznlnx2cis_rule_4_2_1_6: {{ amznlnx2cis_rule_4_2_1_6 }}
+amazon2cis_rule_4_2_1_1: {{ amazon2cis_rule_4_2_1_1 }}
+amazon2cis_rule_4_2_1_2: {{ amazon2cis_rule_4_2_1_2 }}
+amazon2cis_rule_4_2_1_3: {{ amazon2cis_rule_4_2_1_3 }}
+amazon2cis_rule_4_2_1_4: {{ amazon2cis_rule_4_2_1_4 }}
+amazon2cis_rule_4_2_1_5: {{ amazon2cis_rule_4_2_1_5 }}
+amazon2cis_rule_4_2_1_6: {{ amazon2cis_rule_4_2_1_6 }}
 
-amznlnx2cis_rule_4_2_2_1: {{ amznlnx2cis_rule_4_2_2_1 }}
-amznlnx2cis_rule_4_2_2_2: {{ amznlnx2cis_rule_4_2_2_2 }}
-amznlnx2cis_rule_4_2_2_3: {{ amznlnx2cis_rule_4_2_2_3 }}
+amazon2cis_rule_4_2_2_1: {{ amazon2cis_rule_4_2_2_1 }}
+amazon2cis_rule_4_2_2_2: {{ amazon2cis_rule_4_2_2_2 }}
+amazon2cis_rule_4_2_2_3: {{ amazon2cis_rule_4_2_2_3 }}
 
-amznlnx2cis_rule_4_2_3: {{ amznlnx2cis_rule_4_2_3 }}
+amazon2cis_rule_4_2_3: {{ amazon2cis_rule_4_2_3 }}
 
-amznlnx2cis_rule_4_2_4: {{ amznlnx2cis_rule_4_2_4 }}
+amazon2cis_rule_4_2_4: {{ amazon2cis_rule_4_2_4 }}
 
 # Section 5
-amznlnx2cis_rule_5_1_1: {{ amznlnx2cis_rule_5_1_1 }}
-amznlnx2cis_rule_5_1_2: {{ amznlnx2cis_rule_5_1_2 }}
-amznlnx2cis_rule_5_1_3: {{ amznlnx2cis_rule_5_1_3 }}
-amznlnx2cis_rule_5_1_4: {{ amznlnx2cis_rule_5_1_4 }}
-amznlnx2cis_rule_5_1_5: {{ amznlnx2cis_rule_5_1_5 }}
-amznlnx2cis_rule_5_1_6: {{ amznlnx2cis_rule_5_1_6 }}
-amznlnx2cis_rule_5_1_7: {{ amznlnx2cis_rule_5_1_7 }}
-amznlnx2cis_rule_5_1_8: {{ amznlnx2cis_rule_5_1_8 }}
-amznlnx2cis_rule_5_1_9: {{ amznlnx2cis_rule_5_1_9 }}
+amazon2cis_rule_5_1_1: {{ amazon2cis_rule_5_1_1 }}
+amazon2cis_rule_5_1_2: {{ amazon2cis_rule_5_1_2 }}
+amazon2cis_rule_5_1_3: {{ amazon2cis_rule_5_1_3 }}
+amazon2cis_rule_5_1_4: {{ amazon2cis_rule_5_1_4 }}
+amazon2cis_rule_5_1_5: {{ amazon2cis_rule_5_1_5 }}
+amazon2cis_rule_5_1_6: {{ amazon2cis_rule_5_1_6 }}
+amazon2cis_rule_5_1_7: {{ amazon2cis_rule_5_1_7 }}
+amazon2cis_rule_5_1_8: {{ amazon2cis_rule_5_1_8 }}
+amazon2cis_rule_5_1_9: {{ amazon2cis_rule_5_1_9 }}
 
-amznlnx2cis_rule_5_2_1: {{ amznlnx2cis_rule_5_2_1 }}
-amznlnx2cis_rule_5_2_2: {{ amznlnx2cis_rule_5_2_2 }}
-amznlnx2cis_rule_5_2_3: {{ amznlnx2cis_rule_5_2_3 }}
-
-
-amznlnx2cis_rule_5_3_1: {{ amznlnx2cis_rule_5_3_1 }}
-amznlnx2cis_rule_5_3_2: {{ amznlnx2cis_rule_5_3_2 }}
-amznlnx2cis_rule_5_3_3: {{ amznlnx2cis_rule_5_3_3 }}
-amznlnx2cis_rule_5_3_4: {{ amznlnx2cis_rule_5_3_4 }}
-amznlnx2cis_rule_5_3_5: {{ amznlnx2cis_rule_5_3_5 }}
-amznlnx2cis_rule_5_3_6: {{ amznlnx2cis_rule_5_3_6 }}
-amznlnx2cis_rule_5_3_7: {{ amznlnx2cis_rule_5_3_7 }}
-amznlnx2cis_rule_5_3_8: {{ amznlnx2cis_rule_5_3_8 }}
-amznlnx2cis_rule_5_3_9: {{ amznlnx2cis_rule_5_3_9 }}
-amznlnx2cis_rule_5_3_10: {{ amznlnx2cis_rule_5_3_10 }}
-amznlnx2cis_rule_5_3_11: {{ amznlnx2cis_rule_5_3_11 }}
-amznlnx2cis_rule_5_3_12: {{ amznlnx2cis_rule_5_3_12 }}
-amznlnx2cis_rule_5_3_13: {{ amznlnx2cis_rule_5_3_13 }}
-amznlnx2cis_rule_5_3_14: {{ amznlnx2cis_rule_5_3_14 }}
-amznlnx2cis_rule_5_3_15: {{ amznlnx2cis_rule_5_3_15 }}
-amznlnx2cis_rule_5_3_16: {{ amznlnx2cis_rule_5_3_16 }}
-amznlnx2cis_rule_5_3_17: {{ amznlnx2cis_rule_5_3_17 }}
-amznlnx2cis_rule_5_3_18: {{ amznlnx2cis_rule_5_3_18 }}
-amznlnx2cis_rule_5_3_19: {{ amznlnx2cis_rule_5_3_19 }}
-amznlnx2cis_rule_5_3_20: {{ amznlnx2cis_rule_5_3_20 }}
-amznlnx2cis_rule_5_3_21: {{ amznlnx2cis_rule_5_3_21 }}
-amznlnx2cis_rule_5_3_22: {{ amznlnx2cis_rule_5_3_22 }}
+amazon2cis_rule_5_2_1: {{ amazon2cis_rule_5_2_1 }}
+amazon2cis_rule_5_2_2: {{ amazon2cis_rule_5_2_2 }}
+amazon2cis_rule_5_2_3: {{ amazon2cis_rule_5_2_3 }}
 
 
-amznlnx2cis_rule_5_4_1: {{ amznlnx2cis_rule_5_4_1 }}
-amznlnx2cis_rule_5_4_2: {{ amznlnx2cis_rule_5_4_2 }}
-amznlnx2cis_rule_5_4_3: {{ amznlnx2cis_rule_5_4_3 }}
-amznlnx2cis_rule_5_4_4: {{ amznlnx2cis_rule_5_4_4 }}
+amazon2cis_rule_5_3_1: {{ amazon2cis_rule_5_3_1 }}
+amazon2cis_rule_5_3_2: {{ amazon2cis_rule_5_3_2 }}
+amazon2cis_rule_5_3_3: {{ amazon2cis_rule_5_3_3 }}
+amazon2cis_rule_5_3_4: {{ amazon2cis_rule_5_3_4 }}
+amazon2cis_rule_5_3_5: {{ amazon2cis_rule_5_3_5 }}
+amazon2cis_rule_5_3_6: {{ amazon2cis_rule_5_3_6 }}
+amazon2cis_rule_5_3_7: {{ amazon2cis_rule_5_3_7 }}
+amazon2cis_rule_5_3_8: {{ amazon2cis_rule_5_3_8 }}
+amazon2cis_rule_5_3_9: {{ amazon2cis_rule_5_3_9 }}
+amazon2cis_rule_5_3_10: {{ amazon2cis_rule_5_3_10 }}
+amazon2cis_rule_5_3_11: {{ amazon2cis_rule_5_3_11 }}
+amazon2cis_rule_5_3_12: {{ amazon2cis_rule_5_3_12 }}
+amazon2cis_rule_5_3_13: {{ amazon2cis_rule_5_3_13 }}
+amazon2cis_rule_5_3_14: {{ amazon2cis_rule_5_3_14 }}
+amazon2cis_rule_5_3_15: {{ amazon2cis_rule_5_3_15 }}
+amazon2cis_rule_5_3_16: {{ amazon2cis_rule_5_3_16 }}
+amazon2cis_rule_5_3_17: {{ amazon2cis_rule_5_3_17 }}
+amazon2cis_rule_5_3_18: {{ amazon2cis_rule_5_3_18 }}
+amazon2cis_rule_5_3_19: {{ amazon2cis_rule_5_3_19 }}
+amazon2cis_rule_5_3_20: {{ amazon2cis_rule_5_3_20 }}
+amazon2cis_rule_5_3_21: {{ amazon2cis_rule_5_3_21 }}
+amazon2cis_rule_5_3_22: {{ amazon2cis_rule_5_3_22 }}
 
-amznlnx2cis_rule_5_5_1_1: {{ amznlnx2cis_rule_5_5_1_1 }}
-amznlnx2cis_rule_5_5_1_2: {{ amznlnx2cis_rule_5_5_1_2 }}
-amznlnx2cis_rule_5_5_1_3: {{ amznlnx2cis_rule_5_5_1_3 }}
-amznlnx2cis_rule_5_5_1_4: {{ amznlnx2cis_rule_5_5_1_4 }}
-amznlnx2cis_rule_5_5_1_5: {{ amznlnx2cis_rule_5_5_1_5 }}
 
-amznlnx2cis_rule_5_5_2: {{ amznlnx2cis_rule_5_5_2 }}
-amznlnx2cis_rule_5_5_3: {{ amznlnx2cis_rule_5_5_3 }}
-amznlnx2cis_rule_5_5_4: {{ amznlnx2cis_rule_5_5_4 }}
-amznlnx2cis_rule_5_5_5: {{ amznlnx2cis_rule_5_5_5 }}
+amazon2cis_rule_5_4_1: {{ amazon2cis_rule_5_4_1 }}
+amazon2cis_rule_5_4_2: {{ amazon2cis_rule_5_4_2 }}
+amazon2cis_rule_5_4_3: {{ amazon2cis_rule_5_4_3 }}
+amazon2cis_rule_5_4_4: {{ amazon2cis_rule_5_4_4 }}
 
-amznlnx2cis_rule_5_6: {{ amznlnx2cis_rule_5_6 }}
-amznlnx2cis_rule_5_7: {{ amznlnx2cis_rule_5_7 }}
+amazon2cis_rule_5_5_1_1: {{ amazon2cis_rule_5_5_1_1 }}
+amazon2cis_rule_5_5_1_2: {{ amazon2cis_rule_5_5_1_2 }}
+amazon2cis_rule_5_5_1_3: {{ amazon2cis_rule_5_5_1_3 }}
+amazon2cis_rule_5_5_1_4: {{ amazon2cis_rule_5_5_1_4 }}
+amazon2cis_rule_5_5_1_5: {{ amazon2cis_rule_5_5_1_5 }}
+
+amazon2cis_rule_5_5_2: {{ amazon2cis_rule_5_5_2 }}
+amazon2cis_rule_5_5_3: {{ amazon2cis_rule_5_5_3 }}
+amazon2cis_rule_5_5_4: {{ amazon2cis_rule_5_5_4 }}
+amazon2cis_rule_5_5_5: {{ amazon2cis_rule_5_5_5 }}
+
+amazon2cis_rule_5_6: {{ amazon2cis_rule_5_6 }}
+amazon2cis_rule_5_7: {{ amazon2cis_rule_5_7 }}
 
 
 # Section 6
-amznlnx2cis_rule_6_1_1: {{ amznlnx2cis_rule_6_1_1 }}
-amznlnx2cis_rule_6_1_2: {{ amznlnx2cis_rule_6_1_2 }}
-amznlnx2cis_rule_6_1_3: {{ amznlnx2cis_rule_6_1_3 }}
-amznlnx2cis_rule_6_1_4: {{ amznlnx2cis_rule_6_1_4 }}
-amznlnx2cis_rule_6_1_5: {{ amznlnx2cis_rule_6_1_5 }}
-amznlnx2cis_rule_6_1_6: {{ amznlnx2cis_rule_6_1_6 }}
-amznlnx2cis_rule_6_1_7: {{ amznlnx2cis_rule_6_1_7 }}
-amznlnx2cis_rule_6_1_8: {{ amznlnx2cis_rule_6_1_8 }}
-amznlnx2cis_rule_6_1_9: {{ amznlnx2cis_rule_6_1_9 }}
-amznlnx2cis_rule_6_1_10: {{ amznlnx2cis_rule_6_1_10 }}
-amznlnx2cis_rule_6_1_11: {{ amznlnx2cis_rule_6_1_11 }}
-amznlnx2cis_rule_6_1_12: {{ amznlnx2cis_rule_6_1_12 }}
-amznlnx2cis_rule_6_1_13: {{ amznlnx2cis_rule_6_1_13 }}
-amznlnx2cis_rule_6_1_14: {{ amznlnx2cis_rule_6_1_14 }}
+amazon2cis_rule_6_1_1: {{ amazon2cis_rule_6_1_1 }}
+amazon2cis_rule_6_1_2: {{ amazon2cis_rule_6_1_2 }}
+amazon2cis_rule_6_1_3: {{ amazon2cis_rule_6_1_3 }}
+amazon2cis_rule_6_1_4: {{ amazon2cis_rule_6_1_4 }}
+amazon2cis_rule_6_1_5: {{ amazon2cis_rule_6_1_5 }}
+amazon2cis_rule_6_1_6: {{ amazon2cis_rule_6_1_6 }}
+amazon2cis_rule_6_1_7: {{ amazon2cis_rule_6_1_7 }}
+amazon2cis_rule_6_1_8: {{ amazon2cis_rule_6_1_8 }}
+amazon2cis_rule_6_1_9: {{ amazon2cis_rule_6_1_9 }}
+amazon2cis_rule_6_1_10: {{ amazon2cis_rule_6_1_10 }}
+amazon2cis_rule_6_1_11: {{ amazon2cis_rule_6_1_11 }}
+amazon2cis_rule_6_1_12: {{ amazon2cis_rule_6_1_12 }}
+amazon2cis_rule_6_1_13: {{ amazon2cis_rule_6_1_13 }}
+amazon2cis_rule_6_1_14: {{ amazon2cis_rule_6_1_14 }}
 
-amznlnx2cis_rule_6_2_1: {{ amznlnx2cis_rule_6_2_1 }}
-amznlnx2cis_rule_6_2_2: {{ amznlnx2cis_rule_6_2_2 }}
-amznlnx2cis_rule_6_2_3: {{ amznlnx2cis_rule_6_2_3 }}
-amznlnx2cis_rule_6_2_4: {{ amznlnx2cis_rule_6_2_4 }}
-amznlnx2cis_rule_6_2_5: {{ amznlnx2cis_rule_6_2_5 }}
-amznlnx2cis_rule_6_2_6: {{ amznlnx2cis_rule_6_2_6 }}
-amznlnx2cis_rule_6_2_7: {{ amznlnx2cis_rule_6_2_7 }}
-amznlnx2cis_rule_6_2_8: {{ amznlnx2cis_rule_6_2_8 }}
-amznlnx2cis_rule_6_2_9: {{ amznlnx2cis_rule_6_2_9 }}
-amznlnx2cis_rule_6_2_10: {{ amznlnx2cis_rule_6_2_10 }}
-amznlnx2cis_rule_6_2_11: {{ amznlnx2cis_rule_6_2_11 }}
-amznlnx2cis_rule_6_2_12: {{ amznlnx2cis_rule_6_2_12 }}
-amznlnx2cis_rule_6_2_13: {{ amznlnx2cis_rule_6_2_13 }}
-amznlnx2cis_rule_6_2_14: {{ amznlnx2cis_rule_6_2_14 }}
-amznlnx2cis_rule_6_2_15: {{ amznlnx2cis_rule_6_2_15 }}
-amznlnx2cis_rule_6_2_16: {{ amznlnx2cis_rule_6_2_16 }}
-amznlnx2cis_rule_6_2_17: {{ amznlnx2cis_rule_6_2_17 }}
+amazon2cis_rule_6_2_1: {{ amazon2cis_rule_6_2_1 }}
+amazon2cis_rule_6_2_2: {{ amazon2cis_rule_6_2_2 }}
+amazon2cis_rule_6_2_3: {{ amazon2cis_rule_6_2_3 }}
+amazon2cis_rule_6_2_4: {{ amazon2cis_rule_6_2_4 }}
+amazon2cis_rule_6_2_5: {{ amazon2cis_rule_6_2_5 }}
+amazon2cis_rule_6_2_6: {{ amazon2cis_rule_6_2_6 }}
+amazon2cis_rule_6_2_7: {{ amazon2cis_rule_6_2_7 }}
+amazon2cis_rule_6_2_8: {{ amazon2cis_rule_6_2_8 }}
+amazon2cis_rule_6_2_9: {{ amazon2cis_rule_6_2_9 }}
+amazon2cis_rule_6_2_10: {{ amazon2cis_rule_6_2_10 }}
+amazon2cis_rule_6_2_11: {{ amazon2cis_rule_6_2_11 }}
+amazon2cis_rule_6_2_12: {{ amazon2cis_rule_6_2_12 }}
+amazon2cis_rule_6_2_13: {{ amazon2cis_rule_6_2_13 }}
+amazon2cis_rule_6_2_14: {{ amazon2cis_rule_6_2_14 }}
+amazon2cis_rule_6_2_15: {{ amazon2cis_rule_6_2_15 }}
+amazon2cis_rule_6_2_16: {{ amazon2cis_rule_6_2_16 }}
+amazon2cis_rule_6_2_17: {{ amazon2cis_rule_6_2_17 }}
 
 
 
 # Service configuration booleans set true to keep service
-amznlnx2cis_avahi_server: {{ amznlnx2cis_avahi_server }}
-amznlnx2cis_cups_server: {{ amznlnx2cis_cups_server }}
-amznlnx2cis_dhcp_server: {{ amznlnx2cis_dhcp_server }}
-amznlnx2cis_ldap_server: {{ amznlnx2cis_ldap_server }}
-amznlnx2cis_telnet_server: {{ amznlnx2cis_telnet_server }}
-amznlnx2cis_nfs_server: {{ amznlnx2cis_nfs_server }}
-amznlnx2cis_rpc_server: {{ amznlnx2cis_rpc_server }}
-amznlnx2cis_rsyncd_server: {{ amznlnx2cis_rsyncd_server }}
-amznlnx2cis_nis_server: {{ amznlnx2cis_nis_server }}
-amznlnx2cis_snmp_server: {{ amznlnx2cis_snmp_server }}
-amznlnx2cis_squid_server: {{ amznlnx2cis_squid_server }}
-amznlnx2cis_smb_server: {{ amznlnx2cis_smb_server }}
-amznlnx2cis_dovecot_server: {{ amznlnx2cis_dovecot_server }}
-amznlnx2cis_httpd_server: {{ amznlnx2cis_httpd_server }}
-amznlnx2cis_vsftpd_server: {{ amznlnx2cis_vsftpd_server }}
-amznlnx2cis_nfs_rpc_server: {{ amznlnx2cis_nfs_rpc_server }}
-amznlnx2cis_is_mail_server: {{ amznlnx2cis_is_mail_server }}
-amznlnx2cis_bind: {{ amznlnx2cis_named_server}}
+amazon2cis_avahi_server: {{ amazon2cis_avahi_server }}
+amazon2cis_cups_server: {{ amazon2cis_cups_server }}
+amazon2cis_dhcp_server: {{ amazon2cis_dhcp_server }}
+amazon2cis_ldap_server: {{ amazon2cis_ldap_server }}
+amazon2cis_telnet_server: {{ amazon2cis_telnet_server }}
+amazon2cis_nfs_server: {{ amazon2cis_nfs_server }}
+amazon2cis_rpc_server: {{ amazon2cis_rpc_server }}
+amazon2cis_rsyncd_server: {{ amazon2cis_rsyncd_server }}
+amazon2cis_nis_server: {{ amazon2cis_nis_server }}
+amazon2cis_snmp_server: {{ amazon2cis_snmp_server }}
+amazon2cis_squid_server: {{ amazon2cis_squid_server }}
+amazon2cis_smb_server: {{ amazon2cis_smb_server }}
+amazon2cis_dovecot_server: {{ amazon2cis_dovecot_server }}
+amazon2cis_httpd_server: {{ amazon2cis_httpd_server }}
+amazon2cis_vsftpd_server: {{ amazon2cis_vsftpd_server }}
+amazon2cis_nfs_rpc_server: {{ amazon2cis_nfs_rpc_server }}
+amazon2cis_is_mail_server: {{ amazon2cis_is_mail_server }}
+amazon2cis_bind: {{ amazon2cis_named_server}}
 
 
 # client services
-amznlnx2cis_openldap_clients_required: {{ amznlnx2cis_openldap_clients_required }}
-amznlnx2cis_telnet_required: {{ amznlnx2cis_telnet_required }}
-amznlnx2cis_talk_required: {{ amznlnx2cis_talk_required }}
-amznlnx2cis_rsh_required: {{ amznlnx2cis_rsh_required }}
-amznlnx2cis_ypbind_required: {{ amznlnx2cis_ypbind_required }}
+amazon2cis_openldap_clients_required: {{ amazon2cis_openldap_clients_required }}
+amazon2cis_telnet_required: {{ amazon2cis_telnet_required }}
+amazon2cis_talk_required: {{ amazon2cis_talk_required }}
+amazon2cis_rsh_required: {{ amazon2cis_rsh_required }}
+amazon2cis_ypbind_required: {{ amazon2cis_ypbind_required }}
 
 # AIDE
-amznlnx2cis_config_aide: {{ amznlnx2cis_config_aide }}
+amazon2cis_config_aide: {{ amazon2cis_config_aide }}
 
 # aide setup via - cron, timer
-amznlnx2cis_aide_scan_type: cron
+amazon2cis_aide_scan_type: cron
 
 # AIDE cron settings
-amznlnx2cis_aide_cron:
-  cron_user: {{ amznlnx2cis_aide_cron.cron_user }}
-  cron_file: '{{ amznlnx2cis_aide_cron.cron_file }}'
-  aide_job: ' {{ amznlnx2cis_aide_cron.aide_job }}'
-  aide_minute: '{{ amznlnx2cis_aide_cron.aide_minute }}'
-  aide_hour: '{{ amznlnx2cis_aide_cron.aide_hour }}'
-  aide_day: '{{ amznlnx2cis_aide_cron.aide_day }}'
-  aide_month: '{{ amznlnx2cis_aide_cron.aide_month }}'
-  aide_weekday: '{{ amznlnx2cis_aide_cron.aide_weekday }}'
+amazon2cis_aide_cron:
+  cron_user: {{ amazon2cis_aide_cron.cron_user }}
+  cron_file: '{{ amazon2cis_aide_cron.cron_file }}'
+  aide_job: ' {{ amazon2cis_aide_cron.aide_job }}'
+  aide_minute: '{{ amazon2cis_aide_cron.aide_minute }}'
+  aide_hour: '{{ amazon2cis_aide_cron.aide_hour }}'
+  aide_day: '{{ amazon2cis_aide_cron.aide_day }}'
+  aide_month: '{{ amazon2cis_aide_cron.aide_month }}'
+  aide_weekday: '{{ amazon2cis_aide_cron.aide_weekday }}'
 
 
 
 # Warning Banner Content (issue, issue.net, motd)
-amznlnx2cis_warning_banner: {{ amznlnx2cis_warning_banner }}
+amazon2cis_warning_banner: {{ amazon2cis_warning_banner }}
 # End Banner
 
 # Set to 'true' if X Windows is needed in your environment
-amznlnx2cis_xwindows_required: {{ amznlnx2cis_xwindows_required }}
+amazon2cis_xwindows_required: {{ amazon2cis_xwindows_required }}
 
 # Whether or not to run tasks related to auditing/patching the desktop environment
-amznlnx2cis_gui: {{ amznlnx2cis_gui }}
+amazon2cis_gui: {{ amazon2cis_gui }}
 
 
 # IPv6 required
-amznlnx2cis_ipv6_required: {{ amznlnx2cis_ipv6_required }}
+amazon2cis_ipv6_required: {{ amazon2cis_ipv6_required }}
 
 # System network parameters (host only OR host and router)
-amznlnx2cis_is_router: {{ amznlnx2cis_is_router }}
+amazon2cis_is_router: {{ amazon2cis_is_router }}
 
 # Time Synchronization
-amznlnx2cis_time_synchronization: {{ amznlnx2cis_time_synchronization }}
+amazon2cis_time_synchronization: {{ amazon2cis_time_synchronization }}
 
 
-amznlnx2cis_firewall: {{ amznlnx2cis_firewall }}
-#amznlnx2cis_firewall: iptables
-amznlnx2cis_default_firewall_zone: {{ amznlnx2cis_default_zone }}
-amznlnx2cis_firewall_interface: 
+amazon2cis_firewall: {{ amazon2cis_firewall }}
+#amazon2cis_firewall: iptables
+amazon2cis_default_firewall_zone: {{ amazon2cis_default_zone }}
+amazon2cis_firewall_interface: 
 - ['enp0s3']
 - ['enp0s8']
 
 
 ### Section 4
 ## auditd settings
-amznlnx2cis_auditd:
-  space_left_action: {{ amznlnx2cis_auditd.space_left_action}}
-  action_mail_acct: {{ amznlnx2cis_auditd.action_mail_acct }}
-  admin_space_left_action: {{ amznlnx2cis_auditd.admin_space_left_action }}
-  max_log_file_action: {{ amznlnx2cis_auditd.max_log_file_action }}
-  auditd_backlog_limit: {{ amznlnx2cis_audit_backlog_limit }}
+amazon2cis_auditd:
+  space_left_action: {{ amazon2cis_auditd.space_left_action}}
+  action_mail_acct: {{ amazon2cis_auditd.action_mail_acct }}
+  admin_space_left_action: {{ amazon2cis_auditd.admin_space_left_action }}
+  max_log_file_action: {{ amazon2cis_auditd.max_log_file_action }}
+  auditd_backlog_limit: {{ amazon2cis_audit_backlog_limit }}
 
 ## syslog
-amznlnx2cis_runs_rsyslog: true
-amznlnx2cis_rsyslog_listener: false
+amazon2cis_runs_rsyslog: true
+amazon2cis_rsyslog_listener: false
 
 ### Section 5
-amznlnx2cis_sshd_limited: false
+amazon2cis_sshd_limited: false
 #Note the following to understand precedence and layout
-amznlnx2cis_sshd_access:
+amazon2cis_sshd_access:
   AllowUser:
   AllowGroup:
   DenyUser:
   DenyGroup:
 
-amznlnx2cis_ssh_strong_ciphers:  Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128- gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-amznlnx2cis_ssh_weak_ciphers:
+amazon2cis_ssh_strong_ciphers:  Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128- gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+amazon2cis_ssh_weak_ciphers:
   - 3des-cbc
   - aes128-cbc
   - aes192-cbc
@@ -440,8 +440,8 @@ amznlnx2cis_ssh_weak_ciphers:
   - cast128-cbc
   - rijndael-cbc@lysator.liu.se
 
-amznlnx2cis_ssh_strong_macs:  MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2- 512,hmac-sha2-256
-amznlnx2cis_ssh_weak_macs:
+amazon2cis_ssh_strong_macs:  MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2- 512,hmac-sha2-256
+amazon2cis_ssh_weak_macs:
   - hmac-md5
   - hmac-md5-96
   - hmac-ripemd160
@@ -457,36 +457,36 @@ amznlnx2cis_ssh_weak_macs:
   - umac-64-etm@openssh.com
   - umac-128-etm@openssh.com
 
-amznlnx2cis_ssh_strong_kex: KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman- group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
-amznlnx2cis_ssh_weak_kex: 
+amazon2cis_ssh_strong_kex: KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman- group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+amazon2cis_ssh_weak_kex: 
   - diffie-hellman-group1-sha1
   - diffie-hellman-group14-sha1
   - diffie-hellman-group-exchange-sha1
 
-amznlnx2cis_ssh_aliveinterval: "300"
-amznlnx2cis_ssh_countmax: "3"
+amazon2cis_ssh_aliveinterval: "300"
+amazon2cis_ssh_countmax: "3"
 
 ## PAM
-amznlnx2cis_pam_password:
+amazon2cis_pam_password:
   - minclass = 4
-amznlnx2cis_pam_passwd_retry: "3"
+amazon2cis_pam_passwd_retry: "3"
 
 
 ## note this is to skip tests
-amznlnx2cis_skip_pam_passwd_auth: true
-amznlnx2cis_skip_pam_system_auth: true
+amazon2cis_skip_pam_passwd_auth: true
+amazon2cis_skip_pam_system_auth: true
 
 # choose one of below
-amznlnx2cis_pwhistory_so: "14"
-amznlnx2cis_unix_so: false
-amznlnx2cis_passwd_remember: "5"
+amazon2cis_pwhistory_so: "14"
+amazon2cis_unix_so: false
+amazon2cis_passwd_remember: "5"
 
 # logins.def password settings
 
-amznlnx2cis_pass_max_days: {{ amznlnx2cis_pass.max_days }}
-amznlnx2cis_pass_min_days: {{ amznlnx2cis_pass.min_days }}
-amznlnx2cis_pass_warn_age: {{ amznlnx2cis_pass.warn_age }}
+amazon2cis_pass_max_days: {{ amazon2cis_pass.max_days }}
+amazon2cis_pass_min_days: {{ amazon2cis_pass.min_days }}
+amazon2cis_pass_warn_age: {{ amazon2cis_pass.warn_age }}
 
 
-amznlnx2cis_sugroup: {{ amznlnx2cis_sugroup| default('wheel') }}
-amznlnx2cis_sugroup_users: {{ amznlnx2cis_sugroup_users | default('root') }}
+amazon2cis_sugroup: {{ amazon2cis_sugroup| default('wheel') }}
+amazon2cis_sugroup_users: {{ amazon2cis_sugroup_users | default('root') }}

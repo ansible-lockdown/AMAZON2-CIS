@@ -6,7 +6,7 @@
       state: started
       enabled: true
   when:
-      - amznlnx2cis_rule_5_1_1
+      - amazon2cis_rule_5_1_1
   tags:
       - level1
       - automated
@@ -21,7 +21,7 @@
       group: root
       mode: 0600
   when:
-      - amznlnx2cis_rule_5_1_2
+      - amazon2cis_rule_5_1_2
   tags:
       - level1
       - automated
@@ -38,7 +38,7 @@
       group: root
       mode: 0700
   when:
-      - amznlnx2cis_rule_5_1_3
+      - amazon2cis_rule_5_1_3
   tags:
       - level1
       - automated
@@ -55,7 +55,7 @@
       group: root
       mode: 0700
   when:
-      - amznlnx2cis_rule_5_1_4
+      - amazon2cis_rule_5_1_4
   tags:
       - level1
       - automated
@@ -72,7 +72,7 @@
       group: root
       mode: 0700
   when:
-      - amznlnx2cis_rule_5_1_5
+      - amazon2cis_rule_5_1_5
   tags:
       - level1
       - patch
@@ -86,7 +86,7 @@
       group: root
       mode: 0700
   when:
-      - amznlnx2cis_rule_5_1_6
+      - amazon2cis_rule_5_1_6
   tags:
       - level1
       - automated
@@ -103,7 +103,7 @@
       group: root
       mode: 0700
   when:
-      - amznlnx2cis_rule_5_1_7
+      - amazon2cis_rule_5_1_7
   tags:
       - level1
       - automated
@@ -122,17 +122,17 @@
       - name: "5.1.8 | PATCH | Ensure cron is restricted to authorized users | Check if cron.allow exists"
         stat:
             path: "/etc/cron.allow"
-        register: amznlnx2cis_5_1_8_p
+        register: amazon2cis_5_1_8_p
 
       - name: "5.1.8 | PATCH | Ensure cron is restricted to authorized users | Ensure cron.allow is restricted to authorized users"
         file:
             dest: /etc/cron.allow
-            state: '{{ "file" if  amznlnx2cis_5_1_8_p.stat.exists else "touch" }}'
+            state: '{{ "file" if  amazon2cis_5_1_8_p.stat.exists else "touch" }}'
             owner: root
             group: root
             mode: 0600
   when:
-      - amznlnx2cis_rule_5_1_8
+      - amazon2cis_rule_5_1_8
   tags:
       - level1
       - automated
@@ -151,17 +151,17 @@
       - name: "5.1.9 | AUDIT | Ensure at is restricted to authorized users | Check if at.allow exists"
         stat:
             path: "/etc/at.allow"
-        register: amznlnx2cis_5_1_9_p
+        register: amazon2cis_5_1_9_p
 
       - name: "5.1.9 | PATCH | Ensure at is restricted to authorized users | Ensure at.allow is restricted to authorized users"
         file:
             dest: /etc/at.allow
-            state: '{{ "file" if  amznlnx2cis_5_1_9_p.stat.exists else "touch" }}'
+            state: '{{ "file" if  amazon2cis_5_1_9_p.stat.exists else "touch" }}'
             owner: root
             group: root
             mode: 0600
   when:
-      - amznlnx2cis_rule_5_1_9
+      - amazon2cis_rule_5_1_9
   tags:
       - level1
       - automated

@@ -7,7 +7,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_4_2_1_1
+      - amazon2cis_rule_4_2_1_1
   tags:
       - level1
       - automated
@@ -21,7 +21,7 @@
       state: started
       enabled: true
   when:
-      - amznlnx2cis_rule_4_2_1_2
+      - amazon2cis_rule_4_2_1_2
   tags:
       - level1
       - automated
@@ -36,7 +36,7 @@
       line: '$FileCreateMode 0640'
   notify: restart rsyslog
   when:
-      - amznlnx2cis_rule_4_2_1_3
+      - amazon2cis_rule_4_2_1_3
   tags:
       - level1
       - automated
@@ -50,14 +50,14 @@
         command: cat /etc/rsyslog.conf
         changed_when: false
         failed_when: false
-        register: amznlnx2_4_2_1_4_audit
+        register: amazon2_4_2_1_4_audit
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Debug out rsyslog settings"
         debug:
             msg:
                 - "These are the current logging configurations for rsyslog, please review:"
-                - "{{ amznlnx2_4_2_1_4_audit.stdout_lines }}"
-        when: not amznlnx2cis_rsyslog_ansibleManaged
+                - "{{ amazon2_4_2_1_4_audit.stdout_lines }}"
+        when: not amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Set logging settings lineinfile"
         lineinfile:
@@ -79,7 +79,7 @@
         loop_control:
             label: "{{ item.line }}"
         notify: restart rsyslog
-        when: amznlnx2cis_rsyslog_ansibleManaged
+        when: amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Misc. log setting"
         blockinfile:
@@ -93,7 +93,7 @@
                 *.*;mail.none;news.none                                  /var/log/messages
             insertafter: '#### RULES ####'
         notify: restart rsyslog
-        when: amznlnx2cis_rsyslog_ansibleManaged
+        when: amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Local log settings"
         blockinfile:
@@ -109,7 +109,7 @@
             insertafter: '#### RULES ####'
         notify: restart rsyslog
   when:
-      - amznlnx2cis_rule_4_2_1_4
+      - amazon2cis_rule_4_2_1_4
   tags:
       - level1
       - manual
@@ -123,16 +123,16 @@
       state: present
       block: |
         # remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
-        *.* @@{{ amznlnx2cis_remote_log_server }}
+        *.* @@{{ amazon2cis_remote_log_server }}
       insertafter: EOF
   failed_when:
-      - amznlnx2cis_4_2_1_5_result is failed
-      - amznlnx2cis_4_2_1_5_result.rc != 257
-  register: amznlnx2cis_4_2_1_5_result
+      - amazon2cis_4_2_1_5_result is failed
+      - amazon2cis_4_2_1_5_result.rc != 257
+  register: amazon2cis_4_2_1_5_result
   notify: restart rsyslog
   when:
-      - amznlnx2cis_rule_4_2_1_5
-      - amznlnx2cis_remote_log_server is defined
+      - amazon2cis_rule_4_2_1_5
+      - amazon2cis_remote_log_server is defined
   tags:
       - level1
       - automated
@@ -152,7 +152,7 @@
             - '^(\$InputTCPServerRun)'
         notify: restart rsyslog
         when:
-            - not amznlnx2cis_system_is_log_server
+            - not amazon2cis_system_is_log_server
 
       - name: "4.2.1.6 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts. | When log host"
         replace:
@@ -164,9 +164,9 @@
             - 'InputTCPServerRun'
         notify: restart rsyslog
         when:
-            - amznlnx2cis_system_is_log_server
+            - amazon2cis_system_is_log_server
   when:
-      - amznlnx2cis_rule_4_2_1_6
+      - amazon2cis_rule_4_2_1_6
   tags:
       - level1
       - patch
@@ -189,7 +189,7 @@
 #   changed_when: no
 #   failed_when: no
 #   when:
-#   - amznlnx2cis_rule_4_2_3
+#   - amazon2cis_rule_4_2_3
 #   tags:
 #   - level1
 #   - patch

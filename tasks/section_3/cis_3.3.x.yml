@@ -27,8 +27,8 @@
             - { name: net.ipv6.conf.all.accept_source_route, value: 0 }
             - { name: net.ipv6.conf.default.accept_source_route, value: 0 }
   when:
-      - amznlnx2cis_rule_3_3_1
-      - amznlnx2cis_ipv6_required
+      - amazon2cis_rule_3_3_1
+      - amazon2cis_ipv6_required
   tags:
       - level1
       - automated
@@ -63,9 +63,9 @@
         with_items:
             - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
             - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
-        when: amznlnx2cis_ipv6_required
+        when: amazon2cis_ipv6_required
   when:
-      - amznlnx2cis_rule_3_3_2
+      - amazon2cis_rule_3_3_2
   tags:
       - level1
       - automated
@@ -86,7 +86,7 @@
       - { name: net.ipv4.conf.all.secure_redirects, value: 0 }
       - { name: net.ipv4.conf.default.secure_redirects, value: 0 }
   when:
-      - amznlnx2cis_rule_3_3_3
+      - amazon2cis_rule_3_3_3
   tags:
       - level1
       - automated
@@ -107,7 +107,7 @@
       - { name: net.ipv4.conf.all.log_martians, value: 1 }
       - { name: net.ipv4.conf.default.log_martians, value: 1 }
   when:
-      - amznlnx2cis_rule_3_3_4
+      - amazon2cis_rule_3_3_4
   tags:
       - level1
       - automated
@@ -124,7 +124,7 @@
       ignoreerrors: true
   notify: sysctl flush ipv4 route table
   when:
-      - amznlnx2cis_rule_3_3_5
+      - amazon2cis_rule_3_3_5
   tags:
       - level1
       - automated
@@ -141,7 +141,7 @@
       ignoreerrors: true
   notify: sysctl flush ipv4 route table
   when:
-      - amznlnx2cis_rule_3_3_6
+      - amazon2cis_rule_3_3_6
   tags:
       - level1
       - automated
@@ -162,7 +162,7 @@
       - { name: net.ipv4.conf.default.rp_filter, value: 1 }
   notify: sysctl flush ipv4 route table
   when:
-      - amznlnx2cis_rule_3_3_7
+      - amazon2cis_rule_3_3_7
   tags:
       - level1
       - automated
@@ -179,7 +179,7 @@
       ignoreerrors: true
   notify: sysctl flush ipv4 route table
   when:
-      - amznlnx2cis_rule_3_3_8
+      - amazon2cis_rule_3_3_8
   tags:
       - level1
       - automated
@@ -200,8 +200,8 @@
       - { name: net.ipv6.conf.default.accept_ra, value: 0 }
   notify: sysctl flush ipv6 route table
   when:
-      - amznlnx2cis_ipv6_required
-      - amznlnx2cis_rule_3_3_9
+      - amazon2cis_ipv6_required
+      - amazon2cis_rule_3_3_9
   tags:
       - level1
       - automated

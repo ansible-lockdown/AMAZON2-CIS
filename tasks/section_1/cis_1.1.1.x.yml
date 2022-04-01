@@ -15,7 +15,7 @@
             name: cramfs
             state: absent
   when:
-      - amznlnx2cis_rule_1_1_1_1
+      - amazon2cis_rule_1_1_1_1
       - ansible_connection != 'docker'
   tags:
       - level1
@@ -40,7 +40,7 @@
             name: squashfs
             state: absent
   when:
-      - amznlnx2cis_rule_1_1_1_2
+      - amazon2cis_rule_1_1_1_2
       - ansible_connection != 'docker'
   tags:
       - level1
@@ -65,7 +65,7 @@
             name: udf
             state: absent
   when:
-      - amznlnx2cis_rule_1_1_1_3
+      - amazon2cis_rule_1_1_1_3
       - ansible_connection != 'docker'
   tags:
       - level1

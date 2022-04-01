@@ -19,7 +19,7 @@
 - name: "check sugroup exists if used"
   block:
       - name: "Check su group exists if defined"
-        command: grep -w "{{ amznlnx2cis_sugroup }}" /etc/group
+        command: grep -w "{{ amazon2cis_sugroup }}" /etc/group
         changed_when: false
         failed_when: sugroup_exists.rc >= 2
         register: sugroup_exists
@@ -29,10 +29,10 @@
       - name: Check sugroup if defined exists before continuing
         assert:
             that: sugroup_exists.rc == 0
-            msg: "The variable amznlnx2cis_sugroup is defined but does not exist please rectify"
+            msg: "The variable amazon2cis_sugroup is defined but does not exist please rectify"
   when:
-      - amznlnx2cis_sugroup is defined
-      - amznlnx2cis_rule_5_7
+      - amazon2cis_sugroup is defined
+      - amazon2cis_rule_5_7
   tags:
       - rule_5.7
 
@@ -59,34 +59,34 @@
       - always
 
 - include: section_1/main.yml
-  when: amznlnx2cis_section1
+  when: amazon2cis_section1
   tags:
-      - amznlnx2cis_section1
+      - amazon2cis_section1
 
 - include: section_2/main.yml
-  when: amznlnx2cis_section2
+  when: amazon2cis_section2
   tags:
-      - amznlnx2cis_section2
+      - amazon2cis_section2
 
 - include: section_3/main.yml
-  when: amznlnx2cis_section3
+  when: amazon2cis_section3
   tags:
-      - amznlnx2cis_section3
+      - amazon2cis_section3
 
 - include: section_4/main.yml
-  when: amznlnx2cis_section4
+  when: amazon2cis_section4
   tags:
-      - amznlnx2cis_section4
+      - amazon2cis_section4
 
 - include: section_5/main.yml
-  when: amznlnx2cis_section5
+  when: amazon2cis_section5
   tags:
-      - amznlnx2cis_section5
+      - amazon2cis_section5
 
 - include: section_6/main.yml
-  when: amznlnx2cis_section6
+  when: amazon2cis_section6
   tags:
-      - amznlnx2cis_section6
+      - amazon2cis_section6
 
 # - include: post.yml
 #   tags:

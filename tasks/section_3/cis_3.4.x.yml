@@ -10,7 +10,7 @@
       group: root
       mode: 0600
   when:
-      - amznlnx2cis_rule_3_4_1
+      - amazon2cis_rule_3_4_1
   tags:
       - level2
       - automated
@@ -28,7 +28,7 @@
       group: root
       mode: 0600
   when:
-      - amznlnx2cis_rule_3_4_2
+      - amazon2cis_rule_3_4_2
   tags:
       - level2
       - automated

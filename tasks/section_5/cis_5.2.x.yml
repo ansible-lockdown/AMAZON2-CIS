@@ -5,7 +5,7 @@
       name: sudo
       state: present
   when:
-      - amznlnx2cis_rule_5_2_1
+      - amazon2cis_rule_5_2_1
   tags:
       - level1
       - automated
@@ -18,7 +18,7 @@
       path: /etc/sudoers
       line: 'Defaults use_pty'
   when:
-      - amznlnx2cis_rule_5_2_2
+      - amazon2cis_rule_5_2_2
   tags:
       - level1
       - automated
@@ -31,7 +31,7 @@
       path: /etc/sudoers
       line: 'Defaults logfile="/var/log/sudo.log"'
   when:
-      - amznlnx2cis_rule_5_2_3
+      - amazon2cis_rule_5_2_3
   tags:
       - level1
       - automated

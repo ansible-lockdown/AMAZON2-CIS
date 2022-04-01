@@ -15,14 +15,14 @@
 - name: "SECTION | 3.5.1 | Configure firewalld"
   include: cis_3.5.1.x.yml
   when:
-  - amznlnx2cis_firewall == "firewalld"
+  - amazon2cis_firewall == "firewalld"
 
 - name: "SECTION | 3.5.2 | Configure nftables"
   include: cis_3.5.2.x.yml
   when:
-  - amznlnx2cis_firewall == "nftables"
+  - amazon2cis_firewall == "nftables"
 
 - name: "SECTION | 3.5.3.1.x | Configure iptables"
   include: cis_3.5.3.1.x.yml
   when:
-  - amznlnx2cis_firewall == "iptables"
+  - amazon2cis_firewall == "iptables"

@@ -6,7 +6,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_3
+      - amazon2cis_rule_4_1_3
   tags:
       - level2
       - auditd
@@ -20,7 +20,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_4
+      - amazon2cis_rule_4_1_4
   tags:
       - level2
       - automated
@@ -34,7 +34,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_5
+      - amazon2cis_rule_4_1_5
   tags:
       - level2
       - automated
@@ -48,7 +48,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_6
+      - amazon2cis_rule_4_1_6
   tags:
       - level2
       - automated
@@ -62,7 +62,7 @@
         shell: grep pam_tally2.so /etc/pam.d/system-auth /etc/pam.d/password-auth
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_4_1_7_tally2_check
+        register: amazon2cis_4_1_7_tally2_check
         tags:
             - skip_ansible_lint
 
@@ -72,7 +72,7 @@
         changed_when: true
         notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_7
+      - amazon2cis_rule_4_1_7
   tags:
       - level2
       - automated
@@ -86,7 +86,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_8
+      - amazon2cis_rule_4_1_8
   tags:
       - level2
       - automated
@@ -100,7 +100,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_9
+      - amazon2cis_rule_4_1_9
   tags:
       - level2
       - automated
@@ -114,7 +114,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_10
+      - amazon2cis_rule_4_1_10
   tags:
       - level2
       - automated
@@ -128,7 +128,7 @@
         shell: for i in  $(df | grep '^/dev' | awk '{ print $NF }'); do find $i -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null; done
         changed_when: false
         check_mode: false
-        register: amznlnx2cis_4_1_11_priv_procs
+        register: amazon2cis_4_1_11_priv_procs
 
       - name: "4.1.11 | PATCH | Ensure use of privileged commands is collected"
         debug:
@@ -136,7 +136,7 @@
         changed_when: true
         notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_11
+      - amazon2cis_rule_4_1_11
   tags:
       - level2
       - automated
@@ -150,7 +150,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_12
+      - amazon2cis_rule_4_1_12
   tags:
       - level2
       - auditd
@@ -164,7 +164,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_13
+      - amazon2cis_rule_4_1_13
   tags:
       - level2
       - automated
@@ -178,7 +178,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_14
+      - amazon2cis_rule_4_1_14
   tags:
       - level2
       - automated
@@ -192,7 +192,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_15
+      - amazon2cis_rule_4_1_15
   tags:
       - level2
       - automated
@@ -206,7 +206,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_16
+      - amazon2cis_rule_4_1_16
   tags:
       - level2
       - automated
@@ -220,7 +220,7 @@
   changed_when: true
   notify: update auditd
   when:
-      - amznlnx2cis_rule_4_1_17
+      - amazon2cis_rule_4_1_17
   tags:
       - level2
       - automated

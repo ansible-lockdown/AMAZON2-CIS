@@ -1,8 +1,8 @@
 # RHEL 7 CIS
 
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMZNLNX2-CIS/CommunityToDevel?label=Devel%20Build%20Status&style=plastic)
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMZNLNX2-CIS/DevelToMain?label=Main%20Build%20Status&style=plastic)
-![Release](https://img.shields.io/github/v/release/ansible-lockdown/AMZNLNX2-CIS?style=plastic)
+![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMAZON2-CIS/CommunityToDevel?label=Devel%20Build%20Status&style=plastic)
+![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMAZON2-CIS/DevelToMain?label=Main%20Build%20Status&style=plastic)
+![Release](https://img.shields.io/github/v/release/ansible-lockdown/AMAZON2-CIS?style=plastic)
 
 Configure Amazon Linux 2 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 Untested on OEL
@@ -17,7 +17,7 @@ On our [Discord Server](https://discord.gg/JFxpSgPFEJ) to ask questions, discuss
 
 This role **will make changes to the system** which may have unintended consequences. This is not an auditing tool but rather a remediation tool to be used after an audit has been conducted.
 
-Check Mode is not supported! The role will complete in check mode without errors, but it is not supported and should be used with caution. The AMZNLNX2-CIS-Audit role or a compliance scanner should be used for compliance checking over check mode.
+Check Mode is not supported! The role will complete in check mode without errors, but it is not supported and should be used with caution. The AMAZON2-CIS-Audit role or a compliance scanner should be used for compliance checking over check mode.
 
 This role was developed against a clean install of the Operating System. If you are implementing to an existing system please review this role for any site specific changes that are needed.
 
@@ -36,8 +36,8 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 - [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise)
 - [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration)
 - [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise)
-- [Wiki](https://github.com/ansible-lockdown/AMZNLNX2-CIS/wiki)
-- [Repo GitHub Page](https://ansible-lockdown.github.io/AMZNLNX2-CIS/)
+- [Wiki](https://github.com/ansible-lockdown/AMAZON2-CIS/wiki)
+- [Repo GitHub Page](https://ansible-lockdown.github.io/AMAZON2-CIS/)
 
 ## Requirements
 
@@ -50,7 +50,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
   - [Tower User Guide](https://docs.ansible.com/ansible-tower/latest/html/userguide/index.html)
   - [Ansible Community Info](https://docs.ansible.com/ansible/latest/community/index.html)
 - Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
-- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file or the [Main Variables Wiki Page](https://github.com/ansible-lockdown/AMZNLNX2-CIS/wiki/Main-Variables).
+- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file or the [Main Variables Wiki Page](https://github.com/ansible-lockdown/AMAZON2-CIS/wiki/Main-Variables).
 
 **Technical Dependencies:**
 
@@ -62,7 +62,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 ## Role Variables
 
-This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done via the defaults/main.yml file or with extra vars within the project, job, workflow, etc. These variables can be found [here](https://github.com/ansible-lockdown/AMZNLNX2-CIS/wiki/Main-Variables) in the Main Variables Wiki page. All variables are listed there along with descriptions.
+This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done via the defaults/main.yml file or with extra vars within the project, job, workflow, etc. These variables can be found [here](https://github.com/ansible-lockdown/AMAZON2-CIS/wiki/Main-Variables) in the Main Variables Wiki page. All variables are listed there along with descriptions.
 
 ## Tags
 

@@ -8,8 +8,8 @@
       masked: false
       state: started
   when:
-      - amznlnx2cis_tmp_svc
-      - amznlnx2cis_rule_1_1_2
+      - amazon2cis_tmp_svc
+      - amazon2cis_rule_1_1_2
   tags:
       - level1
       - automated
@@ -26,17 +26,17 @@
       src: "{{ item.device }}"
       fstype: "{{ item.fstype }}"
       state: present
-      opts: defaults,{% if amznlnx2cis_rule_1_1_4 %}nodev,{% endif %}{% if amznlnx2cis_rule_1_1_3 %}noexec,{% endif %}{% if amznlnx2cis_rule_1_1_5 %}nosuid{% endif %}
+      opts: defaults,{% if amazon2cis_rule_1_1_4 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_3 %}noexec,{% endif %}{% if amazon2cis_rule_1_1_5 %}nosuid{% endif %}
   notify: systemd restart tmp.mount
   with_items:
       - "{{ ansible_mounts }}"
   loop_control:
       label: "{{ item.device }}"
   when:
-      - amznlnx2cis_tmp_svc
-      - amznlnx2cis_rule_1_1_3
-      - amznlnx2cis_rule_1_1_4
-      - amznlnx2cis_rule_1_1_5
+      - amazon2cis_tmp_svc
+      - amazon2cis_rule_1_1_3
+      - amazon2cis_rule_1_1_4
+      - amazon2cis_rule_1_1_5
   tags:
       - level1
       - automated
@@ -56,13 +56,13 @@
       src: tmpfs
       fstype: tmpfs
       state: present
-      opts: defaults,{% if amznlnx2cis_rule_1_1_7 %}noexec,{% endif %}{% if amznlnx2cis_rule_1_1_8 %}nodev,{% endif %}{% if amznlnx2cis_rule_1_1_9 %}nosuid{% endif %},seclabel
+      opts: defaults,{% if amazon2cis_rule_1_1_7 %}noexec,{% endif %}{% if amazon2cis_rule_1_1_8 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_9 %}nosuid{% endif %},seclabel
   notify: remount dev_shm
   when:
-      - amznlnx2cis_rule_1_1_6 or
-        amznlnx2cis_rule_1_1_7 or
-        amznlnx2cis_rule_1_1_8 or
-        amznlnx2cis_rule_1_1_9
+      - amazon2cis_rule_1_1_6 or
+        amazon2cis_rule_1_1_7 or
+        amazon2cis_rule_1_1_8 or
+        amazon2cis_rule_1_1_9
   tags:
       - level1
       - automated
@@ -84,7 +84,7 @@
             msg: "Congradulations: /var is on a seperate partition"
         when: "'/var' in mount_names"
   when:
-      - amznlnx2cis_rule_1_1_10
+      - amazon2cis_rule_1_1_10
   tags:
       - level2
       - automated
@@ -104,7 +104,7 @@
             msg: "Congradulations: /var/tmp is on a seperate partition"
         when: "'/var/tmp' in mount_names"
   when:
-      - amznlnx2cis_rule_1_1_11
+      - amazon2cis_rule_1_1_11
   tags:
       - level2
       - automated
@@ -121,7 +121,7 @@
       src: "{{ item.device }}"
       fstype: "{{ item.fstype }}"
       state: present
-      opts: defaults,{% if amznlnx2cis_rule_1_1_12 %}noexec,{% endif %}{% if amznlnx2cis_rule_1_1_13 %}nodev,{% endif %}{% if amznlnx2cis_rule_1_1_14 %}nosuid{% endif %}
+      opts: defaults,{% if amazon2cis_rule_1_1_12 %}noexec,{% endif %}{% if amazon2cis_rule_1_1_13 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_14 %}nosuid{% endif %}
   notify: remount var_tmp
   with_items:
       - "{{ ansible_mounts }}"
@@ -129,10 +129,10 @@
       label: "{{ item.device }}"
   when:
       - item.mount == "/var/tmp"
-      - amznlnx2cis_rule_1_1_11 or
-        amznlnx2cis_rule_1_1_12 or
-        amznlnx2cis_rule_1_1_13 or
-        amznlnx2cis_rule_1_1_14
+      - amazon2cis_rule_1_1_11 or
+        amazon2cis_rule_1_1_12 or
+        amazon2cis_rule_1_1_13 or
+        amazon2cis_rule_1_1_14
   tags:
       - level1
       - automated
@@ -155,7 +155,7 @@
             msg: "Congradulations: /var/log is on a seperate partition"
         when: "'/var/log' in mount_names"
   when:
-      - amznlnx2cis_rule_1_1_15
+      - amazon2cis_rule_1_1_15
   tags:
       - level2
       - automated
@@ -175,7 +175,7 @@
             msg: "Congradulations: /var/log/audit is on a seperate partition"
         when: "'/var/log/audit' in mount_names"
   when:
-      - amznlnx2cis_rule_1_1_16
+      - amazon2cis_rule_1_1_16
   tags:
       - level2
       - automated
@@ -195,7 +195,7 @@
             msg: "Congradulations: /home is on a seperate partition"
         when: "'/home' in mount_names"
   when:
-      - amznlnx2cis_rule_1_1_17
+      - amazon2cis_rule_1_1_17
   tags:
       - level2
       - automated
@@ -209,7 +209,7 @@
       src: "{{ item.device }}"
       fstype: "{{ item.fstype }}"
       state: present
-      opts: defaults,{% if amznlnx2cis_rule_1_1_18 %}nodev{% endif %}
+      opts: defaults,{% if amazon2cis_rule_1_1_18 %}nodev{% endif %}
   notify: remount home
   with_items:
       - "{{ ansible_mounts }}"
@@ -217,7 +217,7 @@
       label: "{{ item.device }}"
   when:
       - item.mount == "/home"
-      - amznlnx2cis_rule_1_1_18
+      - amazon2cis_rule_1_1_18
   tags:
       - level2
       - automated
@@ -233,9 +233,9 @@
       msg: "--> Not Applicable"
   changed_when: false
   when:
-      - amznlnx2cis_rule_1_1_19 or
-        amznlnx2cis_rule_1_1_20 or
-        amznlnx2cis_rule_1_1_21
+      - amazon2cis_rule_1_1_19 or
+        amazon2cis_rule_1_1_20 or
+        amazon2cis_rule_1_1_21
   tags:
       - level1
       - automated
@@ -253,7 +253,7 @@
       warn: false
   # when: sticky_bit_on_worldwritable_dirs_audit.rc == '0'
   when:
-      - amznlnx2cis_rule_1_1_22
+      - amazon2cis_rule_1_1_22
   tags:
       - level1
       - automated
@@ -268,9 +268,9 @@
       name: autofs
       enabled: false
   when:
-      - not amznlnx2cis_allow_autofs
+      - not amazon2cis_allow_autofs
       - "'autofs' in ansible_facts.packages"
-      - amznlnx2cis_rule_1_1_23
+      - amazon2cis_rule_1_1_23
   tags:
       - level1
       - automated
@@ -294,7 +294,7 @@
             name: usb-storage
             state: absent
   when:
-      - amznlnx2cis_rule_1_1_24
+      - amazon2cis_rule_1_1_24
   tags:
       - level1
       - automated

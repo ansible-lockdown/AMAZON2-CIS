@@ -2,10 +2,10 @@
 
 - name: "1.2.1 | PATCH | Ensure GPG keys are configured"
   command: gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-{{ ansible_distribution_major_version }}
-  changed_when: "'created' in amznlnx2cis_1_2_1_status.stderr"
-  register: amznlnx2cis_1_2_1_status
+  changed_when: "'created' in amazon2cis_1_2_1_status.stderr"
+  register: amazon2cis_1_2_1_status
   when:
-      - amznlnx2cis_rule_1_2_1
+      - amazon2cis_rule_1_2_1
   tags:
       - level1
       - automated
@@ -18,7 +18,7 @@
       - name: "1.2.2 | AUDIT | Ensure package manager repositories are configured | Get repo list"
         command: yum repolist
         changed_when: false
-        register: amznlnx2cis_1_2_2_repolist
+        register: amazon2cis_1_2_2_repolist
         args:
             warn: false
 
@@ -26,9 +26,9 @@
         debug:
             msg:
                 - "Please check against site policy repos listed below match expected:"
-                - "{{ amznlnx2cis_1_2_2_repolist.stdout_lines }}"
+                - "{{ amazon2cis_1_2_2_repolist.stdout_lines }}"
   when:
-      - amznlnx2cis_rule_1_2_2
+      - amazon2cis_rule_1_2_2
   tags:
       - level1
       - automated
@@ -42,7 +42,7 @@
         find:
             paths: /etc/yum.repos.d
             patterns: "*.repo"
-        register: amznlnx2_1_2_3_yum_repos
+        register: amazon2_1_2_3_yum_repos
 
       - name: "1.2.3 | PATCH | Ensure gpgcheck is globally activated | set gpgcheck"
         replace:
@@ -50,11 +50,11 @@
             regexp: "^gpgcheck=0"
             replace: "gpgcheck=1"
         with_items:
-            - "{{ amznlnx2_1_2_3_yum_repos.files }}"
+            - "{{ amazon2_1_2_3_yum_repos.files }}"
         loop_control:
             label: "{{ item.path }}"
   when:
-      - amznlnx2cis_rule_1_2_3
+      - amazon2cis_rule_1_2_3
   tags:
       - level1
       - automated

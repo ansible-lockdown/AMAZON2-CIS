@@ -6,7 +6,7 @@
       regexp: '^[F|f]orward[T|t]o[S|s]yslog='
       line: "ForwardToSyslog=yes"
   when:
-      - amznlnx2cis_rule_4_2_2_1
+      - amazon2cis_rule_4_2_2_1
   tags:
       - level1
       - manual
@@ -20,7 +20,7 @@
       regexp: '^[C|c]ompress='
       line: "Compress=yes"
   when:
-      - amznlnx2cis_rule_4_2_2_2
+      - amazon2cis_rule_4_2_2_2
   tags:
       - level1
       - automated
@@ -34,7 +34,7 @@
       regexp: '^[S|s]torage='
       line: "Storage=persistent"
   when:
-      - amznlnx2cis_rule_4_2_2_3
+      - amazon2cis_rule_4_2_2_3
   tags:
       - level1
       - automated

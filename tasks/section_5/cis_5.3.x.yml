@@ -8,7 +8,7 @@
       group: root
       mode: 0600
   when:
-      - amznlnx2cis_rule_5_3_1
+      - amazon2cis_rule_5_3_1
   tags:
       - level1
       - automated
@@ -25,7 +25,7 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amznlnx2_5_3_2_priv_results
+        register: amazon2_5_3_2_priv_results
 
       - name: "5.3.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
         file:
@@ -34,11 +34,11 @@
             group: root
             mode: 0600
         with_items:
-            - "{{ amznlnx2_5_3_2_priv_results.files }}"
+            - "{{ amazon2_5_3_2_priv_results.files }}"
         loop_control:
             label: "{{ item.path }}"
   when:
-      - amznlnx2cis_rule_5_3_2
+      - amazon2cis_rule_5_3_2
   tags:
       - level1
       - autoamted
@@ -55,7 +55,7 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amznlnx2_5_3_3_pub_results
+        register: amazon2_5_3_3_pub_results
 
       - name: "5.3.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
         file:
@@ -64,11 +64,11 @@
             group: root
             mode: 0600
         with_items:
-            - "{{ amznlnx2_5_3_3_pub_results.files }}"
+            - "{{ amazon2_5_3_3_pub_results.files }}"
         loop_control:
             label: "{{ item.path }}"
   when:
-      - amznlnx2cis_rule_5_3_3
+      - amazon2cis_rule_5_3_3
   tags:
       - level1
       - automated
@@ -83,35 +83,35 @@
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: "^AllowUsers"
-            line: AllowUsers {{ amznlnx2cis_sshd['allowusers'] }}
+            line: AllowUsers {{ amazon2cis_sshd['allowusers'] }}
         notify: restart sshd
-        when: "amznlnx2cis_sshd['allowusers']|default('') | length > 0"
+        when: "amazon2cis_sshd['allowusers']|default('') | length > 0"
 
       - name: "5.3.4 | PATCH | Ensure SSH access is limited | Add line to sshd_config for allowgroups"
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: "^AllowGroups"
-            line: AllowGroups {{ amznlnx2cis_sshd['allowgroups'] }}
+            line: AllowGroups {{ amazon2cis_sshd['allowgroups'] }}
         notify: restart sshd
-        when: "amznlnx2cis_sshd['allowgroups']|default('') | length > 0"
+        when: "amazon2cis_sshd['allowgroups']|default('') | length > 0"
 
       - name: "5.3.4 | PATCH | Ensure SSH access is limited | Add line to sshd_config for denyusers"
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: "^DenyUsers"
-            line: DenyUsers {{ amznlnx2cis_sshd['denyusers'] }}
+            line: DenyUsers {{ amazon2cis_sshd['denyusers'] }}
         notify: restart sshd
-        when: "amznlnx2cis_sshd['denyusers']|default('') | length > 0"
+        when: "amazon2cis_sshd['denyusers']|default('') | length > 0"
 
       - name: "5.3.4 | PATCH | Ensure SSH access is limited | Add line to sshd_config for denygroups"
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: "^DenyGroups"
-            line: DenyGroups {{ amznlnx2cis_sshd['denygroups'] }}
+            line: DenyGroups {{ amazon2cis_sshd['denygroups'] }}
         notify: restart sshd
-        when: "amznlnx2cis_sshd['denygroups']|default('') | length > 0"
+        when: "amazon2cis_sshd['denygroups']|default('') | length > 0"
   when:
-      - amznlnx2cis_rule_5_3_4
+      - amazon2cis_rule_5_3_4
   tags:
       - level1
       - automated
@@ -123,10 +123,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: "^#LogLevel|^LogLevel"
-      line: 'LogLevel {{ amznlnx2cis_ssh_loglevel }}'
+      line: 'LogLevel {{ amazon2cis_ssh_loglevel }}'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_5
+      - amazon2cis_rule_5_3_5
   tags:
       - level1
       - automated
@@ -141,7 +141,7 @@
       line: 'X11Forwarding no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_6
+      - amazon2cis_rule_5_3_6
   tags:
       - level1
       - automated
@@ -153,10 +153,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: '^(#)?MaxAuthTries \d'
-      line: "MaxAuthTries {{ amznlnx2_max_auth_tries }}"
+      line: "MaxAuthTries {{ amazon2_max_auth_tries }}"
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_7
+      - amazon2cis_rule_5_3_7
   tags:
       - level1
       - automated
@@ -171,7 +171,7 @@
       line: 'IgnoreRhosts yes'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_8
+      - amazon2cis_rule_5_3_8
   tags:
       - level1
       - automated
@@ -186,7 +186,7 @@
       line: 'HostbasedAuthentication no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_9
+      - amazon2cis_rule_5_3_9
   tags:
       - level1
       - automated
@@ -201,7 +201,7 @@
       line: 'PermitRootLogin no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_10
+      - amazon2cis_rule_5_3_10
   tags:
       - level1
       - automated
@@ -216,7 +216,7 @@
       line: 'PermitEmptyPasswords no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_11
+      - amazon2cis_rule_5_3_11
   tags:
       - level1
       - automated
@@ -231,7 +231,7 @@
       line: 'PermitUserEnvironment no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_12
+      - amazon2cis_rule_5_3_12
   tags:
       - level1
       - automated
@@ -243,10 +243,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: '^Cipherss'
-      line: "Ciphers {{ amznlnx2cis_sshd['ciphers'] }}"
+      line: "Ciphers {{ amazon2cis_sshd['ciphers'] }}"
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_13
+      - amazon2cis_rule_5_3_13
   tags:
       - level1
       - autoamted
@@ -258,10 +258,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: '^MACs'
-      line: "MACs {{ amznlnx2cis_sshd['macs'] }}"
+      line: "MACs {{ amazon2cis_sshd['macs'] }}"
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_14
+      - amazon2cis_rule_5_3_14
   tags:
       - level1
       - automated
@@ -273,10 +273,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: '^KexAlgorithms'
-      line: "KexAlgorithms {{ amznlnx2cis_sshd['kex'] }}"
+      line: "KexAlgorithms {{ amazon2cis_sshd['kex'] }}"
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_15
+      - amazon2cis_rule_5_3_15
   tags:
       - level1
       - automated
@@ -290,7 +290,7 @@
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: '^ClientAliveInterval'
-            line: "ClientAliveInterval {{ amznlnx2cis_sshd['clientaliveinterval'] }}"
+            line: "ClientAliveInterval {{ amazon2cis_sshd['clientaliveinterval'] }}"
         notify: restart sshd
 
       - name: "5.3.16 | PATCH | Ensure SSH Idle Timeout Interval is configured | Ensure SSH ClientAliveCountMax set to <= 3"
@@ -300,7 +300,7 @@
             line: "ClientAliveCountMax 0"
         notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_16
+      - amazon2cis_rule_5_3_16
   tags:
       - level1
       - automated
@@ -312,10 +312,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: "^#LoginGraceTime|^LoginGraceTime"
-      line: "LoginGraceTime {{ amznlnx2cis_sshd['logingracetime'] }}"
+      line: "LoginGraceTime {{ amazon2cis_sshd['logingracetime'] }}"
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_17
+      - amazon2cis_rule_5_3_17
   tags:
       - level1
       - automated
@@ -330,7 +330,7 @@
       line: 'Banner /etc/issue.net'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_18
+      - amazon2cis_rule_5_3_18
   tags:
       - level1
       - automated
@@ -345,7 +345,7 @@
       line: 'UsePAM yes'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_19
+      - amazon2cis_rule_5_3_19
   tags:
       - level1
       - automated
@@ -360,7 +360,7 @@
       line: 'AllowTcpForwarding no'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_20
+      - amazon2cis_rule_5_3_20
   tags:
       - level2
       - automated
@@ -375,7 +375,7 @@
       line: 'MaxStartups 10:30:60'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_21
+      - amazon2cis_rule_5_3_21
   tags:
       - level1
       - automated
@@ -387,10 +387,10 @@
   lineinfile:
       path: /etc/ssh/sshd_config
       regexp: "^#MaxSessions|^MaxSessions"
-      line: 'MaxSessions {{ amznlnx2cis_ssh_maxsessions }}'
+      line: 'MaxSessions {{ amazon2cis_ssh_maxsessions }}'
   notify: restart sshd
   when:
-      - amznlnx2cis_rule_5_3_22
+      - amazon2cis_rule_5_3_22
   tags:
       - level1
       - automated

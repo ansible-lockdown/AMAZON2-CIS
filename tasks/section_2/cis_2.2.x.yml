@@ -7,9 +7,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_ypbind_required
+      - not amazon2cis_ypbind_required
       - "'ypbind' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_2_1
+      - amazon2cis_rule_2_2_1
   tags:
       - level1
       - automated
@@ -24,9 +24,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_rsh_required
+      - not amazon2cis_rsh_required
       - "'rsh' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_2_2
+      - amazon2cis_rule_2_2_2
   tags:
       - level1
       - automated
@@ -41,9 +41,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_talk_required
+      - not amazon2cis_talk_required
       - "'talk' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_2_3
+      - amazon2cis_rule_2_2_3
   tags:
       - level1
       - automated
@@ -59,8 +59,8 @@
       ansible_python_interpreter: /bin/python
   when:
       - "'telnet' in ansible_facts.packages"
-      - not amznlnx2cis_telnet_required
-      - amznlnx2cis_rule_2_2_4
+      - not amazon2cis_telnet_required
+      - amazon2cis_rule_2_2_4
   tags:
       - level1
       - automated
@@ -75,9 +75,9 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_openldap_clients_required
+      - not amazon2cis_openldap_clients_required
       - "'openldap-client' in ansible_facts.packages"
-      - amznlnx2cis_rule_2_2_5
+      - amazon2cis_rule_2_2_5
   tags:
       - level1
       - automated

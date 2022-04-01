@@ -7,8 +7,8 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - not amznlnx2cis_selinux_disable
-      - amznlnx2cis_rule_1_6_1_1
+      - not amazon2cis_selinux_disable
+      - amazon2cis_rule_1_6_1_1
   tags:
       - level1
       - automated
@@ -23,8 +23,8 @@
   ignore_errors: true
   notify: grub2cfg
   when:
-      - not amznlnx2cis_selinux_disable
-      - amznlnx2cis_rule_1_6_1_2
+      - not amazon2cis_selinux_disable
+      - amazon2cis_rule_1_6_1_2
   tags:
       - level1
       - automated
@@ -37,12 +37,12 @@
      1.6.1.4 | PATCH | Ensure the SELinux state is enforcing or permissive"
   selinux:
       conf: /etc/selinux/config
-      policy: "{{ amznlnx2cis_selinux_pol }}"
-      state: "{{ amznlnx2cis_selinux_state }}"
+      policy: "{{ amazon2cis_selinux_pol }}"
+      state: "{{ amazon2cis_selinux_state }}"
   when:
-      - not amznlnx2cis_selinux_disable
-      - amznlnx2cis_rule_1_6_1_3
-      - amznlnx2cis_rule_1_6_1_4
+      - not amazon2cis_selinux_disable
+      - amazon2cis_rule_1_6_1_3
+      - amazon2cis_rule_1_6_1_4
   tags:
       - level1
       - automated
@@ -54,12 +54,12 @@
 - name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
   selinux:
       conf: /etc/selinux/config
-      policy: "{{ amznlnx2cis_selinux_pol }}"
+      policy: "{{ amazon2cis_selinux_pol }}"
       state: enforcing
   when:
-      - not amznlnx2cis_selinux_disable
-      - not amznlnx2cis_selinux_state == "permissive"
-      - amznlnx2cis_rule_1_6_1_5
+      - not amazon2cis_selinux_disable
+      - not amazon2cis_selinux_state == "permissive"
+      - amazon2cis_rule_1_6_1_5
   tags:
       - level2
       - automated
@@ -73,19 +73,19 @@
         shell: ps -eZ | grep unconfined_service_t
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_1_6_1_6_unconf_services
+        register: amazon2cis_1_6_1_6_unconf_services
 
       - name: "1.6.1.6 | AUDIT | Ensure no unconfined services exist | Message on no unconfined services"
         debug:
             msg: "Good News! There are no unconfined services found on your system"
-        when: amznlnx2cis_1_6_1_6_unconf_services.stdout | length == 0
+        when: amazon2cis_1_6_1_6_unconf_services.stdout | length == 0
 
       - name: "1.6.1.6 | AUDIT | Ensure no unconfined services exist | Message on unconfined services"
         debug:
-            msg: "Warning! You have unconfined services: {{ amznlnx2cis_1_6_1_6_unconf_services.stdout_lines }}"
-        when: amznlnx2cis_1_6_1_6_unconf_services.stdout | length > 0
+            msg: "Warning! You have unconfined services: {{ amazon2cis_1_6_1_6_unconf_services.stdout_lines }}"
+        when: amazon2cis_1_6_1_6_unconf_services.stdout | length > 0
   when:
-      - amznlnx2cis_rule_1_6_1_6
+      - amazon2cis_rule_1_6_1_6
   tags:
       - level1
       - automated
@@ -100,7 +100,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_1_6_1_7
+      - amazon2cis_rule_1_6_1_7
   tags:
       - level1
       - automated
@@ -115,7 +115,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_1_6_1_8
+      - amazon2cis_rule_1_6_1_8
   tags:
       - level1
       - automated

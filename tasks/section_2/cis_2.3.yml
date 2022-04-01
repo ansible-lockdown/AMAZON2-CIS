@@ -4,7 +4,7 @@
   debug:
       msg: "<----- not required"
   when:
-      - amznlnx2cis_rule_2_3
+      - amazon2cis_rule_2_3
   tags:
       - level1
       - manual

@@ -28,10 +28,10 @@
             mode: 0644
         notify: systemd daemon reload
         with_items:
-            - {regex: '^Storage', line: 'Storage=none'}
-            - {regex: '^ProcessSizeMax', line: 'ProcessSizeMax=0'}
+            - { regex: '^Storage', line: 'Storage=none' }
+            - { regex: '^ProcessSizeMax', line: 'ProcessSizeMax=0' }
   when:
-      - amznlnx2cis_rule_1_5_1
+      - amazon2cis_rule_1_5_1
   tags:
       - level1
       - automated
@@ -45,15 +45,15 @@
         shell: dmesg|grep -E "NX|XD" | grep " active"
         changed_when: false
         failed_when: false
-        register: amznlnx2cis_1_5_2_nx_dx_status
+        register: amazon2cis_1_5_2_nx_dx_status
 
       - name: "1.5.2 | PATCH | Ensure XD/NX support is enabled | Alert on non-active status"
         debug:
             msg:
                 - "Alert! You do not have XD/NX support enabled. Please activate if your system supports it"
-        when: "'active' not in amznlnx2cis_1_5_2_nx_dx_status.stdout"
+        when: "'active' not in amazon2cis_1_5_2_nx_dx_status.stdout"
   when:
-      - amznlnx2cis_rule_1_5_2
+      - amazon2cis_rule_1_5_2
   tags:
       - level1
       - patch
@@ -70,7 +70,7 @@
       sysctl_set: true
       ignoreerrors: true
   when:
-      - amznlnx2cis_rule_1_5_3
+      - amazon2cis_rule_1_5_3
   tags:
       - level1
       - automated
@@ -84,7 +84,7 @@
   vars:
       ansible_python_interpreter: /bin/python
   when:
-      - amznlnx2cis_rule_1_5_4
+      - amazon2cis_rule_1_5_4
   tags:
       - level1
       - automated

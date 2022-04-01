@@ -8,7 +8,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_1
+      - amazon2cis_rule_1_7_1
   tags:
       - level1
       - automated
@@ -24,7 +24,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_2
+      - amazon2cis_rule_1_7_2
   tags:
       - level1
       - automated
@@ -40,7 +40,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_3
+      - amazon2cis_rule_1_7_3
   tags:
       - level1
       - automated
@@ -56,7 +56,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_4
+      - amazon2cis_rule_1_7_4
   tags:
       - level1
       - automated
@@ -73,7 +73,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_5
+      - amazon2cis_rule_1_7_5
   tags:
       - level1
       - automated
@@ -90,7 +90,7 @@
       group: root
       mode: 0644
   when:
-      - amznlnx2cis_rule_1_7_6
+      - amazon2cis_rule_1_7_6
   tags:
       - level1
       - automated
