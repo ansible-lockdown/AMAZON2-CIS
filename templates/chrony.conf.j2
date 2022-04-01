@@ -17,8 +17,8 @@
 # fails they will be discarded.  Thus under some circumstances it is
 # better to use IP numbers than host names.
 
-{% for server in amznlnx2cis_time_synchronization_servers -%}
-server {{ server }} {{ amznlnx2cis_chrony_server_options }}
+{% for server in amazon2cis_time_synchronization_servers -%}
+server {{ server }} {{ amazon2cis_chrony_server_options }}
 {% endfor %}
 
 # Look here for the admin password needed for chronyc.  The initial
