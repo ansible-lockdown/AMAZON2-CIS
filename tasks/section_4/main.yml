@@ -1,0 +1,19 @@
+---
+
+- name: "SECTION | 4.1.1 | Ensure auditing is enabled"
+  include: cis_4.1.1.x.yml
+
+- name: "SECTION | 4.1.2.x | Configure Data Retention"
+  include: cis_4.1.2.x.yml
+
+- name: "SECTION | 4.1.x | Misc"
+  include: cis_4.1.x.yml
+
+- name: "SECTION | 4.2.x | Configure Logging"
+  include: cis_4.2.1.x.yml
+
+- name: "SECTION | 4.2.2.x | Configure journald"
+  include: cis_4.2.2.x.yml
+
+- name: "SECTION | 4.2.x | Misc. Logging settings"
+  include: cis_4.2.x.yml
