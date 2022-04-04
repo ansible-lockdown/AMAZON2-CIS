@@ -27,7 +27,7 @@
 
 - name: "1.1.1.2 | PATCH | Ensure mounting of squashfs filesystems is disabled"
   block:
-      - name: "1.1.1.2 | PATCH | Ensure mounting of squashfs filesystems is disabled | Edit modprobe config "
+      - name: "1.1.1.2 | PATCH | Ensure mounting of squashfs filesystems is disabled | Edit modprobe config"
         lineinfile:
             dest: /etc/modprobe.d/CIS.conf
             regexp: "^(#)?install squashfs(\\s|$)"
