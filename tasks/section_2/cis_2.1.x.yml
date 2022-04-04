@@ -128,7 +128,7 @@
       - amazon2cis_rule_2_1_8
   tags:
       - level1
-      - autoamted
+      - automated
       - patch
       - rule_2.1.8
       - ftp

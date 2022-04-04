@@ -26,7 +26,7 @@
       - amazon2cis_rule_3_5_2_2
   tags:
       - level1
-      - autoamted
+      - automated
       - patch
       - rule_3.5.2.2
       - firewall
