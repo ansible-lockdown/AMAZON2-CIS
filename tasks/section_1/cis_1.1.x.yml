@@ -251,7 +251,6 @@
   failed_when: false
   args:
       warn: false
-  # when: sticky_bit_on_worldwritable_dirs_audit.rc == '0'
   when:
       - amazon2cis_rule_1_1_22
   tags:
