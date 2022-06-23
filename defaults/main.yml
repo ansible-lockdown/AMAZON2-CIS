@@ -48,7 +48,10 @@ amazon2cis_legacy_boot: true
 
 # Enable/Disable SELinux
 amazon2cis_selinux_disable: false
+
+# SELinux state & policy
 amazon2cis_selinux_state: enforcing
+amazon2cis_selinux_pol: targeted
 
 # Misc. environment variables
 amazon2cis_skip_for_travis: false
@@ -474,9 +477,6 @@ amazon2cis_rpm_audit_file: /var/tmp/rpm_file_check
 amazon2cis_no_world_write_adjust: true
 amazon2cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
 amazon2cis_dotperm_ansibleManaged: true
-
-# SELinux policy
-amazon2cis_selinux_pol: targeted
 
 # Warning Banner Content (issue, issue.net, motd)
 amazon2cis_warning_banner: |
