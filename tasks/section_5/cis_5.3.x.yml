@@ -1,5 +1,17 @@
 ---
 
+- name: "5.3 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
+  package:
+      name: openssh-server
+      state: absent
+  notify: restart sshd
+  when:
+      - not amazon2cis_openssh_server
+  tags:
+      - patch
+      - rule_5.3
+      - ssh
+
 - name: "5.3.1 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
   file:
       path: /etc/ssh/sshd_config
@@ -9,6 +21,7 @@
       mode: 0600
   when:
       - amazon2cis_rule_5_3_1
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -27,7 +40,7 @@
             file_type: any
         register: amazon2_5_3_2_priv_results
 
-      - name: "5.3.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
+      - name: "5.3.2 | PATCH | Ensure permissions on SSH private host key files are configured"
         file:
             path: "{{ item.path }}"
             owner: root
@@ -37,8 +50,12 @@
             - "{{ amazon2_5_3_2_priv_results.files }}"
         loop_control:
             label: "{{ item.path }}"
+      - name: "debug 5.3.2"
+        debug:
+            msg: "{{ amazon2_5_3_2_priv_results.files }}"
   when:
       - amazon2cis_rule_5_3_2
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -52,7 +69,7 @@
       - name: "5.3.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
         find:
             paths: /etc/ssh
-            patterns: 'ssh_host_*_key'
+            patterns: 'ssh_host_*_key*.pub'
             recurse: true
             file_type: any
         register: amazon2_5_3_3_pub_results
@@ -62,13 +79,17 @@
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: 0600
+            mode: 0644
         with_items:
             - "{{ amazon2_5_3_3_pub_results.files }}"
         loop_control:
             label: "{{ item.path }}"
+      - name: "debug 5.3.2"
+        debug:
+            msg: "{{ amazon2_5_3_3_pub_results.files }}"
   when:
       - amazon2cis_rule_5_3_3
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -112,6 +133,7 @@
         when: "amazon2cis_sshd['denygroups']|default('') | length > 0"
   when:
       - amazon2cis_rule_5_3_4
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -127,6 +149,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_5
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -142,6 +165,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_6
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -157,6 +181,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_7
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -172,6 +197,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_8
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -187,6 +213,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_9
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -202,6 +229,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_10
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -217,6 +245,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_11
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -232,6 +261,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_12
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -247,6 +277,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_13
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -262,6 +293,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_14
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -277,6 +309,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_15
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -301,6 +334,7 @@
         notify: restart sshd
   when:
       - amazon2cis_rule_5_3_16
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -316,6 +350,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_17
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -331,6 +366,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_18
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -346,6 +382,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_19
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -361,6 +398,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_20
+      - amazon2cis_openssh_server
   tags:
       - level2
       - automated
@@ -376,6 +414,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_21
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated
@@ -391,6 +430,7 @@
   notify: restart sshd
   when:
       - amazon2cis_rule_5_3_22
+      - amazon2cis_openssh_server
   tags:
       - level1
       - automated

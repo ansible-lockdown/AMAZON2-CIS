@@ -22,7 +22,7 @@
         args:
             warn: false
 
-      - name: "AUDIT| 1.2.2 | AUDIT | Ensure package manager repositories are configured | Show repo list"
+      - name: "1.2.2 | AUDIT | Ensure package manager repositories are configured | Show repo list"
         debug:
             msg:
                 - "Please check against site policy repos listed below match expected:"

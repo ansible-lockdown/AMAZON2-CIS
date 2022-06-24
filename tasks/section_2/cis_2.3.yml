@@ -1,8 +1,22 @@
 ---
 
-- name: "2.3 | audit | Ensure nonessential services are removed or masked"
-  debug:
-      msg: "<----- not required"
+- name: "2.3 | AUDIT | Ensure nonessential services are removed or masked"
+  blocks:
+      - name: "2.3 | AUDIT | Ensure nonessential services are removed or masked | install lsof"
+        ansible.builtin.package:
+            name: lsof
+            state: present
+
+      - name: "2.3 | AUDIT | Ensure nonessential services are removed or masked | query"
+        ansible.builtin.shell:
+            cmd: lsof -i -P -n | grep -v "(ESTABLISHED)"
+        register: amazon2cis_2_3_services
+
+      - name: "2.3 | AUDIT | Ensure nonessential services are removed or masked | show "
+        debug:
+            msg:
+                - "Review the output to ensure that all services listed are required on the system."
+                - "{{ amazon2cis_2_3_services.stdout_lines }}"
   when:
       - amazon2cis_rule_2_3
   tags:

@@ -35,6 +35,15 @@
 
 - name: set bootloader type
   block:
+      - name: "PRELIM | set fact if UEFI boot | Amazon Linux"
+        set_fact:
+            amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
+            amazon2cis_legacy_boot: false
+        when:
+            - amazon2cis_efi_boot.stat.exists
+            - (ansible_distribution == 'Amazon') or
+              (ansible_distribution == 'CentOS')
+
       - name: "PRELIM | set fact if UEFI boot | RHEL or OEL"
         set_fact:
             amazon2cis_bootloader_file: /boot/efi/EFI/redhat/grub.cfg
@@ -42,14 +51,7 @@
         when:
             - amazon2cis_efi_boot.stat.exists
             - ansible_distribution != 'CentOS'  # Note: rhel & OEL both use redhat path
-
-      - name: "PRELIM | set fact if UEFI boot | Amazon Linux 2 "
-        set_fact:
-            amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
-            amazon2cis_legacy_boot: false
-        when:
-            - amazon2cis_efi_boot.stat.exists
-            - ansible_distribution == 'CentOS'
+            - ansible_distribution != 'Amazon'
 
       - name: "PRELIM | set if not UEFI boot"
         set_fact:

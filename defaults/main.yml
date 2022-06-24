@@ -21,7 +21,7 @@ python2_bin: /bin/python2.7
 benchmark: AMAZON2-CIS
 
 # If set true uses the tmp.mount service else using fstab configuration
-amazon2cis_tmp_svc: true
+amazon2cis_tmp_svc: false
 
 ### Goss Audit run settings
 # Goss audit configuration settings at bottom of file
@@ -350,15 +350,17 @@ amazon2cis_gui: false
 amazon2cis_xwindows_required: false
 
 # Time Synchronization - Either chrony or ntp
-amazon2cis_time_synchronization: chrony
+amazon2cis_time_synchronization: chrony     
 
 amazon2cis_time_synchronization_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org
+    - 169.254.169.123 prefer
 
-amazon2cis_chrony_server_options: "minpoll 8"
+amazon2cis_time_synchronization_pools:
+    - 0.amazon.pool.ntp.org iburst maxsources 1
+    - 1.amazon.pool.ntp.org iburst maxsources 1
+    - 2.amazon.pool.ntp.org iburst maxsources 2
+
+amazon2cis_chrony_server_options: "iburst minpoll 4 maxpoll 4"
 amazon2cis_ntp_server_options: "iburst"
 
 # Firewall Service - either firewalld or iptables
@@ -389,14 +391,14 @@ amazon2cis_auditd:
 # 4.2.3
 # amazon2cis_logrotate sets the daily, weekly, monthly, yearly value for the log rotation
 # To conform to CIS standards this just needs to comply with your site policy
-amazon2cis_logrotate: "daily"
+amazon2cis_logrotate: "weekly"
 
 # AMZN LNX 2-4.1.2.4
 # amazon2cis_audit_backlog_limit value needs to be 8192 or larger to conform to CIS standards
 amazon2cis_audit_backlog_limit: 8192
 
 # AMZN LNX-4.2.1.4/4.2.1.5 remote and destation log server name
-amazon2cis_remote_log_server: logagg.example.com
+amazon2cis_remote_log_server:
 
 # AMZN LNX-4.2.1.6
 amazon2cis_system_is_log_server: false
@@ -408,6 +410,8 @@ amazon2cis_maxauditlog_size: 10
 amazon2cis_rsyslog_ansibleManaged: true
 
 # SSH variables
+amazon2cis_openssh_server: true
+
 amazon2cis_ssh_loglevel: INFO
 # amazon2cis_ssh_maxsessions is the max number of sessions
 # To conform to CIS standards this value nees to be 10 or less

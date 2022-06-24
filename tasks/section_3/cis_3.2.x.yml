@@ -18,11 +18,11 @@
             reload: true
             ignoreerrors: true
         notify: sysctl flush ipv6 route table
-        when: amazon2cis_ipv6_required
+        when: not amazon2cis_ipv6_required
   when:
       - not amazon2cis_is_router
       - amazon2cis_rule_3_2_1
-      - amazon2cis_ipv6_required
+    #   - amazon2cis_ipv6_required
   tags:
       - level1
       - sysctl
