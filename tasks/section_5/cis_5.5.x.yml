@@ -87,14 +87,14 @@
       - name: "5.5.5 | PATCH | Ensure default user umask is configured | Set umask for /etc/bashrc"
         replace:
             path: /etc/bashrc
-            regexp: '(^\s+umask)'
-            replace: 'umask 027'
+            regexp: '(^\s+umask) 002'
+            replace: '\1 027'
 
       - name: "5.5.5 | PATCH | Ensure default user umask is configured | Set umask for /etc/profile"
         replace:
             path: /etc/profile
-            regexp: '(^\s+umask)'
-            replace: 'umask 027'
+            regexp: '(^\s+umask) 002'
+            replace: '\1 027'
   when:
       - amazon2cis_rule_5_5_5
   tags:

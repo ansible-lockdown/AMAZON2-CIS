@@ -79,7 +79,7 @@
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: 0644
+            mode: 0600
         with_items:
             - "{{ amazon2_5_3_3_pub_results.files }}"
         loop_control:
