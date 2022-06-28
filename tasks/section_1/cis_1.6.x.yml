@@ -51,21 +51,6 @@
       - rule_1.6.1.3
       - selinux
 
-- name: "1.6.1.4 | PATCH | Ensure the SELinux mode is enforcing or permissive"
-  replace:
-      dest: /etc/selinux/config
-      regexp: "^SELINUX=(.+)"
-      replace: "SELINUX={{ amazon2cis_selinux_state }}"
-  when:
-      - not amazon2cis_selinux_disable
-      - amazon2cis_rule_1_6_1_4
-  tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.1.4
-      - selinux
-
 - name: "1.6.1.5 | PATCH | Ensure the SELinux state is enforcing"
   ansible.posix.selinux:
       conf: /etc/selinux/config

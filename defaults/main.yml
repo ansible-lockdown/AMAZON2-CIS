@@ -350,7 +350,7 @@ amazon2cis_gui: false
 amazon2cis_xwindows_required: false
 
 # Time Synchronization - Either chrony or ntp
-amazon2cis_time_synchronization: chrony     
+amazon2cis_time_synchronization: chrony
 
 amazon2cis_time_synchronization_servers:
     - 169.254.169.123 prefer
