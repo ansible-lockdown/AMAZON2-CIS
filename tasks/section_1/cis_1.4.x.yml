@@ -7,7 +7,7 @@
       group: root
       mode: 0600
   when:
-      - amazon2cis_legacy_boot
+      - not amazon2cis_legacy_boot
       - amazon2cis_rule_1_4_1
   tags:
       - level1

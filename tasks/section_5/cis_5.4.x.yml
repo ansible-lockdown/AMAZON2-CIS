@@ -31,6 +31,16 @@
         with_items:
             - "system-auth"
             - "password-auth"
+    
+      - name: "5.4.2 | PATCH | Ensure lockout for failed password attempts is configured | Add pam_faillock"
+        lineinfile:
+            path: /etc/pam.d/{{ item }}
+            state: present
+            line: "account    required    pam_faillock.so"
+            insertafter: '^#?account ?'
+        with_items:
+            - "system-auth"
+            - "password-auth"
 
       - name: "5.4.2 | PATCH | Ensure lockout for failed password attempts is configured | Add success and default settings to pam_unix.so"
         lineinfile:

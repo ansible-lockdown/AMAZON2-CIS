@@ -30,7 +30,7 @@
 
 - name: "PRELIM | Check whether machine is UEFI-based"
   stat:
-      path: /sys/firmware/efi
+      path: /boot/efi
   register: amazon2cis_efi_boot
 
 - name: set bootloader type
