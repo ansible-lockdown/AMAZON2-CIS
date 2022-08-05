@@ -39,6 +39,8 @@
       conf: /etc/selinux/config
       policy: "{{ amazon2cis_selinux_pol }}"
       state: "{{ amazon2cis_selinux_state }}"
+  vars:
+      ansible_python_interpreter: "{{ python2_bin }}"
   when:
       - not amazon2cis_selinux_disable
       - amazon2cis_rule_1_6_1_3
@@ -56,6 +58,8 @@
       conf: /etc/selinux/config
       policy: "{{ amazon2cis_selinux_pol }}"
       state: enforcing
+  vars:
+      ansible_python_interpreter: "{{ python2_bin }}"
   when:
       - not amazon2cis_selinux_disable
       - not amazon2cis_selinux_state == "permissive"

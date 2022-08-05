@@ -36,12 +36,12 @@
   tags:
       - rule_5.7
 
-- include: check_prereqs.yml
+- include_tasks: check_prereqs.yml
   tags:
       - always
       - prereqs
 
-- include: prelim.yml
+- include_tasks: prelim.yml
   tags:
       - prelim_tasks
       - always
@@ -58,37 +58,37 @@
   tags:
       - always
 
-- include: section_1/main.yml
+- include_tasks: section_1/main.yml
   when: amazon2cis_section1
   tags:
       - amazon2cis_section1
 
-- include: section_2/main.yml
+- include_tasks: section_2/main.yml
   when: amazon2cis_section2
   tags:
       - amazon2cis_section2
 
-- include: section_3/main.yml
+- include_tasks: section_3/main.yml
   when: amazon2cis_section3
   tags:
       - amazon2cis_section3
 
-- include: section_4/main.yml
+- include_tasks: section_4/main.yml
   when: amazon2cis_section4
   tags:
       - amazon2cis_section4
 
-- include: section_5/main.yml
+- include_tasks: section_5/main.yml
   when: amazon2cis_section5
   tags:
       - amazon2cis_section5
 
-- include: section_6/main.yml
+- include_tasks: section_6/main.yml
   when: amazon2cis_section6
   tags:
       - amazon2cis_section6
 
-# - include: post.yml
+# - include_tasks: post.yml
 #   tags:
 #   - post_tasks
 #   - always

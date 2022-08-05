@@ -1,7 +1,7 @@
 ---
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
-- include: parse_etc_password.yml
+- include_tasks: parse_etc_password.yml
   when:
       - amazon2cis_section5 or
         amazon2cis_section6
