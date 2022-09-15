@@ -33,10 +33,11 @@
   loop_control:
       label: "{{ item.device }}"
   when:
+      - item.mount == "/tmp"
       - amazon2cis_tmp_svc
-      - amazon2cis_rule_1_1_3
-      - amazon2cis_rule_1_1_4
-      - amazon2cis_rule_1_1_5
+      - amazon2cis_rule_1_1_3 or
+        amazon2cis_rule_1_1_4 or
+        amazon2cis_rule_1_1_5
   tags:
       - level1
       - automated
