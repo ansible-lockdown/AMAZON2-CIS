@@ -58,6 +58,17 @@
         with_items:
             - "system-auth"
             - "password-auth"
+    
+      - name: "5.4.2 | PATCH | Ensure lockout for failed password attempts is configured | Activate deny count and unlock times to failed password"
+        lineinfile:
+            path: /etc/pam.d/{{ item }}
+            line: "account     required      pam_faillock.so"
+            insertbefore: '^#?account ?'
+            firstmatch: true
+            regexp: '^\s*account\s+required\s+pam_faillock.so\s*'
+        with_items:
+            - "system-auth"
+            - "password-auth"
 
       - name: "5.4.3 | PATCH | Ensure password hashing algorithm is SHA-512 | add sha512 settings"
         lineinfile:
