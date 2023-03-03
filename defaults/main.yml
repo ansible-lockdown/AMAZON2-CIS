@@ -517,7 +517,7 @@ audit_files: "/opt/{{ benchmark }}-Audit/"
 
 ## Goss configuration information
 # Where the goss configs and outputs are stored
-audit_out_dir: '/var/tmp'
+audit_out_dir: '/opt'
 audit_conf_dir: "{{ audit_out_dir }}/{{ benchmark }}-Audit"
 pre_audit_outfile: "{{ audit_out_dir }}/{{ ansible_hostname }}-{{ benchmark }}_pre_scan_{{ ansible_date_time.epoch }}.{{ audit_format }}"
 post_audit_outfile: "{{ audit_out_dir }}/{{ ansible_hostname }}-{{ benchmark }}_post_scan_{{ ansible_date_time.epoch }}.{{ audit_format }}"
