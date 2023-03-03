@@ -10,7 +10,7 @@
         tags:
             - skip_ansible_lint
 
-      - name: "6.1.1 | AUDIT | Audit system file permissions | Add file discrepancy list to system"
+      - name: "6.1.1 | AUDIT | Audit system file permissions | Add file discrepancy list to system"  # noqa template-instead-of-copy
         copy:
             dest: "{{ amazon2cis_rpm_audit_file }}"
             content: "{{ amazon2cis_6_1_1_packages_rpm.stdout }}"
