@@ -58,7 +58,7 @@
         with_items:
             - "system-auth"
             - "password-auth"
-    
+
       - name: "5.4.2 | PATCH | Ensure lockout for failed password attempts is configured | Activate deny count and unlock times to failed password"
         lineinfile:
             path: /etc/pam.d/{{ item }}
