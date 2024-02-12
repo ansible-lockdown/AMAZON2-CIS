@@ -1,7 +1,7 @@
 ---
 
 - name: "4.2.1.1 | PATCH | Ensure rsyslog is installed"
-  package:
+  ansible.builtin.package:
       name: rsyslog
       state: present
   vars:
@@ -16,7 +16,7 @@
       - rsyslog
 
 - name: "4.2.1.2 | PATCH | Ensure rsyslog Service is enabled and running"
-  service:
+  ansible.builtin.systemd:
       name: rsyslog
       state: started
       enabled: true
@@ -30,7 +30,7 @@
       - rsyslog
 
 - name: "4.2.1.3 | PATCH | Ensure rsyslog default file permissions configured"
-  lineinfile:
+  ansible.builtin.lineinfile:
       dest: /etc/rsyslog.conf
       regexp: '^\$FileCreateMode'
       line: '$FileCreateMode 0640'
@@ -47,20 +47,20 @@
 - name: "4.2.1.4 | PATCH | Ensure logging is configured"
   block:
       - name: "4.2.1.4 | AUDIT | Ensure logging is configured | rsyslog current config message out"
-        command: cat /etc/rsyslog.conf
+        ansible.builtin.command: cat /etc/rsyslog.conf
         changed_when: false
         failed_when: false
         register: amazon2_4_2_1_4_audit
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Debug out rsyslog settings"
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "These are the current logging configurations for rsyslog, please review:"
                 - "{{ amazon2_4_2_1_4_audit.stdout_lines }}"
         when: not amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Set logging settings lineinfile"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: /etc/rsyslog.conf
             state: present
             regexp: "{{ item.regexp }}"
@@ -82,7 +82,7 @@
         when: amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Misc. log setting"
-        blockinfile:
+        ansible.builtin.blockinfile:
             path: /etc/rsyslog.conf
             state: present
             marker: "# {mark} MISC. LOG SETTINGS (ANSIBLE MANAGED)"
@@ -96,7 +96,7 @@
         when: amazon2cis_rsyslog_ansibleManaged
 
       - name: "4.2.1.4 | PATCH | Ensure logging is configured | Local log settings"
-        blockinfile:
+        ansible.builtin.blockinfile:
             path: /etc/rsyslog.conf
             state: present
             marker: "#{mark} LOCAL LOG SETTINGS (ANSIBLE MANAGED)"
@@ -118,7 +118,7 @@
       - rsyslog
 
 - name: "4.2.1.5 | PATCH | Ensure rsyslog is configured to send logs to a remote log host"
-  blockinfile:
+  ansible.builtin.blockinfile:
       path: /etc/rsyslog.conf
       state: present
       block: |
@@ -143,7 +143,7 @@
 - name: "4.2.1.6 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts."
   block:
       - name: "4.2.1.6 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts. | When not log host"
-        replace:
+        ansible.builtin.replace:
             path: /etc/rsyslog.conf
             regexp: '({{ item }})'
             replace: '#\1'
@@ -155,7 +155,7 @@
             - not amazon2cis_system_is_log_server
 
       - name: "4.2.1.6 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts. | When log host"
-        replace:
+        ansible.builtin.replace:
             path: /etc/rsyslog.conf
             regexp: '^#(.*{{ item }}.*)'
             replace: '\1'
@@ -175,7 +175,7 @@
       - rsyslog
 
 # - name: "MANUAL | 4.2.3 | AUDIT | Ensure logrotate is configured"
-#   find:
+#   ansible.builtin.find:
 #     paths: /etc/logrotate.d/
 #   register: log_rotates
 #   tags:
@@ -185,7 +185,7 @@
 #   - rule_4.2.3
 
 # - name: "AUTOMATED | 4.2.4 | PATCH | Ensure permissions on all logfiles are configured"
-#   command: find /var/log -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g-wx,o-rwx "{}" +
+#   ansible.builtin.command: find /var/log -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g-wx,o-rwx "{}" +
 #   changed_when: no
 #   failed_when: no
 #   when:

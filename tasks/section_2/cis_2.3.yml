@@ -1,7 +1,7 @@
 ---
 
 - name: "2.3 | audit | Ensure nonessential services are removed or masked"
-  debug:
+  ansible.builtin.debug:
       msg: "<----- not required"
   when:
       - amazon2cis_rule_2_3

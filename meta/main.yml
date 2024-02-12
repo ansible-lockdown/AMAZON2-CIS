@@ -17,7 +17,7 @@ galaxy_info:
         - security
         - cis
         - hardening
-        - Amazon
+        - amazon
         - complianceascode
 collections:
     - community.general

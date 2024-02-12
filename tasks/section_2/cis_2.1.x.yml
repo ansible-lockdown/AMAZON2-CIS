@@ -1,7 +1,7 @@
 ---
 
 - name: "2.1.2 | PATCH | Ensure X11 Server components are not installed"
-  package:
+  ansible.builtin.package:
       state: absent
       name:
           - "@X Window System"
@@ -21,13 +21,13 @@
 - name: "2.1.3 | PATCH | Ensure Avahi Server is not installed"
   block:
       - name: "2.1.3 | PATCH | Ensure Avahi Server is not installed | disabled"
-        service:
+        ansible.builtin.systemd:
             name: avahi-daemon
             state: stopped
             enabled: false
 
       - name: "2.1.3 | PATCH | Ensure Avahi Server is not installed | disabled"
-        package:
+        ansible.builtin.package:
             name:
                 - avahi
                 - avahi-autoipd
@@ -45,7 +45,7 @@
       - services
 
 - name: "2.1.4 | PATCH | Ensure CUPS is not installed"
-  package:
+  ansible.builtin.package:
       name: cups
       state: absent
   vars:
@@ -63,7 +63,7 @@
       - services
 
 - name: "2.1.5 | PATCH | Ensure DHCP Server is not installed"
-  package:
+  ansible.builtin.package:
       name: dhcpd
       state: absent
   vars:
@@ -81,7 +81,7 @@
       - services
 
 - name: "2.1.6 | PATCH | Ensure LDAP server is not installed"
-  package:
+  ansible.builtin.package:
       name: openldap-servers
       state: absent
   vars:
@@ -99,7 +99,7 @@
       - services
 
 - name: "2.1.7 | PATCH | Ensure dns server is not installed"
-  package:
+  ansible.builtin.package:
       name: bind
       state: absent
   vars:
@@ -117,7 +117,7 @@
       - services
 
 - name: "2.1.8 | PATCH | Ensure FTP server is not installed"
-  package:
+  ansible.builtin.package:
       name: vsftpd
       state: absent
   vars:
@@ -135,7 +135,7 @@
       - services
 
 - name: "2.1.9 | PATCH | Ensure HTTP server is not installed"
-  package:
+  ansible.builtin.package:
       name: httpd
       state: absent
   vars:
@@ -153,7 +153,7 @@
       - services
 
 - name: "2.1.10 | PATCH | Ensure IMAP and POP3 server is not installed"
-  package:
+  ansible.builtin.package:
       name: dovecot
       state: absent
   vars:
@@ -171,7 +171,7 @@
       - services
 
 - name: "2.1.11 | PATCH | Ensure Samba server is not installed"
-  package:
+  ansible.builtin.package:
       name: samba
       state: absent
   vars:
@@ -189,7 +189,7 @@
       - servicess
 
 - name: "2.1.12 | PATCH | Ensure HTTP Proxy server is not installed"
-  package:
+  ansible.builtin.package:
       name: squid
       state: absent
   vars:
@@ -207,7 +207,7 @@
       - services
 
 - name: "2.1.13 | PATCH | Ensure net-snmp is not installed"
-  package:
+  ansible.builtin.package:
       name: net-snmp
       state: absent
   vars:
@@ -225,7 +225,7 @@
       - services
 
 - name: "2.1.14 | PATCH | Ensure nis server is not installed"
-  package:
+  ansible.builtin.package:
       name: ypserv
       state: absent
   vars:
@@ -243,7 +243,7 @@
       - services
 
 - name: "2.1.15 | PATCH | Ensure telnet server is not installed"
-  package:
+  ansible.builtin.package:
       name: telnet-server
       state: absent
   vars:
@@ -261,7 +261,7 @@
       - services
 
 - name: "2.1.16 | PATCH | Ensure mail transfer agent is configured for local-only mode"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: /etc/postfix/main.cf
       regexp: "^(#)?inet_interfaces"
       line: "inet_interfaces = loopback-only"
@@ -280,7 +280,7 @@
 - name: "2.1.17 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked"
   block:
       - name: "2.1.17 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | nfs-utils "
-        package:
+        ansible.builtin.package:
             name: nfs-utils
             state: absent
         vars:
@@ -290,7 +290,7 @@
             - not amazon2cis_nfs_server
 
       - name: "2.1.17 | PATCH | Ensure nfs-utils is not installed or the nfs-server service is masked | nfs-server "
-        systemd:
+        ansible.builtin.systemd:
             name: nfs-server
             masked: true
         when:
@@ -310,7 +310,7 @@
 - name: "2.1.18 | PATCH | Ensure rpcbind is not installed or the irpcbind services are masked"
   block:
       - name: "2.1.18 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | rpcbind"
-        package:
+        ansible.builtin.package:
             name: rpcbind
             state: absent
         vars:
@@ -320,7 +320,7 @@
             - not amazon2cis_rpc_server
 
       - name: "2.1.18 | PATCH | Ensure rpcbind is not installed or the rpcbind services are masked | rpcbind-server"
-        systemd:
+        ansible.builtin.systemd:
             name: rpcbind.socket
             masked: true
         when:
@@ -338,7 +338,7 @@
       - services
 
 - name: "2.1.19 | PATCH | Ensure rsync is not installed or the rsyncd services are masked"
-  package:
+  ansible.builtin.package:
       name: rsync
       state: absent
   vars:
