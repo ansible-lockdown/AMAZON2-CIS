@@ -15,7 +15,7 @@
       - cron
 
 - name: "5.1.2 | PATCH | Ensure permissions on /etc/crontab are configured"
-  ansible.builtin.ansible.builtin.file:
+  ansible.builtin.file:
       dest: /etc/crontab
       owner: root
       group: root
