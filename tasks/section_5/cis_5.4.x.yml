@@ -1,7 +1,7 @@
 ---
 
 - name: "5.4.1 | PATCH | Ensure password creation requirements are configured"
-  ansible.builtin.ansible.builtin.lineinfile:
+  ansible.builtin.lineinfile:
       path: /etc/security/pwquality.conf
       regexp: '^{{ item.key }}'
       line: '{{ item.key }} = {{ item.value }}'
