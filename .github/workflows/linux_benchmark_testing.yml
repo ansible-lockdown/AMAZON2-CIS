@@ -33,7 +33,7 @@ jobs:
                       Congrats on opening your first pull request and thank you for taking the time to help improve Ansible-Lockdown!
                       Please join in the conversation happening on the [Discord Server](https://discord.io/ansible-lockdown) as well.
     # This workflow contains a single job called "build"
-    build:
+    playbook-test:
         # The type of runner that the job will run on
         runs-on: ubuntu-latest
         env:
@@ -105,7 +105,7 @@ jobs:
               env:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  OSVAR: ${{ vars.OSVAR }}
+                  OSVAR: ${{ env.OSVAR }}
                   TF_VAR_benchmark_type: ${{ env.BENCHMARK_TYPE }}
               run: terraform apply -var-file "github_vars.tfvars" -var-file "${OSVAR}.tfvars" --auto-approve -input=false
 
