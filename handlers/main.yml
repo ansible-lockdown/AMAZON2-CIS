@@ -63,6 +63,7 @@
 
 - name: grub2cfg
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
+  notify: Change_requires_reboot
 
 - name: restart rsyslog
   ansible.builtin.service:
@@ -73,3 +74,7 @@
   ansible.builtin.service:
       name: sshd
       state: restarted
+
+- name: Change_requires_reboot
+  ansible.builtin.set_fact:
+      change_requires_reboot: true

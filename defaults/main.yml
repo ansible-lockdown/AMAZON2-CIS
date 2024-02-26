@@ -24,6 +24,10 @@ benchmark_version: v2.0.0
 # If set true uses the tmp.mount service else using fstab configuration
 amazon2cis_tmp_svc: true
 
+# Ability to stop reboot from occuring until convenient
+# set to true if ok to reboot
+skip_reboot: false
+
 ### Goss Audit run settings
 # Goss audit configuration settings at bottom of file
 
