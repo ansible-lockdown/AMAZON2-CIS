@@ -1,4 +1,5 @@
 ---
+
 galaxy_info:
     author: "DFed, George Nalen, Mark Bolwell"
     description: "Apply the Amazon Linux 2 CIS controls"
@@ -17,7 +18,7 @@ galaxy_info:
         - security
         - cis
         - hardening
-        - Amazon
+        - amazonlinux
         - complianceascode
 collections:
     - community.general

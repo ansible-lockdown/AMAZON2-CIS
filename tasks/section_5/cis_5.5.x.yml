@@ -3,7 +3,7 @@
 - name: "5.5.2 | PATCH | Ensure system accounts are secured"
   block:
       - name: "5.5.2 | PATCH | Ensure system accounts are secured | Set nologin"
-        user:
+        ansible.builtin.user:
             name: "{{ item.id }}"
             shell: /usr/sbin/nologin
         with_items:
@@ -20,7 +20,7 @@
             label: "{{ item.id }}"
 
       - name: "5.5.2 | PATCH | Ensure system accounts are secured | Lock accounts"
-        user:
+        ansible.builtin.user:
             name: "{{ item.id }}"
             password_lock: true
         with_items:
@@ -45,7 +45,7 @@
       - accounts
 
 - name: "5.5.3 | PATCH | Ensure default group for the root account is GID 0"
-  user:
+  ansible.builtin.user:
       name: root
       group: "0"
   when:
@@ -59,7 +59,7 @@
       - root
 
 - name: "5.5.4 | PATCH | Ensure default user shell timeout is configured"
-  blockinfile:
+  ansible.builtin.blockinfile:
       path: "{{ item.dest }}"
       state: "{{ item.state }}"
       create: true
@@ -85,13 +85,13 @@
 - name: "5.5.5 | PATCH | Ensure default user umask is configured"
   block:
       - name: "5.5.5 | PATCH | Ensure default user umask is configured | Set umask for /etc/bashrc"
-        replace:
+        ansible.builtin.replace:
             path: /etc/bashrc
             regexp: '(^\s+umask) 002'
             replace: '\1 027'
 
       - name: "5.5.5 | PATCH | Ensure default user umask is configured | Set umask for /etc/profile"
-        replace:
+        ansible.builtin.replace:
             path: /etc/profile
             regexp: '(^\s+umask) 002'
             replace: '\1 027'

@@ -402,8 +402,7 @@ amazon2cis_system_is_log_server: false
 # Maxium audit log size in MB
 amazon2cis_maxauditlog_size: 10
 
-
-amazon2cis_rsyslog_ansibleManaged: true
+amazon2cis_rsyslog_ansiblemanaged: true
 
 # SSH variables
 amazon2cis_ssh_loglevel: INFO
@@ -474,7 +473,7 @@ amazon2cis_rpm_audit_file: /var/tmp/rpm_file_check
 # amazon2_6.2.12
 amazon2cis_no_world_write_adjust: true
 amazon2cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
-amazon2cis_dotperm_ansibleManaged: true
+amazon2cis_dotperm_ansiblemanaged: true
 
 # SELinux policy
 amazon2cis_selinux_pol: targeted

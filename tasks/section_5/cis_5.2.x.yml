@@ -1,7 +1,7 @@
 ---
 
 - name: "5.2.1 | PATCH | Ensure sudo is installed"
-  package:
+  ansible.builtin.package:
       name: sudo
       state: present
   when:
@@ -14,7 +14,7 @@
       - sudo
 
 - name: "5.2.2 | PATCH | Ensure sudo commands use pty"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: /etc/sudoers
       line: 'Defaults use_pty'
   when:
@@ -27,7 +27,7 @@
       - sudo
 
 - name: "5.2.3 | PATCH | Ensure sudo log file exists"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: /etc/sudoers
       line: 'Defaults logfile="/var/log/sudo.log"'
   when:

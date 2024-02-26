@@ -3,7 +3,7 @@
 - name: "1.5.1 | PATCH | Ensure core dumps are restricted"
   block:
       - name: "1.5.1 | PATCH | Ensure core dumps are restricted | Update limits.conf file"
-        lineinfile:
+        ansible.builtin.lineinfile:
             state: present
             dest: /etc/security/limits.conf
             regexp: '^#?\\*.*core'
@@ -11,7 +11,7 @@
             insertbefore: '^# End of file'
 
       - name: "1.5.1 | PATCH | Ensure core dumps are restricted | Set active kernel parameter"
-        sysctl:
+        ansible.posix.sysctl:
             name: fs.suid_dumpable
             value: '0'
             state: present
@@ -20,7 +20,7 @@
             ignoreerrors: true
 
       - name: "1.5.1 | PATCH | Ensure core dumps are restricted | coredump.conf"
-        lineinfile:
+        ansible.builtin.lineinfile:
             dest: /etc/systemd/coredump.conf
             regexp: "{{ item.regex }}"
             line: "{{ item.line }}"
@@ -42,13 +42,13 @@
 - name: "1.5.2 | PATCH | Ensure XD/NX support is enabled"
   block:
       - name: "1.5.2 | PATCH | Ensure XD/NX support is enabled | Get NX/DX status"
-        shell: dmesg|grep -E "NX|XD" | grep " active"
+        ansible.builtin.shell: dmesg|grep -E "NX|XD" | grep " active"
         changed_when: false
         failed_when: false
         register: amazon2cis_1_5_2_nx_dx_status
 
       - name: "1.5.2 | PATCH | Ensure XD/NX support is enabled | Alert on non-active status"
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Alert! You do not have XD/NX support enabled. Please activate if your system supports it"
         when: "'active' not in amazon2cis_1_5_2_nx_dx_status.stdout"
@@ -62,7 +62,7 @@
       - skip_ansible_lint
 
 - name: "1.5.3 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
-  sysctl:
+  ansible.posix.sysctl:
       name: kernel.randomize_va_space
       value: '2'
       state: present
@@ -78,7 +78,7 @@
       - rule_1.5.3
 
 - name: "1.5.4 | PATCH | Ensure prelink is not installed"
-  package:
+  ansible.builtin.package:
       name: prelink
       state: absent
   vars:

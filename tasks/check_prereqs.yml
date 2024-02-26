@@ -1,7 +1,7 @@
 ---
 
 - name: "PREREQ | Add the required packages installed | Python2"
-  package:
+  ansible.builtin.package:
       name: "{{ item }}"
       state: latest
   register: python2_packages
@@ -12,7 +12,7 @@
       ansible_python_interpreter: "{{ python2_bin }}"
 
 - name: "PREREQ | Check required packages installed | Python3 "
-  package:
+  ansible.builtin.package:
       name: "{{ item }}"
       state: present
   register: python3reqs_installed
