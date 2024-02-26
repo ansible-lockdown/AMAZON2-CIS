@@ -19,8 +19,6 @@
         command: yum repolist
         changed_when: false
         register: amazon2cis_1_2_2_repolist
-        args:
-            warn: false
 
       - name: "AUDIT| 1.2.2 | AUDIT | Ensure package manager repositories are configured | Show repo list"
         debug:
