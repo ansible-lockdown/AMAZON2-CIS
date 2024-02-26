@@ -1,18 +1,20 @@
 ---
 
 - name: Check OS version and family
-  ansible.builtin.fail:
-      msg: "This role can only be run against Amazon Linux 2. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
   when:
-      - ansible_distribution != 'Amazon'
-      - ansible_distribution_major_version is version_compare('2', '!=')
+      - os_check
+  ansible.builtin.assert:
+      that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2', '=='))
+      fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
+      success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
   tags:
       - always
 
 - name: Check ansible version
-  ansible.builtin.fail:
-      msg: You must use ansible 2.9 or greater
-  when: not ansible_version.full is version_compare('2.9', '>=')
+  ansible.builtin.assert:
+      that: ansible_version.full is version_compare(min_ansible_version, '>=')
+      fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
+      success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
   tags:
       - always
 
@@ -108,6 +110,31 @@
 
 - name: flush handlers
   ansible.builtin.meta: flush_handlers
+
+- name: POST | reboot system if changes require it and not skipped
+  block:
+      - name: POST | Reboot system if changes require it and not skipped
+        ansible.builtin.reboot:
+        when:
+            - change_requires_reboot
+            - not skip_reboot
+
+      - name: POST | Warning a reboot required but skip option set
+        ansible.builtin.debug:
+            msg: "Warning!! changes have been made that require a reboot to be implemented but skip reboot was set - Can affect compliance check results"
+        changed_when: true
+        when:
+            - change_requires_reboot
+            - skip_reboot
+
+      - name: "POST | Warning a reboot required but skip option set | warning count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+        when:
+            - change_requires_reboot
+            - skip_reboot
+  vars:
+      warn_control_id: Reboot_required
 
 - name: run post_remediation audit
   ansible.builtin.import_tasks:
