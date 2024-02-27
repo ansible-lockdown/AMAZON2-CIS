@@ -1,39 +1,73 @@
 ---
 
-- name: "1.4.1 | PATCH | Ensure permissions on bootloader config are configured"
-  ansible.builtin.file:
-      path: "{{ amazon2cis_bootloader_file }}"
-      owner: root
-      group: root
-      mode: 0600
+- name: "1.4.1 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
+  ansible.posix.sysctl:
+      name: kernel.randomize_va_space
+      value: '2'
+      state: present
+      reload: true
+      sysctl_set: true
+      ignoreerrors: true
+      sysctl_file: "{{ kernel_sysctl_file }}"
   when:
-      - amazon2cis_legacy_boot
       - amazon2cis_rule_1_4_1
   tags:
       - level1
       - automated
       - patch
       - rule_1.4.1
-      - grub
+      - NIST800-53R5_CM-6
 
-- name: "1.4.2 | PATCH | Ensure authentication required for single user mode"
-  block:
-      - name: "1.4.2 | PATCH | Ensure authentication required for single user mode | Emergency service"
-        ansible.builtin.lineinfile:
-            dest: /usr/lib/systemd/system/emergency.service
-            regexp: '/sbin/sulogin'
-            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
-
-      - name: "1.4.2 | PATCH | Ensure authentication required for single user mode | Rescue service"
-        ansible.builtin.lineinfile:
-            dest: /usr/lib/systemd/system/rescue.service
-            regexp: '/sbin/sulogin'
-            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+- name: "1.4.2 | PATCH | Ensure ptrace_scope is restricted"
+  ansible.posix.sysctl:
+      name: kernel.yama.ptrace_scope
+      value: '1'
+      state: present
+      reload: true
+      sysctl_set: true
+      ignoreerrors: true
+      sysctl_file: "{{ kernel_sysctl_file }}"
   when:
       - amazon2cis_rule_1_4_2
-      - ansible_facts['distribution_major_version'] is version('2', '>=')
   tags:
       - level1
       - automated
       - patch
       - rule_1.4.2
+
+- name: "1.4.3 | PATCH | Ensure core dump backtraces are disabled"
+  ansible.builtin.lineinfile:
+      dest: /etc/systemd/coredump.conf
+      regexp: ^ProcessSizeMax
+      line: ProcessSizeMax=0
+      create: true
+      mode: '0644'
+  notify: systemd daemon reload
+  when:
+      - amazon2cis_rule_1_4_3
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.4.3
+      - coredump
+      - NIST800-53R5_CM-6b
+
+- name: "1.4.4 | PATCH | Ensure core dump storage is disabled"
+  ansible.builtin.lineinfile:
+      dest: /etc/systemd/coredump.conf
+      regexp: ^Storage
+      line: Storage=none
+      create: true
+      mode: '0644'
+  notify: systemd daemon reload
+  when:
+      - amazon2cis_rule_1_4_4
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.4.4
+      - coredump
+
+

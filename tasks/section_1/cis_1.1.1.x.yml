@@ -1,8 +1,8 @@
 ---
 
-- name: "1.1.1.1 | PATCH | Ensure mounting of cramfs filesystems is disabled"
+- name: "1.1.1.1 | PATCH | Ensure cramfs kernel module is not available"
   block:
-      - name: "1.1.1.1 | PATCH | Ensure mounting of cramfs filesystems is disabled | Edit modprobe config"
+      - name: "1.1.1.1 | PATCH | Ensure cramfs kernel module is not available | Edit modprobe config"
         ansible.builtin.lineinfile:
             dest: /etc/modprobe.d/CIS.conf
             regexp: "^(#)?install cramfs(\\s|$)"
@@ -10,13 +10,20 @@
             create: true
             mode: '0600'
 
-      - name: "1.1.1.1 | PATCH | Ensure mounting of cramfs filesystems is disabled | Remove cramfs module"
+      - name: "1.1.1.1 | PATCH | Ensure cramfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist cramfs(\\s|$)"
+            line: "blacklist cramfs"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.1 | PATCH | Ensure cramfs kernel module is not available | Remove cramfs module"
         community.general.modprobe:
             name: cramfs
             state: absent
   when:
       - amazon2cis_rule_1_1_1_1
-      - ansible_connection != 'docker'
   tags:
       - level1
       - automated
@@ -24,10 +31,143 @@
       - rule_1.1.1.1
       - cramfs
       - modprobe
+      - NIST800-53R5_CM-7
 
-- name: "1.1.1.2 | PATCH | Ensure mounting of squashfs filesystems is disabled"
+- name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available"
   block:
-      - name: "1.1.1.2 | PATCH | Ensure mounting of squashfs filesystems is disabled | Edit modprobe config"
+      - name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/CIS.conf
+            regexp: "^(#)?install freevxfs(\\s|$)"
+            line: "install freevxfs /bin/true"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist freevxfs(\\s|$)"
+            line: "blacklist freevxfs"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available | Remove cramfs module"
+        community.general.modprobe:
+            name: freevxfs
+            state: absent
+  when:
+      - amazon2cis_rule_1_1_1_2
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.1.1.2
+      - cramfs
+      - modprobe
+      - NIST800-53R5_CM-7
+
+- name: "1.1.1.3 | PATCH | Ensure hfs kernel module is not available"
+  block:
+      - name: "1.1.1.3 | PATCH | Ensure hfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/CIS.conf
+            regexp: "^(#)?install hfs(\\s|$)"
+            line: "install hfs /bin/true"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.3 | PATCH | Ensure hfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist hfs(\\s|$)"
+            line: "blacklist hfs"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.3 | PATCH | Ensure hfs kernel module is not available | Remove hfs module"
+        community.general.modprobe:
+            name: hfs
+            state: absent
+  when:
+      - amazon2cis_rule_1_1_1_3
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.1.1.3
+      - hfs
+      - modprobe
+      - NIST800-53R5_CM-7
+
+- name: "1.1.1.4 | PATCH | Ensure hfsplus kernel module is not available"
+  block:
+      - name: "1.1.1.4 | PATCH | Ensure hfsplus kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/CIS.conf
+            regexp: "^(#)?install hfsplus(\\s|$)"
+            line: "install hfsplus /bin/true"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.4 | PATCH | Ensure hfsplus kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist hfsplus(\\s|$)"
+            line: "blacklist hfsplus"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.4 | PATCH | Ensure hfsplus kernel module is not available | Remove hfsplus module"
+        community.general.modprobe:
+            name: hfsplus
+            state: absent
+  when:
+      - amazon2cis_rule_1_1_1_4
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.1.1.4
+      - hfsplus
+      - modprobe
+      - NIST800-53R5_CM-7
+
+- name: "1.1.1.5 | PATCH | Ensure jffs2 kernel module is not available"
+  block:
+      - name: "1.1.1.5 | PATCH | Ensure jffs2 kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/CIS.conf
+            regexp: "^(#)?install jffs2(\\s|$)"
+            line: "install jffs2 /bin/true"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.5 | PATCH | Ensure jffs2 kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist jffs2(\\s|$)"
+            line: "blacklist jffs2"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.5 | PATCH | Ensure jffs2 kernel module is not available | Remove jffs2 module"
+        community.general.modprobe:
+            name: jffs2
+            state: absent
+  when:
+      - amazon2cis_rule_1_1_1_5
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.1.1.5
+      - jffs2
+      - modprobe
+      - NIST800-53R5_CM-7
+
+- name: "1.1.1.6 | PATCH | Ensure squashfs kernel module is not available"
+  block:
+      - name: "1.1.1.6 | PATCH | Ensure squashfs kernel module is not available | Edit modprobe config"
         ansible.builtin.lineinfile:
             dest: /etc/modprobe.d/CIS.conf
             regexp: "^(#)?install squashfs(\\s|$)"
@@ -35,24 +175,32 @@
             create: true
             mode: '0600'
 
-      - name: "1.1.1.2 | PATCH | Ensure mounting of cramfs filesystems is disabled | Remove squashfs module"
+      - name: "1.1.1.6 | PATCH | Ensure squashfs kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist squashfs(\\s|$)"
+            line: "blacklist squashfs"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.6 | PATCH | Ensure cramfs kernel module is not available | Remove squashfs module"
         community.general.modprobe:
             name: squashfs
             state: absent
   when:
-      - amazon2cis_rule_1_1_1_2
-      - ansible_connection != 'docker'
+      - amazon2cis_rule_1_1_1_6
   tags:
-      - level1
+      - level2
       - automated
       - patch
-      - rule_1.1.1.2
+      - rule_1.1.1.6
       - squashfs
       - modprobe
+      - NIST800-53R5_CM-7
 
-- name: "1.1.1.3 | PATCH | Ensure mounting of udf filesystems is disabled"
+- name: "1.1.1.7 | PATCH | Ensure udf kernel module is not available"
   block:
-      - name: "1.1.1.3 | PATCH | Ensure mounting of udf filesystems is disabled | Edit modprobe config"
+      - name: "1.1.1.7 | PATCH | Ensure udf kernel module is not available | Edit modprobe config"
         ansible.builtin.lineinfile:
             dest: /etc/modprobe.d/CIS.conf
             regexp: "^(#)?install udf(\\s|$)"
@@ -60,17 +208,58 @@
             create: true
             mode: '0600'
 
-      - name: "1.1.1.3 | PATCH | Remove udf module"
+      - name: "1.1.1.7 | PATCH | Ensure udf kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist udf(\\s|$)"
+            line: "blacklist udf"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.7 | PATCH | Remove udf module"
         community.general.modprobe:
             name: udf
             state: absent
   when:
-      - amazon2cis_rule_1_1_1_3
-      - ansible_connection != 'docker'
+      - amazon2cis_rule_1_1_1_7
+  tags:
+      - level2
+      - automated
+      - patch
+      - rule_1.1.1.7
+      - udf
+      - modprobe
+      - NIST800-53R5_CM-7
+
+- name: "1.1.1.8 | PATCH | Ensure udf kernel module is not available"
+  block:
+      - name: "1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/CIS.conf
+            regexp: "^(#)?install usb-storage(\\s|$)"
+            line: "install usb-storage /bin/true"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available | Edit modprobe config"
+        ansible.builtin.lineinfile:
+            dest: /etc/modprobe.d/blacklist.conf
+            regexp: "^(#)?blacklist usb-storage(\\s|$)"
+            line: "blacklist usb-storage"
+            create: true
+            mode: '0600'
+
+      - name: "1.1.1.8 | PATCH | Remove usb-storage module"
+        community.general.modprobe:
+            name: usb-storage
+            state: absent
+  when:
+      - amazon2cis_rule_1_1_1_8
   tags:
       - level1
       - automated
       - patch
-      - rule_1.1.1.3
-      - udf
+      - rule_1.1.1.8
+      - usb
       - modprobe
+      - NIST800-53R5_SI-3

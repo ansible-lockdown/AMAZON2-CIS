@@ -66,89 +66,128 @@ system_is_ec2: true
 # You must enable an entire section in order for the variables below to take effect.
 # Section 1 rules
 # Section 1 is Initial Setup (Filesystem Configuration, Configure Software Updates, Configure Sudo, Filesystem Integrity Checking, Secure Boot Settings, Additional Process Hardening, Mandatory Access Control, and Warning Banners)
+# Configure Filesystem Kernel Modules
 amazon2cis_rule_1_1_1_1: true
 amazon2cis_rule_1_1_1_2: true
 amazon2cis_rule_1_1_1_3: true
-amazon2cis_rule_1_1_2: true
-amazon2cis_rule_1_1_3: true
-amazon2cis_rule_1_1_4: true
-amazon2cis_rule_1_1_5: true
-amazon2cis_rule_1_1_6: true
-amazon2cis_rule_1_1_7: true
-amazon2cis_rule_1_1_8: true
-amazon2cis_rule_1_1_9: true
-amazon2cis_rule_1_1_10: true
-amazon2cis_rule_1_1_11: true
-amazon2cis_rule_1_1_12: true
-amazon2cis_rule_1_1_13: true
-amazon2cis_rule_1_1_14: true
-amazon2cis_rule_1_1_15: true
-amazon2cis_rule_1_1_16: true
-amazon2cis_rule_1_1_17: true
-amazon2cis_rule_1_1_18: true
-amazon2cis_rule_1_1_19: true
-amazon2cis_rule_1_1_20: true
-amazon2cis_rule_1_1_21: true
-amazon2cis_rule_1_1_22: true
-amazon2cis_rule_1_1_23: true
-amazon2cis_rule_1_1_24: true
+amazon2cis_rule_1_1_1_4: true
+amazon2cis_rule_1_1_1_5: true
+amazon2cis_rule_1_1_1_6: true
+amazon2cis_rule_1_1_1_7: true
+amazon2cis_rule_1_1_1_8: true
+
+# /tmp
+amazon2cis_rule_1_1_2_1_1: true
+amazon2cis_rule_1_1_2_1_2: true
+amazon2cis_rule_1_1_2_1_3: true
+amazon2cis_rule_1_1_2_1_4: true
+
+# /dev/shm
+amazon2cis_rule_1_1_2_2_1: true
+amazon2cis_rule_1_1_2_2_2: true
+amazon2cis_rule_1_1_2_2_3: true
+amazon2cis_rule_1_1_2_2_4: true
+
+# /home
+amazon2cis_rule_1_1_2_3_1: true
+amazon2cis_rule_1_1_2_3_2: true
+amazon2cis_rule_1_1_2_3_3: true
+
+# /var/
+amazon2cis_rule_1_1_2_4_1: true
+amazon2cis_rule_1_1_2_4_2: true
+amazon2cis_rule_1_1_2_4_3: true
+
+# /var/tmp
+amazon2cis_rule_1_1_2_5_1: true
+amazon2cis_rule_1_1_2_5_2: true
+amazon2cis_rule_1_1_2_5_3: true
+amazon2cis_rule_1_1_2_5_4: true
+
+# /var/log
+amazon2cis_rule_1_1_2_6_1: true
+amazon2cis_rule_1_1_2_6_2: true
+amazon2cis_rule_1_1_2_6_3: true
+amazon2cis_rule_1_1_2_6_4: true
+
+# /var/log/audit
+amazon2cis_rule_1_1_2_7_1: true
+amazon2cis_rule_1_1_2_7_2: true
+amazon2cis_rule_1_1_2_7_3: true
+amazon2cis_rule_1_1_2_7_4: true
+
+# Software and Patch management
 amazon2cis_rule_1_2_1: true
 amazon2cis_rule_1_2_2: true
 amazon2cis_rule_1_2_3: true
+amazon2cis_rule_1_2_4: true
+amazon2cis_rule_1_2_5: true
+
+# Secure boot settings
 amazon2cis_rule_1_3_1: true
-amazon2cis_rule_1_3_2: true
+
+# Additional Process Hardening
 amazon2cis_rule_1_4_1: true
 amazon2cis_rule_1_4_2: true
-amazon2cis_rule_1_5_1: true
-amazon2cis_rule_1_5_2: true
-amazon2cis_rule_1_5_3: true
-amazon2cis_rule_1_5_4: true
+amazon2cis_rule_1_4_3: true
+amazon2cis_rule_1_4_4: true
+
+# SElinux
+amazon2cis_rule_1_5_1_1: true
+amazon2cis_rule_1_5_1_2: true
+amazon2cis_rule_1_5_1_3: true
+amazon2cis_rule_1_5_1_4: true
+amazon2cis_rule_1_5_1_5: true
+amazon2cis_rule_1_5_1_6: true
+amazon2cis_rule_1_5_1_7: true
+amazon2cis_rule_1_5_1_8: true
+
+# Command line banner warnings
 amazon2cis_rule_1_6_1_1: true
 amazon2cis_rule_1_6_1_2: true
 amazon2cis_rule_1_6_1_3: true
 amazon2cis_rule_1_6_1_4: true
 amazon2cis_rule_1_6_1_5: true
 amazon2cis_rule_1_6_1_6: true
-amazon2cis_rule_1_6_1_7: true
-amazon2cis_rule_1_6_1_8: true
-amazon2cis_rule_1_7_1: true
-amazon2cis_rule_1_7_2: true
-amazon2cis_rule_1_7_3: true
-amazon2cis_rule_1_7_4: true
-amazon2cis_rule_1_7_5: true
-amazon2cis_rule_1_7_6: true
-amazon2cis_rule_1_8: true
 
 # Section 2 rules
 # Section 2 is Services (inetd Services, Special Purpose Services, and Service Clients)
+
+# Time Service (Chrony)
 amazon2cis_rule_2_1_1: true
 amazon2cis_rule_2_1_2: true
 amazon2cis_rule_2_1_3: true
-amazon2cis_rule_2_1_4: true
-amazon2cis_rule_2_1_5: true
-amazon2cis_rule_2_1_6: true
-amazon2cis_rule_2_1_7: true
-amazon2cis_rule_2_1_8: true
-amazon2cis_rule_2_1_9: true
-amazon2cis_rule_2_1_10: true
-amazon2cis_rule_2_1_11: true
-amazon2cis_rule_2_1_12: true
-amazon2cis_rule_2_1_13: true
-amazon2cis_rule_2_1_14: true
-amazon2cis_rule_2_1_15: true
-amazon2cis_rule_2_1_16: true
-amazon2cis_rule_2_1_17: true
-amazon2cis_rule_2_1_18: true
-amazon2cis_rule_2_1_19: true
-amazon2cis_rule_2_1_1_1: true
-amazon2cis_rule_2_1_1_2: true
-amazon2cis_rule_2_1_1_3: true
+
+# Special purpose services
 amazon2cis_rule_2_2_1: true
 amazon2cis_rule_2_2_2: true
 amazon2cis_rule_2_2_3: true
 amazon2cis_rule_2_2_4: true
 amazon2cis_rule_2_2_5: true
-amazon2cis_rule_2_3: true
+amazon2cis_rule_2_2_6: true
+amazon2cis_rule_2_2_7: true
+amazon2cis_rule_2_2_8: true
+amazon2cis_rule_2_2_9: true
+amazon2cis_rule_2_2_10: true
+amazon2cis_rule_2_2_11: true
+amazon2cis_rule_2_2_12: true
+amazon2cis_rule_2_2_13: true
+amazon2cis_rule_2_2_14: true
+amazon2cis_rule_2_2_15: true
+amazon2cis_rule_2_2_16: true
+amazon2cis_rule_2_2_17: true
+amazon2cis_rule_2_2_18: true
+amazon2cis_rule_2_2_19: true
+amazon2cis_rule_2_2_20: true
+amazon2cis_rule_2_2_21: true
+amazon2cis_rule_2_2_22: true
+
+# Client Services
+amazon2cis_rule_2_3_1: true
+amazon2cis_rule_2_3_2: true
+amazon2cis_rule_2_3_3: true
+amazon2cis_rule_2_3_4: true
+amazon2cis_rule_2_3_5: true
 
 # Section 3 rules
 # Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
@@ -311,33 +350,70 @@ amazon2cis_rule_6_2_15: true
 amazon2cis_rule_6_2_16: true
 amazon2cis_rule_6_2_17: true
 
+
+## Section 1 variables
+# cis 1.4.1
+kernel_sysctl_file: /etc/sysctl.d/60-kernel_sysctl.conf
+
+## Section 2 variables
+# 2.2.x
 # Service configuration booleans set true to keep service
-amazon2cis_allow_autofs: false
+# Service configuration
+# Options are
+# true to leave installed if exists not changes take place
+# false - this removes the package
+# mask - if a dependancy for product so cannot be removed
+# Server Services
+amazon2cis_autofs_services: false
+amazon2cis_autofs_mask: true
 amazon2cis_avahi_server: false
-amazon2cis_cups_server: false
+amazon2cis_avahi_mask: false
 amazon2cis_dhcp_server: false
-amazon2cis_ldap_server: false
-amazon2cis_named_server: false
-amazon2cis_vsftpd_server: false
-amazon2cis_httpd_server: false
-amazon2cis_dovecot_server: false
-amazon2cis_smb_server: false
-amazon2cis_squid_server: false
-amazon2cis_snmp_server: false
-amazon2cis_nis_server: false
+amazon2cis_dhcp_mask: false
+amazon2cis_dns_server: false
+amazon2cis_dns_mask: false
+amazon2cis_dnsmasq_server: false
+amazon2cis_dnsmasq_mask: false
+amazon2cis_samba_server: false
+amazon2cis_samba_mask: false
+amazon2cis_ftp_server: false
+amazon2cis_ftp_mask: false
+amazon2cis_message_server: false  # This is for messaging dovecot and cyrus-imap
+amazon2cis_message_mask: false
+amazon2cis_nfs_server: true
+amazon2cis_nfs_mask: true
+amazon2cis_nis_server: true  # set to mask if nis client required
+amazon2cis_nis_mask: false
+amazon2cis_print_server: false  # replaces cups
+amazon2cis_print_mask: false
+amazon2cis_rpc_server: true
+amazon2cis_rpc_mask: true
+amazon2cis_rsync_server: false
+amazon2cis_rsync_mask: false
+amazon2cis_net_snmp_server: false
+amazon2cis_net_snmp_mask: false
 amazon2cis_telnet_server: false
+amazon2cis_telnet_mask: false
+amazon2cis_tftp_server: false
+amazon2cis_tftp_mask: false
+amazon2cis_squid_server: false
+amazon2cis_squid_mask: false
+amazon2cis_httpd_server: false
+amazon2cis_httpd_mask: false
+amazon2cis_nginx_server: false
+amazon2cis_nginx_mask: false
+amazon2cis_xinetd_server: false
+amazon2cis_xinetd_mask: false
+amazon2cis_xwindow_server: false  # will remove mask not an option
 amazon2cis_is_mail_server: false
-amazon2cis_nfs_rpc_server: false
-amazon2cis_nfs_server: false
-amazon2cis_rpc_server: false
-amazon2cis_rsyncd_server: false
 
 # Service Clients
-amazon2cis_ypbind_required: false
-amazon2cis_rsh_required: false
-amazon2cis_talk_required: false
-amazon2cis_telnet_required: false
+# Client Services
+amazon2cis_ftp_client: false
 amazon2cis_openldap_clients_required: false
+amazon2cis_ypbind_required: false  # Same package as NIS server
+amazon2cis_telnet_required: false
+amazon2cis_tftp_client: false
 
 # System network parameters (host only OR host and router)
 amazon2cis_is_router: false

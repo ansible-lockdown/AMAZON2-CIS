@@ -4,9 +4,33 @@
   ansible.builtin.import_tasks:
       file: cis_1.1.1.x.yml
 
-- name: "SECTION | 1.1 | FileSystem Configuration"
+- name: "SECTION | 1.1.2.1.x | FileSystem Configuration /tmp"
   ansible.builtin.import_tasks:
-      file: cis_1.1.x.yml
+      file: cis_1.1.2.1.x.yml
+
+- name: "SECTION | 1.1.2.2.x | FileSystem Configuration /dev/shm"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.2.x.yml
+
+- name: "SECTION | 1.1.2.3.x | FileSystem Configuration /home"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.3.x.yml
+
+- name: "SECTION | 1.1.2.4.x | FileSystem Configuration /var"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.4.x.yml
+
+- name: "SECTION | 1.1.2.5.x | FileSystem Configuration /var/tmp"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.5.x.yml
+
+- name: "SECTION | 1.1.2.6.x | FileSystem Configuration /var/log"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.6.x.yml
+
+- name: "SECTION | 1.1.2.7.x | FileSystem Configuration /var/log/audit"
+  ansible.builtin.import_tasks:
+      file: cis_1.1.2.7.x.yml
 
 - name: "SECTION | 1.2 | Configure Software Updates"
   ansible.builtin.import_tasks:
@@ -29,11 +53,3 @@
   ansible.builtin.import_tasks:
       file: cis_1.6.x.yml
   when: not amazon2cis_selinux_disable
-
-- name: "SECTION | 1.7 | Command Line Warning Banners"
-  ansible.builtin.import_tasks:
-      file: cis_1.7.x.yml
-
-- name: "SECTION | 1.8 | Ensure updates, patches, and additional security software are installed"
-  ansible.builtin.import_tasks:
-      file: cis_1.8.x.yml
