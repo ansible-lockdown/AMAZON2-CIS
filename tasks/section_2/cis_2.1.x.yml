@@ -1,6 +1,18 @@
 ---
 
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
+  when:
+      - amazon2cis_rule_2_1_1
+      - not amazon2cis_system_is_container
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_2.1.1
+      - ntp
+      - chrony
+      - NIST800-53R5_AU-3
+      - NIST800-53R5_AU-12
   block:
       - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service install"
         ansible.builtin.package:
@@ -30,27 +42,8 @@
         when:
             - "'chrony' in ansible_facts.packages"
             - amazon2cis_time_synchronization == "ntp"
-  when:
-      - amazon2cis_rule_2_1_1
-      - not amazon2cis_system_is_container
-  tags:
-      - level1
-      - automated
-      - patch
-      - rule_2.1.1
-      - ntp
-      - chrony
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
-
 
 - name: "2.1.2 | PATCH | Ensure chrony is configured | modify /etc/chrony.conf"
-  ansible.builtin.template:
-      src: chrony.conf.j2
-      dest: /etc/chrony.conf
-      owner: root
-      group: root
-      mode: '0644'
   when:
       - amazon2cis_rule_2_1_2
       - amazon2cis_time_synchronization == "chrony"
@@ -64,15 +57,14 @@
       - chrony
       - NIST800-53R5_AU-3
       - NIST800-53R5_AU-12
+  ansible.builtin.template:
+      src: chrony.conf.j2
+      dest: /etc/chrony.conf
+      owner: root
+      group: root
+      mode: '0644'
 
 - name: "2.1.3 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd"
-  ansible.builtin.lineinfile:
-      path: /etc/sysconfig/chronyd
-      regexp: OPTIONS=\"(.*)(?!-u chrony)(.*)"
-      line: OPTIONS="\1\2 -u chrony"
-      create: true
-      backrefs: true
-      mode: '0644'
   when:
       - amazon2cis_rule_2_1_3
       - amazon2cis_time_synchronization == "chrony"
@@ -84,3 +76,10 @@
       - rule_2.1.3
       - ntp
       - chrony
+  ansible.builtin.lineinfile:
+      path: /etc/sysconfig/chronyd
+      regexp: OPTIONS=\"(.*)(?!-u chrony)(.*)"
+      line: OPTIONS="\1\2 -u chrony"
+      create: true
+      backrefs: true
+      mode: '0644'

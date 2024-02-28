@@ -1,11 +1,6 @@
 ---
 
 - name: "1.5.1.1 | PATCH | Ensure SELinux is installed"
-  ansible.builtin.package:
-      name: libselinux
-      state: present
-  vars:
-      ansible_python_interpreter: /bin/python
   when:
       - not amazon2cis_selinux_disable
       - amazon2cis_rule_1_5_1_1
@@ -17,16 +12,13 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  vars:
+      ansible_python_interpreter: /bin/python
+  ansible.builtin.package:
+      name: libselinux
+      state: present
 
 - name: "1.5.1.2 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
-  ansible.builtin.replace:
-      path: /etc/default/grub
-      regexp: '{{ item }}'
-      replace: ''
-  loop:
-      - selinux=0
-      - enforcing=0
-  notify: grub2cfg
   when:
       - not amazon2cis_selinux_disable
       - amazon2cis_rule_1_5_1_2
@@ -38,16 +30,18 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  notify: grub2cfg
+  ansible.builtin.replace:
+      path: /etc/default/grub
+      regexp: '{{ item }}'
+      replace: ''
+  loop:
+      - selinux=0
+      - enforcing=0
 
 - name: |
     "1.5.1.3 | PATCH | Ensure SELinux policy is configured
      1.5.1.4 | PATCH | Ensure the SELinux state is enforcing or permissive"
-  ansible.posix.selinux:
-      conf: /etc/selinux/config
-      policy: "{{ amazon2cis_selinux_pol }}"
-      state: "{{ amazon2cis_selinux_state }}"
-  vars:
-      ansible_python_interpreter: "{{ python2_bin }}"
   when:
       - not amazon2cis_selinux_disable
       - amazon2cis_rule_1_5_1_3
@@ -61,14 +55,14 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-- name: "1.5.1.5 | PATCH | Ensure the SELinux state is enforcing"
+  vars:
+      ansible_python_interpreter: "{{ python2_bin }}"
   ansible.posix.selinux:
       conf: /etc/selinux/config
       policy: "{{ amazon2cis_selinux_pol }}"
-      state: enforcing
-  vars:
-      ansible_python_interpreter: "{{ python2_bin }}"
+      state: "{{ amazon2cis_selinux_state }}"
+
+- name: "1.5.1.5 | PATCH | Ensure the SELinux state is enforcing"
   when:
       - not amazon2cis_selinux_disable
       - not amazon2cis_selinux_state == "permissive"
@@ -81,8 +75,26 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_SI-6
+  vars:
+      ansible_python_interpreter: "{{ python2_bin }}"
+  ansible.posix.selinux:
+      conf: /etc/selinux/config
+      policy: "{{ amazon2cis_selinux_pol }}"
+      state: enforcing
 
 - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist"
+  when:
+      - amazon2cis_rule_1_5_1_6
+  tags:
+      - level1
+      - automated
+      - audit
+      - rule_1.5.1.6
+      - selinux
+      - NIST800-53R5_AC-3
+      - NIST800-53R5_MP-2
+  vars:
+      warn_control_id: '1.5.1.6'
   block:
       - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Find the unconfined services"
         ansible.builtin.shell: ps -eZ | grep unconfined_service_t
@@ -98,25 +110,8 @@
       - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Warn Count"
         ansible.builtin.import_tasks:
             file: warning_facts.yml
-  vars:
-      warn_control_id: '1.5.1.6'
-  when:
-      - amazon2cis_rule_1_5_1_6
-  tags:
-      - level1
-      - automated
-      - audit
-      - rule_1.5.1.6
-      - selinux
-      - NIST800-53R5_AC-3
-      - NIST800-53R5_MP-2
 
 - name: "1.5.1.7 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
-  ansible.builtin.package:
-      name: mcstrans
-      state: absent
-  vars:
-      ansible_python_interpreter: /bin/python
   when:
       - amazon2cis_rule_1_5_1_7
   tags:
@@ -126,13 +121,13 @@
       - rule_1.5.1.7
       - mcstrans
       - NIST800-53R5_SI-4
-
-- name: "1.5.1.8 | PATCH | Ensure SETroubleshoot is not installed"
-  ansible.builtin.package:
-      name: setroubleshoot
-      state: absent
   vars:
       ansible_python_interpreter: /bin/python
+  ansible.builtin.package:
+      name: mcstrans
+      state: absent
+
+- name: "1.5.1.8 | PATCH | Ensure SETroubleshoot is not installed"
   when:
       - amazon2cis_rule_1_5_1_8
   tags:
@@ -143,5 +138,8 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-
-
+  vars:
+      ansible_python_interpreter: /bin/python
+  ansible.builtin.package:
+      name: setroubleshoot
+      state: absent

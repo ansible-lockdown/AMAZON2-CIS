@@ -1,14 +1,6 @@
 ---
 
 - name: "1.4.1 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
-  ansible.posix.sysctl:
-      name: kernel.randomize_va_space
-      value: '2'
-      state: present
-      reload: true
-      sysctl_set: true
-      ignoreerrors: true
-      sysctl_file: "{{ kernel_sysctl_file }}"
   when:
       - amazon2cis_rule_1_4_1
   tags:
@@ -17,8 +9,23 @@
       - patch
       - rule_1.4.1
       - NIST800-53R5_CM-6
+  ansible.posix.sysctl:
+      name: kernel.randomize_va_space
+      value: '2'
+      state: present
+      reload: true
+      sysctl_set: true
+      ignoreerrors: true
+      sysctl_file: "{{ kernel_sysctl_file }}"
 
 - name: "1.4.2 | PATCH | Ensure ptrace_scope is restricted"
+  when:
+      - amazon2cis_rule_1_4_2
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.4.2
   ansible.posix.sysctl:
       name: kernel.yama.ptrace_scope
       value: '1'
@@ -27,22 +34,8 @@
       sysctl_set: true
       ignoreerrors: true
       sysctl_file: "{{ kernel_sysctl_file }}"
-  when:
-      - amazon2cis_rule_1_4_2
-  tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.4.2
 
 - name: "1.4.3 | PATCH | Ensure core dump backtraces are disabled"
-  ansible.builtin.lineinfile:
-      dest: /etc/systemd/coredump.conf
-      regexp: ^ProcessSizeMax
-      line: ProcessSizeMax=0
-      create: true
-      mode: '0644'
-  notify: systemd daemon reload
   when:
       - amazon2cis_rule_1_4_3
   tags:
@@ -52,15 +45,15 @@
       - rule_1.4.3
       - coredump
       - NIST800-53R5_CM-6b
-
-- name: "1.4.4 | PATCH | Ensure core dump storage is disabled"
+  notify: systemd daemon reload
   ansible.builtin.lineinfile:
       dest: /etc/systemd/coredump.conf
-      regexp: ^Storage
-      line: Storage=none
+      regexp: ^ProcessSizeMax
+      line: ProcessSizeMax=0
       create: true
       mode: '0644'
-  notify: systemd daemon reload
+
+- name: "1.4.4 | PATCH | Ensure core dump storage is disabled"
   when:
       - amazon2cis_rule_1_4_4
   tags:
@@ -69,5 +62,10 @@
       - patch
       - rule_1.4.4
       - coredump
-
-
+  notify: systemd daemon reload
+  ansible.builtin.lineinfile:
+      dest: /etc/systemd/coredump.conf
+      regexp: ^Storage
+      line: Storage=none
+      create: true
+      mode: '0644'

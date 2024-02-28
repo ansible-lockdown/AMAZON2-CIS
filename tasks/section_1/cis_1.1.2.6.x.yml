@@ -1,17 +1,6 @@
 ---
 
 - name: "1.1.2.6.1 | PATCH | Ensure /var/log is a seperate partition"
-  block:
-      - name: "1.1.2.6.1 | AUDIT | Ensure /var/log is a separate partition | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
-
-      - name: "1.1.2.6.1 | AUDIT | Ensure /var/log is a separate partition | Warn Count"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-  vars:
-      warn_control_id: '1.1.2.6.1'
-      required_mount: '/var/log'
   when:
       - required_mount not in mount_names
       - amazon2cis_rule_1_1_2_6_1
@@ -22,22 +11,23 @@
       - rule_1.1.2.6.1
       - mounts
       - NIST800-53R5_CM-7
+  vars:
+      warn_control_id: '1.1.2.6.1'
+      required_mount: '/var/log'
+
+  block:
+      - name: "1.1.2.6.1 | AUDIT | Ensure /var/log is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.6.1 | AUDIT | Ensure /var/log is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
 
 - name: |
          "1.1.2.6.2 | PATCH | Ensure nodev option set on /var/log partition
           1.1.2.6.3 | PATCH | Ensure nosuid option set on /var/log partition
           1.1.2.6.4 | PATCH | Ensure noexec option set on /var/log partition"
-  ansible.posix.mount:
-      name: /var/log
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amazon2cis_rule_1_1_2_6_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_6_3 %}nosuid,{% endif %}{% if amazon2cis_rule_1_1_2_6_4 %}noexec{% endif %}
-  notify: Remount var_log
-  with_items:
-      - "{{ ansible_mounts }}"
-  loop_control:
-      label: "{{ item.device }}"
   when:
       - item.mount == "/var/log"
       - amazon2cis_tmp_svc
@@ -54,3 +44,14 @@
       - mounts
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.posix.mount:
+      name: /var/log
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,{% if amazon2cis_rule_1_1_2_6_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_6_3 %}nosuid,{% endif %}{% if amazon2cis_rule_1_1_2_6_4 %}noexec{% endif %}
+  notify: Remount var_log
+  with_items:
+      - "{{ ansible_mounts }}"
+  loop_control:
+      label: "{{ item.device }}"

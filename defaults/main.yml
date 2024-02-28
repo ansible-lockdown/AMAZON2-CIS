@@ -93,7 +93,7 @@ amazon2cis_rule_1_1_2_3_1: true
 amazon2cis_rule_1_1_2_3_2: true
 amazon2cis_rule_1_1_2_3_3: true
 
-# /var/
+# /var
 amazon2cis_rule_1_1_2_4_1: true
 amazon2cis_rule_1_1_2_4_2: true
 amazon2cis_rule_1_1_2_4_3: true
@@ -191,10 +191,18 @@ amazon2cis_rule_2_3_5: true
 
 # Section 3 rules
 # Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
+# ipv6, bluettoth and wireless
 amazon2cis_rule_3_1_1: true
 amazon2cis_rule_3_1_2: true
+amazon2cis_rule_3_1_3: true
+
+# network kernel modules
 amazon2cis_rule_3_2_1: true
 amazon2cis_rule_3_2_2: true
+amazon2cis_rule_3_2_3: true
+amazon2cis_rule_3_2_4: true
+
+# network kernel parameters
 amazon2cis_rule_3_3_1: true
 amazon2cis_rule_3_3_2: true
 amazon2cis_rule_3_3_3: true
@@ -204,29 +212,48 @@ amazon2cis_rule_3_3_6: true
 amazon2cis_rule_3_3_7: true
 amazon2cis_rule_3_3_8: true
 amazon2cis_rule_3_3_9: true
-amazon2cis_rule_3_4_1: true
-amazon2cis_rule_3_4_2: true
-amazon2cis_rule_3_5_1_1: true
-amazon2cis_rule_3_5_1_2: true
-amazon2cis_rule_3_5_1_3: true
-amazon2cis_rule_3_5_1_4: true
-amazon2cis_rule_3_5_1_5: true
-amazon2cis_rule_3_5_1_6: true
-amazon2cis_rule_3_5_1_7: true
-amazon2cis_rule_3_5_2_1: true
-amazon2cis_rule_3_5_2_2: true
-amazon2cis_rule_3_5_2_3: true
-amazon2cis_rule_3_5_2_4: true
-amazon2cis_rule_3_5_2_5: true
-amazon2cis_rule_3_5_2_6: true
-amazon2cis_rule_3_5_2_7: true
-amazon2cis_rule_3_5_2_8: true
-amazon2cis_rule_3_5_2_9: true
-amazon2cis_rule_3_5_2_10: true
-amazon2cis_rule_3_5_2_11: true
-amazon2cis_rule_3_5_3_1_1: true
-amazon2cis_rule_3_5_3_1_2: true
-amazon2cis_rule_3_5_3_1_3: true
+amazon2cis_rule_3_3_10: true
+amazon2cis_rule_3_3_11: true
+
+# Configure firewall utility
+amazon2cis_rule_3_4_1_1: true
+amazon2cis_rule_3_4_1_2: true
+
+# firewalld
+amazon2cis_rule_3_4_2_1: true
+amazon2cis_rule_3_4_2_2: true
+amazon2cis_rule_3_4_2_3: true
+amazon2cis_rule_3_4_2_4: true
+
+# nftables
+amazon2cis_rule_3_4_3_1: true
+amazon2cis_rule_3_4_3_2: true
+amazon2cis_rule_3_4_3_3: true
+amazon2cis_rule_3_4_3_4: true
+amazon2cis_rule_3_4_3_5: true
+amazon2cis_rule_3_4_3_6: true
+amazon2cis_rule_3_4_3_7: true
+amazon2cis_rule_3_4_3_8: true
+amazon2cis_rule_3_4_3_9: true
+
+# iptables
+amazon2cis_rule_3_4_4_1_1: true
+
+# ip4tables
+amazon2cis_rule_3_4_4_2_1: true
+amazon2cis_rule_3_4_4_2_2: true
+amazon2cis_rule_3_4_4_2_3: true
+amazon2cis_rule_3_4_4_2_4: true
+amazon2cis_rule_3_4_4_2_5: true
+amazon2cis_rule_3_4_4_2_6: true
+
+# ip6tables
+amazon2cis_rule_3_4_4_3_1: true
+amazon2cis_rule_3_4_4_3_2: true
+amazon2cis_rule_3_4_4_3_3: true
+amazon2cis_rule_3_4_4_3_4: true
+amazon2cis_rule_3_4_4_3_5: true
+amazon2cis_rule_3_4_4_3_6: true
 
 # Section 4 rules
 # Section 4 is Logging and Auditing (Configure System Accounting (auditd) and Configure Logging)
@@ -350,12 +377,20 @@ amazon2cis_rule_6_2_15: true
 amazon2cis_rule_6_2_16: true
 amazon2cis_rule_6_2_17: true
 
-
 ## Section 1 variables
 # cis 1.4.1
 kernel_sysctl_file: /etc/sysctl.d/60-kernel_sysctl.conf
 
 ## Section 2 variables
+amazon2cis_time_synchronization_servers:
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+    - 2.pool.ntp.org
+    - 3.pool.ntp.org
+
+amazon2cis_chrony_server_options: "minpoll 8"
+amazon2cis_ntp_server_options: "iburst"
+
 # 2.2.x
 # Service configuration booleans set true to keep service
 # Service configuration
@@ -415,33 +450,39 @@ amazon2cis_ypbind_required: false  # Same package as NIS server
 amazon2cis_telnet_required: false
 amazon2cis_tftp_client: false
 
-# System network parameters (host only OR host and router)
-amazon2cis_is_router: false
-
+## Section 3 Variables
+# 3.1.x
 # IPv6 required
 amazon2cis_ipv6_required: false
+amazon2cis_ipv6_sysctl_file: /etc/sysctl.d/60-ipv6.conf
+# Setting this will stop ipv6 listening on ::1 and will remove from /etc/hosts
+amazon2cis_ipv6_disable_localhost: false
 
-# Whether or not to run tasks related to auditing/patching the desktop environment
-amazon2cis_gui: false
+# service = true removes package - mask = true will just mask package
+amazon2cis_bluetooth_service: true
+amazon2cis_bluetooth_mask: false
 
-# Set to 'true' if X Windows is needed in your environment
-amazon2cis_xwindows_required: false
+# 3.3.x
+# System network parameters (host only OR host and router)
+amazon2cis_is_router: false
+amazon2cis_ipv4_sysctl_file: /etc/sysctl.d/60-ipv4.conf
 
-# Time Synchronization - Either chrony or ntp
-amazon2cis_time_synchronization: chrony
+# Firewall Service - either firewalld, iptables or nftables
+# multiple options for removal or masking of services
+# The firewall to be configured
+amazon2cis_system_firewall: firewalld
+# Set the following to remove or mask - note will not effect system_firewall # set to none
+amazon2cis_nftables: mask
+amazon2cis_iptables: mask
+amazon2cis_firewalld: none
 
-amazon2cis_time_synchronization_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org
+# Allow automated creation of nftables table
+amazon2cis_nft_tables_autonewtable: false
+# give that table a name
+amazon2cis_nft_tables_tablename: cis
 
-amazon2cis_chrony_server_options: "minpoll 8"
-amazon2cis_ntp_server_options: "iburst"
-
-# Firewall Service - either firewalld or iptables
-amazon2cis_firewall: firewalld
-amazon2cis_default_zone: public
+# Allow creation of chains
+amazon2cis_nft_tables_autochaincreate: false
 
 # AIDE
 amazon2cis_config_aide: true

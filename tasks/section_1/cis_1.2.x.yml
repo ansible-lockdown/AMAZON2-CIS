@@ -1,9 +1,6 @@
 ---
 
 - name: "1.2.1 | PATCH | Ensure GPG keys are configured"
-  ansible.builtin.command: gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-{{ ansible_distribution_major_version }}
-  changed_when: "'created' in amazon2cis_1_2_1_status.stderr"
-  register: amazon2cis_1_2_1_status
   when:
       - amazon2cis_rule_1_2_1
   tags:
@@ -13,8 +10,20 @@
       - rule_1.2.1
       - gpg
       - NIST800-53R5_SI-2
+  ansible.builtin.command: gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-{{ ansible_distribution_major_version }}
+  changed_when: "'created' in amazon2cis_1_2_1_status.stderr"
+  register: amazon2cis_1_2_1_status
 
 - name: "1.2.2 | PATCH | Ensure gpgcheck is globally activated"
+  when:
+      - amazon2cis_rule_1_2_2
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.2.2
+      - gpg
+      - NIST800-53R5_SI-2
   block:
       - name: "1.2.2 | PATCH | Ensure gpgcheck is globally activated | find repo files"
         ansible.builtin.find:
@@ -31,21 +40,8 @@
             - "{{ amazon2_1_2_2_yum_repos.files }}"
         loop_control:
             label: "{{ item.path }}"
-  when:
-      - amazon2cis_rule_1_2_2
-  tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.2.2
-      - gpg
-      - NIST800-53R5_SI-2
 
 - name: "1.2.3 | PATCH | Ensure repo_gpgcheck is globally activated"
-  ansible.builtin.replace:
-      path: /etc/yum.conf
-      regexp: ^repo_gpgcheck\s*=\s*0
-      replace: "repo_gpgcheck=1"
   when:
       - amazon2cis_rule_1_2_3
   tags:
@@ -55,8 +51,22 @@
       - rule_1.2.3
       - gpg
       - NIST800-53R5_SI-2
+  ansible.builtin.replace:
+      path: /etc/yum.conf
+      regexp: ^repo_gpgcheck\s*=\s*0
+      replace: "repo_gpgcheck=1"
 
 - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured"
+  when:
+      - amazon2cis_rule_1_2_4
+  tags:
+      - level1
+      - automated
+      - patch
+      - rule_1.2.4
+      - NIST800-53R5_SI-2
+  vars:
+      warn_control_id: '1.2.4'
   block:
       - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"
         ansible.builtin.command: yum repolist
@@ -72,23 +82,8 @@
       - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Warn Count"
         ansible.builtin.import_tasks:
             file: warning_facts.yml
-  vars:
-      warn_control_id: '1.2.4'
-  when:
-      - amazon2cis_rule_1_2_4
-  tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.2.4
-      - NIST800-53R5_SI-2
 
 - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed"
-  ansible.builtin.package:
-      name: "*"
-      state: latest
-  vars:
-      ansible_python_interpreter: /bin/python
   when:
       - amazon2cis_rule_1_2_5
   tags:
@@ -97,3 +92,8 @@
       - patch
       - rule_1.2.5
       - NIST800-53R5_SI-2
+  vars:
+      ansible_python_interpreter: /bin/python
+  ansible.builtin.package:
+      name: "*"
+      state: latest

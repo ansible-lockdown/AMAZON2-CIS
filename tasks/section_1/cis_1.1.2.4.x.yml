@@ -1,17 +1,6 @@
 ---
 
 - name: "1.1.2.4.1 | PATCH | Ensure /var is a seperate partition"
-  block:
-      - name: "1.1.2.4.1 | AUDIT | Ensure /var is a separate partition | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
-
-      - name: "1.1.2.4.1 | AUDIT | Ensure /var is a separate partition | Warn Count"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
-  vars:
-      warn_control_id: '1.1.2.4.1'
-      required_mount: '/var'
   when:
       - required_mount not in mount_names
       - amazon2cis_rule_1_1_2_4_1
@@ -22,21 +11,21 @@
       - rule_1.1.2.4.1
       - mounts
       - NIST800-53R5_CM-7
+  vars:
+      warn_control_id: '1.1.2.4.1'
+      required_mount: '/var'
+  block:
+      - name: "1.1.2.4.1 | AUDIT | Ensure /var is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.4.1 | AUDIT | Ensure /var is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
 
 - name: |
          "1.1.2.4.2 | PATCH | Ensure nodev option set on /var partition
           1.1.2.4.3 | PATCH | Ensure nosuid option set on /var partition
-  ansible.posix.mount:
-      name: /var
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amazon2cis_rule_1_1_2_4_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_4_3 %}nosuid{% endif %}
-  notify: Remount var
-  with_items:
-      - "{{ ansible_mounts }}"
-  loop_control:
-      label: "{{ item.device }}"
   when:
       - item.mount == "/var"
       - amazon2cis_tmp_svc
@@ -51,3 +40,14 @@
       - mounts
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
+  ansible.posix.mount:
+      name: /var
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,{% if amazon2cis_rule_1_1_2_4_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_4_3 %}nosuid{% endif %}
+  notify: Remount var
+  with_items:
+      - "{{ ansible_mounts }}"
+  loop_control:
+      label: "{{ item.device }}"

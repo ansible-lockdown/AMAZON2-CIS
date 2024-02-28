@@ -1,35 +1,48 @@
 ---
 
-- name: "SECTION | 3.1 | Disable unused network protocols and devices"
+- name: "SECTION | 3.1.x | Disable unused network protocols and devices"
   ansible.builtin.import_tasks:
       file: cis_3.1.x.yml
 
-- name: "SECTION | 3.2 | Network Parameters (Host Only)"
+- name: "SECTION | 3.2 | Network Kernel modules (Host Only)"
   ansible.builtin.import_tasks:
       file: cis_3.2.x.yml
 
-- name: "SECTION | 3.3 | Network Parameters (Host and Router)"
+- name: "SECTION | 3.3 | Network Kernel Parameters (Host and Router)"
   ansible.builtin.import_tasks:
       file: cis_3.3.x.yml
 
-- name: "SECTION | 3.4 | Uncommon Network Protocols"
+- name: "SECTION | 3.4.1 | Configure host based firewall"
   ansible.builtin.import_tasks:
-      file: cis_3.4.x.yml
+      file: cis_3.4.1.x.yml
 
-- name: "SECTION | 3.5.1 | Configure firewalld"
-  ansible.builtin.import_tasks:
-      file: cis_3.5.1.x.yml
+- name: "SECTION | 3.4.2 | Configure firewalld"
   when:
   - amazon2cis_firewall == "firewalld"
-
-- name: "SECTION | 3.5.2 | Configure nftables"
   ansible.builtin.import_tasks:
-      file: cis_3.5.2.x.yml
+      file: cis_3.4.2.x.yml
+
+- name: "SECTION | 3.4.3 | Configure nftables"
   when:
   - amazon2cis_firewall == "nftables"
-
-- name: "SECTION | 3.5.3.1.x | Configure iptables"
   ansible.builtin.import_tasks:
-      file: cis_3.5.3.1.x.yml
+      file: cis_3.4.3.x.yml
+
+- name: "SECTION | 3.4.4.1.x | Configure iptables software"
   when:
   - amazon2cis_firewall == "iptables"
+  ansible.builtin.import_tasks:
+      file: cis_3.4.4.1.x.yml
+
+- name: "SECTION | 3.4.4.2.x | Configure iptables"
+  when:
+  - amazon2cis_firewall == "iptables"
+  ansible.builtin.import_tasks:
+      file: cis_3.4.4.2.x.yml
+
+- name: "SECTION | 3.4.4.3.x | Configure ip6tables"
+  when:
+  - amazon2cis_firewall == "iptables"
+  - amazon2cis_ipv6_required
+  ansible.builtin.import_tasks:
+      file: cis_3.4.4.3.x.yml
