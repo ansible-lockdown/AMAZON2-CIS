@@ -42,11 +42,11 @@
             new_control: required
             new_module_path: pam_faillock.so
             module_arguments: 'preauth
-                silent
-                audit
-                {% if amazon2cis_rule_4_4_2_1_2 %}deny={{ amazon2cis_pam_faillock[deny] }}{% endif %}
-                {% if amazon2cis_rule_4_4_2_1_3 %}unlock_time={{ amazon2cis_pam_faillock[unlock_time] }}{% endif %}
-                {% if amazon2cis_rule_4_4_2_1_4 %}even_deny_root{% endif %}'
+               silent
+               audit
+               {% if amazon2cis_rule_4_4_2_1_2 %}deny="{{ amazon2cis_pam_faillock.deny }}"{% endif %}
+               {% if amazon2cis_rule_4_4_2_1_3 %}unlock_time="{{ amazon2cis_pam_faillock.unlock_time }}"{% endif %}
+               {% if amazon2cis_rule_4_4_2_1_4 %}even_deny_root{% endif %}'
         loop:
             - system-auth
             - password-auth
@@ -55,21 +55,21 @@
           "4.4.2.1.1 | PATCH | Ensure pam_faillock module is enabled
            4.4.2.1.2 | PATCH | Ensure password failed attempts lockout is configured
            4.4.2.1.3 | PATCH | Ensure password unlock time is configured
-           4.4.2.1.4 | PATCH | Ensure password failed attempts lockout includes root account | auth_succeed"
+           4.4.2.1.4 | PATCH | Ensure password failed attempts lockout includes root account | auth_default"
         community.general.pamd:
             name: "{{ item }}"
             type: auth
-            control: requisite
-            module_path: pam_succeed_if.so
-            state: before
+            control: sufficient
+            module_path: pam_unix.so
+            state: after
             new_type: auth
-            new_control: [default=die]
+            new_control: '[default=die]'
             new_module_path: pam_faillock.so
             module_arguments: 'authfail
-                audit
-                {% if amazon2cis_rule_4_4_2_1_2 %}deny={{ amazon2cis_pam_faillock[deny] }}{% endif %}
-                {% if amazon2cis_rule_4_4_2_1_3 %}unlock_time={{ amazon2cis_pam_faillock[unlock_time] }}{% endif %}
-                {% if amazon2cis_rule_4_4_2_1_4 %}even_deny_root{% endif %}'
+               audit
+               {% if amazon2cis_rule_4_4_2_1_2 %}deny={{ amazon2cis_pam_faillock.deny }}{% endif %}
+               {% if amazon2cis_rule_4_4_2_1_3 %}unlock_time={{ amazon2cis_pam_faillock.unlock_time }}{% endif %}
+               {% if amazon2cis_rule_4_4_2_1_4 %}even_deny_root{% endif %}'
         loop:
             - system-auth
             - password-auth
@@ -111,34 +111,19 @@
             control: required
             module_path: pam_faillock.so
             state: args_present
-            module_arguments: 'deny={{ amazon2cis_pam_faillock[deny] }}'
+            module_arguments: 'deny={{ amazon2cis_pam_faillock.deny }}'
         loop:
             - system-auth
             - password-auth
 
-      - name: "4.4.2.1.2 | PATCH | Ensure password failed attempts lockout is configured | auth_succeed"
+      - name: "4.4.2.1.2 | PATCH | Ensure password failed attempts lockout is configured | auth_default"
         community.general.pamd:
             name: "{{ item }}"
             type: auth
-            control: required
+            control: '[default=die]'
             module_path: pam_faillock.so
             state: args_present
-            module_arguments: 'deny={{ amazon2cis_pam_faillock[deny] }}'
-        loop:
-            - system-auth
-            - password-auth
-
-      - name: "4.4.2.1.2 | PATCH | Ensure password failed attempts lockout is configured | add to account section"
-        community.general.pamd:
-            name: "{{ item }}"
-            type: account
-            control: required
-            module_path: pam_unix.so
-            state: before
-            new_type: account
-            new_control: required
-            new_module_path: pam_faillock.so
-            module_arguments: ''
+            module_arguments: 'deny={{ amazon2cis_pam_faillock.deny }}'
         loop:
             - system-auth
             - password-auth
@@ -161,34 +146,19 @@
             control: required
             module_path: pam_faillock.so
             state: args_present
-            module_arguments: 'unlock_time={{ amazon2cis_pam_faillock[unlock_time] }}'
+            module_arguments: 'unlock_time={{ amazon2cis_pam_faillock.unlock_time }}'
         loop:
             - system-auth
             - password-auth
 
-      - name: "4.4.2.1.3 | PATCH | Ensure password unlock time is configured | auth_succeed"
+      - name: "4.4.2.1.3 | PATCH | Ensure password unlock time is configured | auth_default"
         community.general.pamd:
             name: "{{ item }}"
             type: auth
-            control: required
+            control: '[default=die]'
             module_path: pam_faillock.so
             state: args_present
-            module_arguments: 'unlock_time={{ amazon2cis_pam_faillock[unlock_time] }}'
-        loop:
-            - system-auth
-            - password-auth
-
-      - name: "4.4.2.1.3 | PATCH | Ensure password unlock time is configured | add to account section"
-        community.general.pamd:
-            name: "{{ item }}"
-            type: account
-            control: required
-            module_path: pam_unix.so
-            state: before
-            new_type: account
-            new_control: required
-            new_module_path: pam_faillock.so
-            module_arguments: ''
+            module_arguments: 'unlock_time={{ amazon2cis_pam_faillock.unlock_time }}'
         loop:
             - system-auth
             - password-auth
@@ -216,29 +186,14 @@
             - system-auth
             - password-auth
 
-      - name: "4.4.2.1.4 | PATCH | Ensure password failed attempts lockout includes root account | auth_succeed"
+      - name: "4.4.2.1.4 | PATCH | Ensure password failed attempts lockout includes root account | auth_default"
         community.general.pamd:
             name: "{{ item }}"
             type: auth
-            control: required
+            control: '[default=die]'
             module_path: pam_faillock.so
             state: args_present
             module_arguments: 'even_deny_root'
-        loop:
-            - system-auth
-            - password-auth
-
-      - name: "4.4.2.1.4 | PATCH | Ensure password failed attempts lockout includes root account | add to account section"
-        community.general.pamd:
-            name: "{{ item }}"
-            type: account
-            control: required
-            module_path: pam_unix.so
-            state: before
-            new_type: account
-            new_control: required
-            new_module_path: pam_faillock.so
-            module_arguments: ''
         loop:
             - system-auth
             - password-auth
