@@ -19,34 +19,11 @@ python2_bin: /bin/python2.7
 ## Benchmark name used by audting control role
 # The audit variable found at the base
 benchmark: AMAZON2-CIS
-benchmark_version: v2.0.0
-
-# If set true uses the tmp.mount service else using fstab configuration
-amazon2cis_tmp_svc: true
+benchmark_version: v3.0.0
 
 # Ability to stop reboot from occuring until convenient
 # set to true if ok to reboot
 skip_reboot: false
-
-### Goss Audit run settings
-# Goss audit configuration settings at bottom of file
-
-setup_audit: false
-# How to retrive goss
-# Options are copy or download - detailed settings at the bottom of this file
-# you will need to access to either github or the file already dowmloaded
-get_goss_file: download
-
-# how to get audit files onto host options
-# options are git/copy/get_url
-audit_content: git
-
-# Timeout for those cmds that take longer to run where timeout set
-audit_cmd_timeout: 30000
-
-# enable audits to run - this  runs the audit and get the latest content
-run_audit: false
-### End Goss enablements ####
 
 # Change to false if using EFI boot changes 1.1.1.4 to stop vfat
 amazon2cis_legacy_boot: true
@@ -61,6 +38,38 @@ amazon2cis_selinux_pol: targeted
 amazon2cis_skip_for_travis: false
 amazon2cis_system_is_container: false
 system_is_ec2: true
+
+##########################################
+### Goss is required on the remote host ###
+## Refer to vars/auditd.yml for any other settings ##
+
+# Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
+setup_audit: false
+
+# enable audits to run - this runs the audit and get the latest content
+run_audit: false
+
+# Only run Audit do not remediate
+audit_only: false
+# As part of audit_only
+# This will enable files to be copied back to control node
+fetch_audit_files: false
+# Path to copy the files to will create dir structure
+audit_capture_files_dir: /some/location to copy to on control node
+
+# How to retrieve audit binary
+# Options are copy or download - detailed settings at the bottom of this file
+# you will need to access to either github or the file already dowmloaded
+get_audit_binary_method: download
+
+# how to get audit files onto host options
+# options are git/copy/get_url other e.g. if you wish to run from already downloaded conf
+audit_content: git
+
+# Run heavy tests - some tests can have more impact on a system enabling these can have greater impact on a system
+audit_run_heavy_tests: true
+
+### End Goss enablements ####
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -103,13 +112,13 @@ amazon2cis_rule_1_1_2_4_1: true
 amazon2cis_rule_1_1_2_4_2: true
 amazon2cis_rule_1_1_2_4_3: true
 
-# /var/tmp
+# /var/tmp
 amazon2cis_rule_1_1_2_5_1: true
 amazon2cis_rule_1_1_2_5_2: true
 amazon2cis_rule_1_1_2_5_3: true
 amazon2cis_rule_1_1_2_5_4: true
 
-# /var/log
+# /var/log
 amazon2cis_rule_1_1_2_6_1: true
 amazon2cis_rule_1_1_2_6_2: true
 amazon2cis_rule_1_1_2_6_3: true
@@ -457,6 +466,10 @@ amazon2cis_rule_6_2_16: true
 amazon2cis_rule_6_2_17: true
 
 ## Section 1 variables
+
+# If set true uses the tmp.mount service else using fstab configuration
+amazon2cis_tmp_svc: true
+
 # cis 1.4.1
 kernel_sysctl_file: /etc/sysctl.d/60-kernel_sysctl.conf
 
@@ -594,7 +607,6 @@ amazon2cis_sshd:
 amazon2cis_ssh_maxsessions: 10
 amazon2cis_ssh_maxauthtries: 4
 
-
 ## Sudo
 amazon2cis_sudolog_location: "/var/log/sudo.log"
 # pam variables
@@ -611,7 +623,8 @@ amazon2cis_inactivelock:
 amazon2cis_pwquality_difok: 2  # 2 or more required
 amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
 amazon2cis_pwquality_maxsequence: 3  # 3 or less not 0 required
-# Seeting minclass true means set via min class else will use the pwquality list below
+
+# Setting minclass true - mincalls used instead of seperated values
 amazon2cis_pwquality_minclass: true
 amazon2cis_pwquality_minclass_value: '4'  # Not less than 4
 amazon2cis_pwquality:
@@ -651,7 +664,6 @@ amazon2cis_pass:
     max_days: 365
     min_days: 1
     warn_age: 7
-
 
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)
@@ -739,7 +751,6 @@ amazon2cis_sgid_adjust: false
 
 # 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true
-
 
 ### Goss binary settings ###
 goss_version:
