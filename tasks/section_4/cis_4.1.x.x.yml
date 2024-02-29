@@ -162,7 +162,6 @@
             group: root
             mode: '0600'
 
-
 - name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users"
   when:
       - amazon2cis_rule_4_1_2_1

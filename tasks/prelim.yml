@@ -54,7 +54,6 @@
             amazon2cis_uid_min: "{{ amazon2cis_min_uid.stdout | string }}"
             amazon2cis_uid_max: "{{ amazon2cis_max_uid.stdout | string }}"
 
-
 - name: "PRELIM | Check whether machine is UEFI-based"
   ansible.builtin.stat:
       path: /sys/firmware/efi

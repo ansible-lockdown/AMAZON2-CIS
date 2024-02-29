@@ -173,4 +173,3 @@
       - always
   ansible.builtin.debug:
       msg: "You have {{ warn_count }} warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"
-
