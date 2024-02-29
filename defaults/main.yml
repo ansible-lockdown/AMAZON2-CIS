@@ -51,9 +51,11 @@ run_audit: false
 # Change to false if using EFI boot changes 1.1.1.4 to stop vfat
 amazon2cis_legacy_boot: true
 
+# SELinux policy
 # Enable/Disable SELinux
 amazon2cis_selinux_disable: false
 amazon2cis_selinux_state: enforcing
+amazon2cis_selinux_pol: targeted
 
 # Misc. environment variables
 amazon2cis_skip_for_travis: false
@@ -64,7 +66,10 @@ system_is_ec2: true
 # the CIS benchmark documents.
 # PLEASE NOTE: These work in coordination with the section # group variables and tags.
 # You must enable an entire section in order for the variables below to take effect.
-# Section 1 rules
+
+##
+## Section 1 rules
+##
 # Section 1 is Initial Setup (Filesystem Configuration, Configure Software Updates, Configure Sudo, Filesystem Integrity Checking, Secure Boot Settings, Additional Process Hardening, Mandatory Access Control, and Warning Banners)
 # Configure Filesystem Kernel Modules
 amazon2cis_rule_1_1_1_1: true
@@ -150,7 +155,9 @@ amazon2cis_rule_1_6_1_4: true
 amazon2cis_rule_1_6_1_5: true
 amazon2cis_rule_1_6_1_6: true
 
-# Section 2 rules
+##
+## Section 2 rules
+##
 # Section 2 is Services (inetd Services, Special Purpose Services, and Service Clients)
 
 # Time Service (Chrony)
@@ -189,7 +196,9 @@ amazon2cis_rule_2_3_3: true
 amazon2cis_rule_2_3_4: true
 amazon2cis_rule_2_3_5: true
 
-# Section 3 rules
+##
+## Section 3 rules
+##
 # Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
 # ipv6, bluettoth and wireless
 amazon2cis_rule_3_1_1: true
@@ -255,93 +264,163 @@ amazon2cis_rule_3_4_4_3_4: true
 amazon2cis_rule_3_4_4_3_5: true
 amazon2cis_rule_3_4_4_3_6: true
 
-# Section 4 rules
-# Section 4 is Logging and Auditing (Configure System Accounting (auditd) and Configure Logging)
+##
+## Section 4 rules
+##
+# Section 4 is Job Schedulers, SSH and privilege PAM
+# Job Schedulers
+## Cron
 amazon2cis_rule_4_1_1_1: true
 amazon2cis_rule_4_1_1_2: true
 amazon2cis_rule_4_1_1_3: true
+amazon2cis_rule_4_1_1_4: true
+amazon2cis_rule_4_1_1_5: true
+amazon2cis_rule_4_1_1_6: true
+amazon2cis_rule_4_1_1_7: true
+amazon2cis_rule_4_1_1_8: true
+# At
 amazon2cis_rule_4_1_2_1: true
-amazon2cis_rule_4_1_2_2: true
-amazon2cis_rule_4_1_2_3: true
-amazon2cis_rule_4_1_2_4: true
-amazon2cis_rule_4_1_3: true
-amazon2cis_rule_4_1_4: true
-amazon2cis_rule_4_1_5: true
-amazon2cis_rule_4_1_6: true
-amazon2cis_rule_4_1_7: true
-amazon2cis_rule_4_1_8: true
-amazon2cis_rule_4_1_9: true
-amazon2cis_rule_4_1_10: true
-amazon2cis_rule_4_1_11: true
-amazon2cis_rule_4_1_12: true
-amazon2cis_rule_4_1_13: true
-amazon2cis_rule_4_1_14: true
-amazon2cis_rule_4_1_15: true
-amazon2cis_rule_4_1_16: true
-amazon2cis_rule_4_1_17: true
-amazon2cis_rule_4_2_1_1: true
-amazon2cis_rule_4_2_1_2: true
-amazon2cis_rule_4_2_1_3: true
-amazon2cis_rule_4_2_1_4: true
-amazon2cis_rule_4_2_1_5: true
-amazon2cis_rule_4_2_1_6: true
-amazon2cis_rule_4_2_2_1: true
-amazon2cis_rule_4_2_2_2: true
-amazon2cis_rule_4_2_2_3: true
+
+# SSH Server
+amazon2cis_rule_4_2_1: true
+amazon2cis_rule_4_2_2: true
 amazon2cis_rule_4_2_3: true
 amazon2cis_rule_4_2_4: true
+amazon2cis_rule_4_2_5: true
+amazon2cis_rule_4_2_6: true
+amazon2cis_rule_4_2_7: true
+amazon2cis_rule_4_2_8: true
+amazon2cis_rule_4_2_9: true
+amazon2cis_rule_4_2_10: true
+amazon2cis_rule_4_2_11: true
+amazon2cis_rule_4_2_12: true
+amazon2cis_rule_4_2_13: true
+amazon2cis_rule_4_2_14: true
+amazon2cis_rule_4_2_15: true
+amazon2cis_rule_4_2_16: true
+amazon2cis_rule_4_2_17: true
+amazon2cis_rule_4_2_18: true
+amazon2cis_rule_4_2_19: true
+amazon2cis_rule_4_2_20: true
+amazon2cis_rule_4_2_21: true
+amazon2cis_rule_4_2_22: true
 
-# Section 5 rules
-# Section 5 is Access, Authentication, and Authorization (Configure time-based job schedulers, Configure SSH Server, Configure PAM, and User Accounts and Environment)
-amazon2cis_rule_5_1_1: true
-amazon2cis_rule_5_1_2: true
+# Privilege escalation
+amazon2cis_rule_4_3_1: true
+amazon2cis_rule_4_3_2: true
+amazon2cis_rule_4_3_3: true
+amazon2cis_rule_4_3_4: true
+amazon2cis_rule_4_3_5: true
+amazon2cis_rule_4_3_6: true
+amazon2cis_rule_4_3_7: true
+
+## Configure Pluggable Authentication
+# software packages
+amazon2cis_rule_4_4_1_1: true
+amazon2cis_rule_4_4_1_2: true
+
+# pam_faillock
+amazon2cis_rule_4_4_2_1_1: true
+amazon2cis_rule_4_4_2_1_2: true
+amazon2cis_rule_4_2_2_1_3: true
+amazon2cis_rule_4_2_2_1_4: true
+
+# pam_pwquality
+amazon2cis_rule_4_4_2_2_1: true
+amazon2cis_rule_4_4_2_2_2: true
+amazon2cis_rule_4_2_2_2_3: true
+amazon2cis_rule_4_2_2_2_4: true
+amazon2cis_rule_4_4_2_2_5: true
+amazon2cis_rule_4_2_2_2_6: true
+amazon2cis_rule_4_2_2_2_7: true
+
+# pam pwhistory
+amazon2cis_rule_4_4_2_3_1: true
+amazon2cis_rule_4_4_2_3_2: true
+amazon2cis_rule_4_2_2_3_3: true
+amazon2cis_rule_4_2_2_3_4: true
+
+# pam pam_unix
+amazon2cis_rule_4_4_2_4_1: true
+amazon2cis_rule_4_4_2_4_2: true
+amazon2cis_rule_4_2_2_4_3: true
+amazon2cis_rule_4_2_2_4_4: true
+
+# shadow password
+amazon2cis_rule_4_5_1_1: true
+amazon2cis_rule_4_5_1_2: true
+amazon2cis_rule_4_5_1_3: true
+amazon2cis_rule_4_5_1_4: true
+
+# root and system accts
+amazon2cis_rule_4_5_2_1: true
+amazon2cis_rule_4_5_2_2: true
+amazon2cis_rule_4_5_2_3: true
+amazon2cis_rule_4_5_2_4: true
+
+# user default envs
+amazon2cis_rule_4_5_3_1: true
+amazon2cis_rule_4_5_3_2: true
+amazon2cis_rule_4_5_3_3: true
+
+##
+## Section 5 rules
+##
+
+# Rsyslog
+amazon2cis_rule_5_1_1_1: true
+amazon2cis_rule_5_1_1_2: true
+amazon2cis_rule_5_1_1_3: true
+amazon2cis_rule_5_1_1_4: true
+amazon2cis_rule_5_1_1_5: true
+amazon2cis_rule_5_1_1_6: true
+amazon2cis_rule_5_1_1_7: true
+
+# Journald
+amazon2cis_rule_5_1_2_1_1: true
+amazon2cis_rule_5_1_2_1_2: true
+amazon2cis_rule_5_1_2_1_3: true
+amazon2cis_rule_5_1_2_1_4: true
+amazon2cis_rule_5_1_2_2: true
+amazon2cis_rule_5_1_2_3: true
+amazon2cis_rule_5_1_2_4: true
+amazon2cis_rule_5_1_2_5: true
+amazon2cis_rule_5_1_2_6: true
 amazon2cis_rule_5_1_3: true
 amazon2cis_rule_5_1_4: true
-amazon2cis_rule_5_1_5: true
-amazon2cis_rule_5_1_6: true
-amazon2cis_rule_5_1_7: true
-amazon2cis_rule_5_1_8: true
-amazon2cis_rule_5_1_9: true
-amazon2cis_rule_5_2_1: true
-amazon2cis_rule_5_2_2: true
-amazon2cis_rule_5_2_3: true
-amazon2cis_rule_5_3_1: true
-amazon2cis_rule_5_3_2: true
-amazon2cis_rule_5_3_3: true
-amazon2cis_rule_5_3_4: true
-amazon2cis_rule_5_3_5: true
-amazon2cis_rule_5_3_6: true
-amazon2cis_rule_5_3_7: true
-amazon2cis_rule_5_3_8: true
-amazon2cis_rule_5_3_9: true
-amazon2cis_rule_5_3_10: true
-amazon2cis_rule_5_3_12: true
-amazon2cis_rule_5_3_11: true
-amazon2cis_rule_5_3_13: true
-amazon2cis_rule_5_3_14: true
-amazon2cis_rule_5_3_15: true
-amazon2cis_rule_5_3_16: true
-amazon2cis_rule_5_3_17: true
-amazon2cis_rule_5_3_18: true
-amazon2cis_rule_5_3_19: true
-amazon2cis_rule_5_3_20: true
-amazon2cis_rule_5_3_21: true
-amazon2cis_rule_5_3_22: true
-amazon2cis_rule_5_4_1: true
-amazon2cis_rule_5_4_2: true
-amazon2cis_rule_5_4_3: true
-amazon2cis_rule_5_4_4: true
-amazon2cis_rule_5_5_1_1: true
-amazon2cis_rule_5_5_1_2: true
-amazon2cis_rule_5_5_1_3: true
-amazon2cis_rule_5_5_1_4: true
-amazon2cis_rule_5_5_1_5: true
-amazon2cis_rule_5_5_2: true
-amazon2cis_rule_5_5_3: true
-amazon2cis_rule_5_5_4: true
-amazon2cis_rule_5_5_5: true
-amazon2cis_rule_5_6: true
-amazon2cis_rule_5_7: true
+
+# Auditd
+amazon2cis_rule_5_2_1_1: true
+amazon2cis_rule_5_2_1_2: true
+amazon2cis_rule_5_2_1_3: true
+amazon2cis_rule_5_2_1_4: true
+amazon2cis_rule_5_2_2_1: true
+amazon2cis_rule_5_2_2_2: true
+amazon2cis_rule_5_2_2_3: true
+amazon2cis_rule_5_2_2_4: true
+
+# auditd rules
+amazon2cis_rule_5_2_3_1: true
+amazon2cis_rule_5_2_3_2: true
+amazon2cis_rule_5_2_3_3: true
+amazon2cis_rule_5_2_3_4: true
+amazon2cis_rule_5_2_3_5: true
+amazon2cis_rule_5_2_3_6: true
+amazon2cis_rule_5_2_3_7: true
+amazon2cis_rule_5_2_3_8: true
+amazon2cis_rule_5_2_3_9: true
+amazon2cis_rule_5_2_3_10: true
+amazon2cis_rule_5_2_3_11: true
+amazon2cis_rule_5_2_3_12: true
+amazon2cis_rule_5_2_3_13: true
+amazon2cis_rule_5_2_3_14: true
+amazon2cis_rule_5_2_3_15: true
+amazon2cis_rule_5_2_3_16: true
+amazon2cis_rule_5_2_3_17: true
+amazon2cis_rule_5_2_3_18: true
+amazon2cis_rule_5_2_3_19: true
+amazon2cis_rule_5_2_3_20: true
+amazon2cis_rule_5_2_3_21: true
 
 # Section 6 rules
 # Section 6 is System Maintenance (System File Permissions and User and Group Settings)
@@ -380,6 +459,11 @@ amazon2cis_rule_6_2_17: true
 ## Section 1 variables
 # cis 1.4.1
 kernel_sysctl_file: /etc/sysctl.d/60-kernel_sysctl.conf
+
+# Warning Banner Content (issue, issue.net, motd)
+amazon2cis_warning_banner: |
+    Authorized uses only. All activity may be monitored and reported.
+# End Banner
 
 ## Section 2 variables
 amazon2cis_time_synchronization_servers:
@@ -484,59 +568,21 @@ amazon2cis_nft_tables_tablename: cis
 # Allow creation of chains
 amazon2cis_nft_tables_autochaincreate: false
 
-# AIDE
-amazon2cis_config_aide: true
-# AIDE cron settings
-amazon2cis_aide_cron:
-    cron_user: root
-    cron_file: /etc/crontab
-    aide_job: '/usr/sbin/aide --check'
-    aide_minute: '0'
-    aide_hour: '5'
-    aide_day: '*'
-    aide_month: '*'
-    aide_weekday: '*'
-
-## Section 4 variables
-# auditd settings
-amazon2cis_auditd:
-    space_left_action: email
-    action_mail_acct: root
-    admin_space_left_action: halt
-    max_log_file_action: keep_logs
-
-# 4.2.3
-# amazon2cis_logrotate sets the daily, weekly, monthly, yearly value for the log rotation
-# To conform to CIS standards this just needs to comply with your site policy
-amazon2cis_logrotate: "daily"
-
-# AMZN LNX 2-4.1.2.4
-# amazon2cis_audit_backlog_limit value needs to be 8192 or larger to conform to CIS standards
-amazon2cis_audit_backlog_limit: 8192
-
-# AMZN LNX-4.2.1.4/4.2.1.5 remote and destation log server name
-amazon2cis_remote_log_server: logagg.example.com
-
-# AMZN LNX-4.2.1.6
-amazon2cis_system_is_log_server: false
-
-# Maxium audit log size in MB
-amazon2cis_maxauditlog_size: 10
-
-amazon2cis_rsyslog_ansiblemanaged: true
+## Section 4 Variables
 
 # SSH variables
+## Can be VERBOSE or INFO
 amazon2cis_ssh_loglevel: INFO
 # amazon2cis_ssh_maxsessions is the max number of sessions
 # To conform to CIS standards this value nees to be 10 or less
-amazon2cis_ssh_maxsessions: 10
+
 amazon2cis_sshd:
-    # clientalivecountmax: 0
+    clientalivecountmax: 3
     # clientaliveinterval shoudl be between 1 and 900
-    clientaliveinterval: 300
+    clientaliveinterval: 15
     ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
     macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
-    kex: "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
+    kex: "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"
     # logingracetime value is in seconds and needs to be set to 1 minute or less
     logingracetime: 60
     # WARNING: make sure you understand the precedence when working with these values!!
@@ -545,9 +591,15 @@ amazon2cis_sshd:
     # denyusers:
     # denygroups:
 
+amazon2cis_ssh_maxsessions: 10
+amazon2cis_ssh_maxauthtries: 4
+
+
+## Sudo
+amazon2cis_sudolog_location: "/var/log/sudo.log"
 # pam variables
 amazon2cis_pam_faillock:
-    attempts: 5
+    deny: 5
     interval: 900
     unlock_time: 900
     fail_for_root: "no"
@@ -556,53 +608,138 @@ amazon2cis_pam_faillock:
 amazon2cis_inactivelock:
     lock_days: 30
 
+amazon2cis_pwquality_difok: 2  # 2 or more required
+amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
+amazon2cis_pwquality_maxsequence: 3  # 3 or less not 0 required
+# Seeting minclass true means set via min class else will use the pwquality list below
+amazon2cis_pwquality_minclass: true
+amazon2cis_pwquality_minclass_value: '4'  # Not less than 4
+amazon2cis_pwquality:
+    - key: '#minclass'
+      value: "{{ ubtu22cis_pwquality_minclass_value }}"
+    - key: 'minlen'
+      value: '14'  # 14 or more required
+    - key: 'dcredit'
+      value: '-1'  # not 0 or greater
+    - key: 'ucredit'
+      value: '-1'  # not 0 or greater
+    - key: 'ocredit'
+      value: '-1'  # not 0 or greater
+    - key: 'lcredit'
+      value: '-1'  # not 0 or greater
+
+# pwhistory
+amazon2cis_pwhistory_remember: 24  # 24 or more recommended
+
+## Users and environments
+amazon2cis_encryption: sha512
+# If encryption method changes foce users to change password at next login
+amazon2cis_force_user_passwd_change: true
 # Accounts listed below will not have INACTIVE field set in shadow file
+
+# Allow synmic discovery of user accounts minimum and maximun from /etc/login.defs
+# findings will override the uid_min|max below
+amazon2cis_uid_info_dynamic: true
+amazon2cis_uid_min: 1000
+amazon2cis_uid_max: 60000
+
 amazon2cis_inactive_whitelist:
     - root
     - vagrant
 
 amazon2cis_pass:
-    max_days: 90
+    max_days: 365
     min_days: 1
     warn_age: 7
 
-# 5.3.7
-# amazon2_max_auth_tries is the number of max authorization attemps permitted per connection
-# To conform to CIS standards this needs to be 4 or less
-amazon2_max_auth_tries: 4
 
-# 5.4.5
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)
 amazon2cis_shell_session_timeout:
     file: /etc/profile.d/tmout.sh
     timeout: 600
-# 5.4.1.5 Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
+# Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
 amazon2cis_futurepwchgdate_autofix: true
 
-# 5.4.2
 amazon2cis_int_gid: 1000
 
-# 5.6 Group to be used for su
+# Group to be used for su
 # this group needs to exists groups will not be created for remediation this is considered sys admins
 
 # amazon2cis_sugroup: sugroup
 
-# amazon2_6.1.1
+## Section 5 Variables
+
+# Preferred method of logging
+# Whether rsyslog or journald preferred method for local logging
+amazon2cis_syslog: rsyslog
+amazon2cis_rsyslog_ansiblemanaged: true
+# Set if system is the log server
+amazon2cis_system_is_log_server: false
+
+# remote and destination log server name
+amazon2cis_remote_log_server: false
+amazon2cis_remote_log_host: logagg.example.com
+amazon2cis_remote_log_port: 514
+amazon2cis_remote_log_protocol: tcp
+amazon2cis_remote_log_retrycount: 100
+amazon2cis_remote_log_queuesize: 1000
+
+# amazon2cis_logrotate sets the daily, weekly, monthly, yearly value for the log rotation
+# To conform to CIS standards this just needs to comply with your site policy
+amazon2cis_logrotate: "daily"
+
+# AuditD
+# The audit_back_log_limit value should never be below 8192
+amazon2cis_audit_back_log_limit: 8192
+# The max_log_file parameter should be based on your sites policy size in MB
+amazon2cis_max_log_file_size: 10
+
+# auditd settings
+amazon2cis_auditd:
+    disk_error_action: halt
+    disk_full_action: halt
+    action_mail_acct: root
+    space_left_action: email
+    admin_space_left_action: email
+    max_log_file_action: keep_logs
+
+# AIDE
+# aide setup via - cron, timer
+amazon2cis_aide_scan: cron
+amazon2cis_config_aide: true
+# AIDE cron settings
+amazon2cis_aide_cron:
+    cron_user: root
+    cron_file: /etc/cron.d/cis_aide
+    aide_job: '/usr/sbin/aide --check'
+    aide_minute: 0
+    aide_hour: 5
+    aide_day: '*'
+    aide_month: '*'
+    aide_weekday: '*'
+
+##
+## Section 6 variables
+##
+
+#
 amazon2cis_rpm_audit_file: /var/tmp/rpm_file_check
 
-# amazon2_6.2.12
+# Allow ansible to adjust world-writable files. False will just display world-writable files, True will remove world-writable
 amazon2cis_no_world_write_adjust: true
 amazon2cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
+
+## adjust files if ungrouped
+amazon2cis_ungrouped_adjust: false
+
+## Remove suid/sgid from files
+amazon2cis_suid_adjust: false
+amazon2cis_sgid_adjust: false
+
+# 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true
 
-# SELinux policy
-amazon2cis_selinux_pol: targeted
-
-# Warning Banner Content (issue, issue.net, motd)
-amazon2cis_warning_banner: |
-    Authorized uses only. All activity may be monitored and reported.
-# End Banner
 
 ### Goss binary settings ###
 goss_version:

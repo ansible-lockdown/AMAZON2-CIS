@@ -1,7 +1,7 @@
 ---
-# vars file for .
+# vars file for amazon linux 2
 
-min_ansible_version: 2.10.1
+min_ansible_version: 2.11.1
 
 change_requires_reboot: false
 

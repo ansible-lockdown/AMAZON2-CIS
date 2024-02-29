@@ -31,6 +31,30 @@
   tags:
       - skip_ansible_lint
 
+- name: "PRELIM | Gather interactive user ID min and max"
+  when:
+      - amazon2cis_uid_info_dynamic
+  tags:
+      - always
+  block:
+      - name: "PRELIM | Gather interactive user ID min"
+        ansible.builtin.shell: grep ^UID_MIN /etc/login.defs | awk '{print $2}'
+        changed_when: false
+        failed_when: false
+        register: amazon2cis_min_uid
+
+      - name: "PRELIM | Gather interactive user ID max"
+        ansible.builtin.shell: grep ^UID_MAX /etc/login.defs | awk '{print $2}'
+        changed_when: false
+        failed_when: false
+        register: amazon2cis_max_uid
+
+      - name: "PRELIM | Setting the fact"
+        ansible.builtin.set_fact:
+            amazon2cis_uid_min: "{{ amazon2cis_min_uid.stdout | string }}"
+            amazon2cis_uid_max: "{{ amazon2cis_max_uid.stdout | string }}"
+
+
 - name: "PRELIM | Check whether machine is UEFI-based"
   ansible.builtin.stat:
       path: /sys/firmware/efi
