@@ -30,20 +30,20 @@
             new_type: password
             new_control: required
             new_module_path: pam_pwhistory.so
-            module_arguments: 'authtok'
+            module_arguments: 'use_authtok'
         loop:
             - system-auth
             - password-auth
 
       - name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | updated"
-        when: amazon2cis_4_4_2_3_1_pwhistory_exists.stdout|int < 2
+        when: amazon2cis_4_4_2_3_1_pwhistory_exists.stdout | int < 2
         community.general.pamd:
             name: "{{ item }}"
             type: password
             control: required
             module_path: pam_pwhistory.so
             state: args_present
-            module_arguments: 'authtok'
+            module_arguments: 'use_authtok'
         loop:
             - system-auth
             - password-auth
