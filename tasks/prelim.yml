@@ -97,7 +97,14 @@
                 - policycoreutils-python
             state: present
 
+      - name: "PRELIM | Section 1.5 | Check current firewalld_t semanage state"
+        ansible.builtin.shell: semanage permissive -l | grep firewalld_t
+        changed_when: false
+        failed_when: false
+        register: firewalld_t_sestate
+
       - name: "PRELIM | Section 1.5 | Ensure firewalld_t is set to permissive"
+        when: "'firewalld_t' not in firewalld_t_sestate.stdout"
         ansible.builtin.shell: semanage permissive -a firewalld_t
   when:
       - not amazon2cis_selinux_disable
