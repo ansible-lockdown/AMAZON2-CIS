@@ -90,16 +90,22 @@
       owner: root
       group: root
       mode: 0600
-  notify: restart auditd
+  notify: Restart_auditd
 
-- name: restart auditd
-  ansible.builtin.command: /sbin/service auditd restart
-  check_mode: false
-  failed_when: false
+- name: Auditd_immutable_check
+  ansible.builtin.shell: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
+  changed_when: false
+  register: auditd_immutable_check
+
+- name: Audit_immutable_fact
+  ansible.builtin.debug:
+      msg: "Reboot required for auditd to apply new rules as immutable set"
+  notify: Change_requires_reboot
   when:
-      - not amazon2cis_skip_for_travis
-  tags:
-      - skip_ansible_lint
+      - auditd_immutable_check.stdout == '1'
+
+- name: Restart_auditd
+  ansible.builtin.shell: /sbin/service auditd restart
 
 - name: grub2cfg
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
