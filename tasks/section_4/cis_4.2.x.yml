@@ -368,7 +368,7 @@
   ansible.builtin.lineinfile:
       path: /etc/ssh/sshd_config
       regexp: ^(?i)(#|)\s*maxauthtries
-      line: 'MaxAuthTries{{ amazon2cis_ssh_maxauthtries }}'
+      line: 'MaxAuthTries {{ amazon2cis_ssh_maxauthtries }}'
       validate: 'sshd -t -f %s'
 
 - name: "4.2.17 | PATCH | Ensure sshd MaxSessions is configured"
