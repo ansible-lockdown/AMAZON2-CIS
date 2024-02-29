@@ -25,9 +25,20 @@
             regexp: ^(?i)(#|)\s*ENCRYPT_METHOD
             line: "ENCRYPT_METHOD {{ amazon2cis_encryption | upper }}"
 
-      - name: "4.5.1.1 | PATCH | Ensure strong password hashing algorithm is configured | force user password change"
+      - name: "4.5.1.1 | PATCH | Ensure strong password hashing algorithm is configured | Captures users who need to change passwd"
         when: amazon2cis_force_user_passwd_change
-        ansible.builtin.shell: awk -F '( $3<'"{{ amazon2cis_uid_min }}"' && $1 != "nfsnobody" && $1 != "nobody") { print $1 }' /etc/passwd | xargs -n 1 chage -d 0
+        ansible.builtin.shell: "awk -F '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd"
+        failed_when: false
+        changed_when: false
+        register: amazon2cis_4_5_1_1_user_crypt_password
+
+      - name: "4.5.1.1 | PATCH | Ensure strong password hashing algorithm is configured | force user password change"
+        when:
+            - amazon2cis_force_user_passwd_change
+            - amazon2cis_4_5_1_1_user_crypt_password.stdout | length > 0
+        ansible.builtin.shell: "xargs -n 1 chage -d 0 {{ item }}"
+        loop:
+            - amazon2cis_4_5_1_1_user_crypt_password.stdout_lines
 
 - name: "4.5.1.2 | PATCH | Ensure password expiration is 365 days or less"
   when:
@@ -110,16 +121,19 @@
       - rule_4.5.1.4
   block:
       - name: "4.5.1.4 | AUDIT | Ensure inactive password lock is 30 days or less | capture default state"
-        ansible.builtin.shell: useradd -D | grep INACTIVE
+        ansible.builtin.shell: useradd -D | grep INACTIVE | cut -d= -f2
         changed_when: false
         failed_when: amazon2cis_users_inactive_def.rc not in [ 0, 1 ]
         register: amazon2cis_users_inactive_def
 
+      - ansible.builtin.debug:
+            msg: "{{ amazon2cis_users_inactive_def.stdout }}"
+
       - name: "4.5.1.4 | PATCH | Ensure inactive password lock is 30 days or less | change default"
         when:
             - amazon2cis_users_inactive_def is defined
-            - "'30' not in amazon2cis_users_inactive_def.stdout"
-        ansible.builtin.shell: useradd -D -f {{ amazon2cis_pass['inactive'] }}
+            - (amazon2cis_pass.inactive | string) not in amazon2cis_users_inactive_def.stdout
+        ansible.builtin.shell: "useradd -D -f {{ amazon2cis_pass.inactive }}"
 
       - name: "4.5.1.4 | AUDIT | Ensure inactive password lock is 30 days or less | capture users not matching"
         ansible.builtin.shell: |
@@ -132,7 +146,7 @@
         when:
             - amazon2cis_users_inactive is defined
             - amazon2cis_users_inactive.stdout | length > 0
-        ansible.builtin.shell: chage --inactive {{ amazon2cis_pass['inactive'] }} {{ item }}
+        ansible.builtin.shell: "chage --inactive {{ amazon2cis_pass.inactive }} {{ item }}"
         loop: "{{ amazon2cis_users_inactive.stdout_lines }}"
 
 - name: "4.5.1.5 | PATCH | Ensure all users last password change date is in the past"
@@ -148,18 +162,6 @@
   vars:
       warn_control_id: '4.5.1.5'
   block:
-      - name: "4.5.1.5 | AUDIT | Ensure all users last password change date is in the past | capture default state"
-        ansible.builtin.shell: useradd -D | grep INACTIVE
-        changed_when: false
-        failed_when: amazon2cis_users_inactive_def.rc not in [ 0, 1 ]
-        register: amazon2cis_users_inactive_def
-
-      - name: "4.5.1.5 | PATCH | Ensure all users last password change date is in the past | change default"
-        when:
-            - amazon2cis_users_inactive_def is defined
-            - "'30' not in amazon2cis_users_inactive_def.stdout"
-        ansible.builtin.shell: useradd -D -f {{ amazon2cis_pass['inactive'] }}
-
       - name: "4.5.1.5 | FACT | Ensure inactive password lock is 30 days or less | set fact days since_epoch"
         ansible.builtin.set_fact:
             days_since_epoch: "{{ (ansible_facts['date_time']['epoch']|int)/86400 }}"
