@@ -5,9 +5,6 @@
 - name: Parse etc password
   ansible.builtin.import_tasks:
       file: parse_etc_password.yml
-  when:
-      - amazon2cis_section5 or
-        amazon2cis_section6
   tags:
       - always
 
