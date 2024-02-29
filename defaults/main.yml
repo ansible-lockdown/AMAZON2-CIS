@@ -8,10 +8,6 @@ amazon2cis_section4: true
 amazon2cis_section5: true
 amazon2cis_section6: true
 
-# 5.7 Group to be used for su
-# this group needs to exists groups will not be created for remediation this is considered sys admins
-# amazon2cis_sugroup: sugroup
-
 ## Python Binary
 ## This is used for python3 Installations where python2 OS modules are used in ansible
 python2_bin: /bin/python2.7
@@ -20,6 +16,9 @@ python2_bin: /bin/python2.7
 # The audit variable found at the base
 benchmark: AMAZON2-CIS
 benchmark_version: v3.0.0
+
+## Ability to skip the os check
+os_check: true
 
 # Ability to stop reboot from occuring until convenient
 # set to true if ok to reboot
@@ -157,12 +156,12 @@ amazon2cis_rule_1_5_1_7: true
 amazon2cis_rule_1_5_1_8: true
 
 # Command line banner warnings
-amazon2cis_rule_1_6_1_1: true
-amazon2cis_rule_1_6_1_2: true
-amazon2cis_rule_1_6_1_3: true
-amazon2cis_rule_1_6_1_4: true
-amazon2cis_rule_1_6_1_5: true
-amazon2cis_rule_1_6_1_6: true
+amazon2cis_rule_1_6_1: true
+amazon2cis_rule_1_6_2: true
+amazon2cis_rule_1_6_3: true
+amazon2cis_rule_1_6_4: true
+amazon2cis_rule_1_6_5: true
+amazon2cis_rule_1_6_6: true
 
 ##
 ## Section 2 rules
@@ -331,35 +330,36 @@ amazon2cis_rule_4_4_1_2: true
 # pam_faillock
 amazon2cis_rule_4_4_2_1_1: true
 amazon2cis_rule_4_4_2_1_2: true
-amazon2cis_rule_4_2_2_1_3: true
-amazon2cis_rule_4_2_2_1_4: true
+amazon2cis_rule_4_4_2_1_3: true
+amazon2cis_rule_4_4_2_1_4: true
 
 # pam_pwquality
 amazon2cis_rule_4_4_2_2_1: true
 amazon2cis_rule_4_4_2_2_2: true
-amazon2cis_rule_4_2_2_2_3: true
-amazon2cis_rule_4_2_2_2_4: true
+amazon2cis_rule_4_4_2_2_3: true
+amazon2cis_rule_4_4_2_2_4: true
 amazon2cis_rule_4_4_2_2_5: true
-amazon2cis_rule_4_2_2_2_6: true
-amazon2cis_rule_4_2_2_2_7: true
+amazon2cis_rule_4_4_2_2_6: true
+amazon2cis_rule_4_4_2_2_7: true
 
 # pam pwhistory
 amazon2cis_rule_4_4_2_3_1: true
 amazon2cis_rule_4_4_2_3_2: true
-amazon2cis_rule_4_2_2_3_3: true
-amazon2cis_rule_4_2_2_3_4: true
+amazon2cis_rule_4_4_2_3_3: true
+amazon2cis_rule_4_4_2_3_4: true
 
 # pam pam_unix
 amazon2cis_rule_4_4_2_4_1: true
 amazon2cis_rule_4_4_2_4_2: true
-amazon2cis_rule_4_2_2_4_3: true
-amazon2cis_rule_4_2_2_4_4: true
+amazon2cis_rule_4_4_2_4_3: true
+amazon2cis_rule_4_4_2_4_4: true
 
 # shadow password
 amazon2cis_rule_4_5_1_1: true
 amazon2cis_rule_4_5_1_2: true
 amazon2cis_rule_4_5_1_3: true
 amazon2cis_rule_4_5_1_4: true
+amazon2cis_rule_4_5_1_5: true
 
 # root and system accts
 amazon2cis_rule_4_5_2_1: true
@@ -431,6 +431,10 @@ amazon2cis_rule_5_2_3_19: true
 amazon2cis_rule_5_2_3_20: true
 amazon2cis_rule_5_2_3_21: true
 
+# Aide
+amazon2cis_rule_5_3_1: true
+amazon2cis_rule_5_3_2: true
+
 # Section 6 rules
 # Section 6 is System Maintenance (System File Permissions and User and Group Settings)
 amazon2cis_rule_6_1_1: true
@@ -479,6 +483,7 @@ amazon2cis_warning_banner: |
 # End Banner
 
 ## Section 2 variables
+amazon2cis_time_synchronization: chrony
 amazon2cis_time_synchronization_servers:
     - 0.pool.ntp.org
     - 1.pool.ntp.org
@@ -551,6 +556,7 @@ amazon2cis_tftp_client: false
 # 3.1.x
 # IPv6 required
 amazon2cis_ipv6_required: false
+amazon2cis_ipv6_sysctl_force: true
 amazon2cis_ipv6_sysctl_file: /etc/sysctl.d/60-ipv6.conf
 # Setting this will stop ipv6 listening on ::1 and will remove from /etc/hosts
 amazon2cis_ipv6_disable_localhost: false
@@ -609,6 +615,13 @@ amazon2cis_ssh_maxauthtries: 4
 
 ## Sudo
 amazon2cis_sudolog_location: "/var/log/sudo.log"
+amazon2cis_sudo_timestamp_timeout: 15
+
+# Group to be used for su
+# this group needs to exists groups will not be created for remediation this is considered sys admins
+
+amazon2cis_sugroup: wheel
+
 # pam variables
 amazon2cis_pam_faillock:
     deny: 5
@@ -623,15 +636,13 @@ amazon2cis_inactivelock:
 amazon2cis_pwquality_difok: 2  # 2 or more required
 amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
 amazon2cis_pwquality_maxsequence: 3  # 3 or less not 0 required
-
+amazon2cis_pwquality_minlen: 14  # 14 or more required
 # Setting minclass true - mincalls used instead of seperated values
 amazon2cis_pwquality_minclass: true
 amazon2cis_pwquality_minclass_value: '4'  # Not less than 4
 amazon2cis_pwquality:
     - key: '#minclass'
       value: "{{ ubtu22cis_pwquality_minclass_value }}"
-    - key: 'minlen'
-      value: '14'  # 14 or more required
     - key: 'dcredit'
       value: '-1'  # not 0 or greater
     - key: 'ucredit'
@@ -664,6 +675,7 @@ amazon2cis_pass:
     max_days: 365
     min_days: 1
     warn_age: 7
+    inactive: 30  # should not be 0 or -1 (little details in control)
 
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)
@@ -673,12 +685,8 @@ amazon2cis_shell_session_timeout:
 # Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
 amazon2cis_futurepwchgdate_autofix: true
 
-amazon2cis_int_gid: 1000
+amazon2cis_root_umask: '0027'  # 0027 or more restrictive
 
-# Group to be used for su
-# this group needs to exists groups will not be created for remediation this is considered sys admins
-
-# amazon2cis_sugroup: sugroup
 
 ## Section 5 Variables
 
