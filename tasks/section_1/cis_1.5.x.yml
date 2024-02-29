@@ -30,7 +30,7 @@
       - selinux
       - NIST800-53R5_AC-3
       - NIST800-53R5_MP-2
-  notify: grub2cfg
+  notify: Rebuild_grub
   ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '{{ item }}'

@@ -42,7 +42,7 @@
   ansible.builtin.systemd:
       daemon_reload: true
 
-- name: grub2cfg
+- name: Rebuild_grub
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
 
 - name: Restart_postfix
@@ -67,6 +67,11 @@
   ignore_errors: true  # noqa ignore-errors
   when:
       - not system_is_container
+
+- name: Restart_rsyslog
+  ansible.builtin.service:
+      name: rsyslog
+      state: restarted
 
 - name: Restart_journald
   ansible.builtin.service:
