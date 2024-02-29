@@ -17,9 +17,9 @@
       path: "/etc/pam.d/{{ item }}"
       regexp: (.*pam_unix.so.*)nullok(.*)
       line: \1\2
-      loop:
-          - system-auth
-          - password-auth
+  loop:
+      - system-auth
+      - password-auth
 
 - name: "4.4.2.4.2 | PATCH | Ensure pam_unix does not include remember"
   when:
@@ -37,9 +37,9 @@
       path: "/etc/pam.d/{{ item }}"
       regexp: (.*pam_unix.so.*)remember(.*)
       line: \1\2
-      loop:
-          - system-auth
-          - password-auth
+  loop:
+      - system-auth
+      - password-auth
 
 - name: "4.4.2.4.3 | PATCH | Ensure pam_unix includes a strong password hashing algorithm"
   when:
@@ -57,9 +57,9 @@
       path: "/etc/pam.d/{{ item }}"
       regexp: (.*pam_unix.so.*)(md5|bigcrypt|sha256|blowfish)(.*)
       line: \1\2 sha512
-      loop:
-          - system-auth
-          - password-auth
+  loop:
+      - system-auth
+      - password-auth
 
 - name: "4.4.2.4.4 | PATCH | Ensure pam_unix includes use_authtok"
   when:
@@ -76,8 +76,8 @@
   ansible.builtin.lineinfile:
       backrefs: true
       path: "/etc/pam.d/{{ item }}"
-      regexp: (.*pam_unix.so.*)use_authtok(.*)
-      line: \1\2 use_authtok
-      loop:
-          - system-auth
-          - password-auth
+      regexp: (.*pam_unix.so.*)(use_authtok)(.*)
+      line: \1use_authtok\3
+  loop:
+      - system-auth
+      - password-auth
