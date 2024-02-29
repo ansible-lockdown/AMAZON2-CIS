@@ -3,7 +3,9 @@
 
 min_ansible_version: 2.11.1
 
+reboot_required: false
 change_requires_reboot: false
+update_audit_template: false
 
 # Used to control warning summary
 warn_control_list: ""

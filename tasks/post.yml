@@ -1,8 +1,8 @@
 ---
 # Post tasks
 
-- name: POST | Perform DNF package cleanup
-  ansible.builtin.dnf:
+- name: POST | Perform yum package cleanup
+  ansible.builtin.package:
       autoremove: true
   changed_when: false
 
