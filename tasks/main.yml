@@ -43,8 +43,6 @@
         changed_when: false
         failed_when: sugroup_exists.rc >= 2
         register: sugroup_exists
-        tags:
-            - skip_ansible_lint
 
       - name: Check sugroup if defined exists before continuing
         ansible.builtin.assert:

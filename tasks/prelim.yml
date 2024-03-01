@@ -19,16 +19,12 @@
   changed_when: false
   check_mode: false
   register: empty_password_accounts
-  tags:
-      - skip_ansible_lint
 
 - name: "PRELIM | Gather UID 0 accounts other than root"
   ansible.builtin.shell: "cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") {i++;print $1 } END {exit i}'"
   changed_when: false
   check_mode: false
-  register: uid_zero_accounts_except_root
-  tags:
-      - skip_ansible_lint
+  register: amazon2cis_uid_zero_accounts_except_root
 
 - name: "PRELIM | Gather interactive user ID min and max"
   when:
