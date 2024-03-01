@@ -1,17 +1,37 @@
-# RHEL 7 CIS
-
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMAZON2-CIS/CommunityToDevel?label=Devel%20Build%20Status&style=plastic)
-![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/AMAZON2-CIS/DevelToMain?label=Main%20Build%20Status&style=plastic)
-![Release](https://img.shields.io/github/v/release/ansible-lockdown/AMAZON2-CIS?style=plastic)
+# Amazon 2 Linux
 
 Configure Amazon Linux 2 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 Untested on OEL
 
-Based on [CIS Amazon Linux 2 Benchmark v2.0.0 - 07-28-2021 ](https://www.cisecurity.org/cis-benchmarks/)
+Based on [CIS Amazon Linux 2 Benchmark v3.0.0 - 12-22-2023 ](https://www.cisecurity.org/cis-benchmarks/)
+
+
+![Org Stars](https://img.shields.io/github/stars/ansible-lockdown?label=Org%20Stars&style=social)
+![Stars](https://img.shields.io/github/stars/ansible-lockdown/AMAZON2-CIS?label=Repo%20Stars&style=social)
+![Forks](https://img.shields.io/github/forks/ansible-lockdown/AMAZON2-CIS?style=social)
+![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
+
+![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
+
+![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
+![Release Tag](https://img.shields.io/github/v/release/ansible-lockdown/AMAZON2-CIS)
+![Release Date](https://img.shields.io/github/release-date/ansible-lockdown/AMAZON2-CIS)
+
+[![Main Pipeline Status](https://github.com/ansible-lockdown/AMAZON2-CIS/actions/workflows/main_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AMAZON2-CIS/actions/workflows/main_pipeline_validation.yml)
+
+[![Devel Pipeline Status](https://github.com/ansible-lockdown/AMAZON2-CIS/actions/workflows/devel_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AMAZON2-CIS/actions/workflows/devel_pipeline_validation.yml)
+![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/AMAZON2-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
+
+![Issues Open](https://img.shields.io/github/issues-raw/ansible-lockdown/AMAZON2-CIS?label=Open%20Issues)
+![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/AMAZON2-CIS?label=Closed%20Issues&&color=success)
+![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/AMAZON2-CIS?label=Pull%20Requests)
+
+![License](https://img.shields.io/github/license/ansible-lockdown/AMAZON2-CIS?label=License)
 
 ## Join us
 
-On our [Discord Server](https://discord.gg/JFxpSgPFEJ) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
+On our [Discord Server](https://www.lockdownenterprise.com/discord) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
 
 ## Caution(s)
 
@@ -54,11 +74,12 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 **Technical Dependencies:**
 
-- Running Ansible/Tower setup (this role is tested against Ansible version 2.9.1 and newer)
+- Running Ansible/Tower setup (this role is tested against Ansible version 2.11.1 and newer)
 - Python3 Ansible run environment
 - python-def (should be included in RHEL/CentOS 7) - First task sets up the prerequisites (Tag pre-reqs)for python3 and python2 (where required)
   - libselinux-python
   - python3-rpm (package used by py3 to use the rpm pkg)
+  - jmespath
 
 ## Role Variables
 
