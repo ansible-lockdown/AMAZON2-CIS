@@ -76,10 +76,19 @@
       - rule_2.1.3
       - ntp
       - chrony
-  ansible.builtin.lineinfile:
-      path: /etc/sysconfig/chronyd
-      regexp: OPTIONS=\"(.*)(?!-u chrony)(.*)"
-      line: OPTIONS="\1\2 -u chrony"
-      create: true
-      backrefs: true
-      mode: '0644'
+  block:
+      - name: "2.1.3 | AUDIT | Ensure chrony is configured | Check Setting"
+        ansible.builtin.shell: grep "u chrony" /etc/sysconfig/chronyd
+        changed_when: false
+        failed_when: amazon2_2_1_3_chrony_user.rc not in [ 0, 1 ]
+        register: amazon2_2_1_3_chrony_user
+
+      - name: "2.1.3 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd"
+        when: "'-u chrony' not in amazon2_2_1_3_chrony_user.stdout"
+        ansible.builtin.lineinfile:
+            path: /etc/sysconfig/chronyd
+            regexp: ^OPTIONS=\"(.*)"
+            line: OPTIONS="\1 -u chrony"
+            create: true
+            backrefs: true
+            mode: '0644'

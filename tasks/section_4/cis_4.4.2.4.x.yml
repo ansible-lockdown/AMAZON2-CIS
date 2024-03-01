@@ -15,8 +15,8 @@
   ansible.builtin.lineinfile:
       backrefs: true
       path: "/etc/pam.d/{{ item }}"
-      regexp: (.*pam_unix.so.*)nullok(.*)
-      line: \1\2
+      regexp: (.*pam_unix.so.*)(nullok)(.*)
+      line: \1\3
   loop:
       - system-auth
       - password-auth

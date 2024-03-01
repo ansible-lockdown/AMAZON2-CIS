@@ -41,7 +41,7 @@
   notify: Rebuild_grub
   block:
       - name: "5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get GRUB_CMDLINE_LINUX"
-        ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX=' /etc/default/grub | sed 's/.$//'
+        ansible.builtin.shell: grep "GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub | cut -f2 -d'"'
         changed_when: false
         failed_when: false
         check_mode: false
@@ -50,27 +50,18 @@
       - name: "5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Replace existing setting"
         when: "'audit=' in amazon2cis_5_2_1_2_grub_cmdline_linux.stdout"
         ansible.builtin.replace:
-            path: /etc/default/grub
-            regexp: 'audit=.'
+            dest: /etc/default/grub
+            regexp: 'audit=([0-9]+)'
             replace: 'audit=1'
+            after: '^GRUB_CMDLINE_LINUX_DEFAULT="'
+            before: '"'
 
       - name: "5.2.1.2 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Add audit setting if missing"
         when: "'audit=' not in amazon2cis_5_2_1_2_grub_cmdline_linux.stdout"
         ansible.builtin.lineinfile:
             path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX='
-            line: '{{ amazon2cis_5_2_1_2_grub_cmdline_linux.stdout }} audit=1"'
-
-      - name: "5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Get grubby"
-        ansible.builtin.shell: grubby --info=ALL | grep -Po '\baudit=1\b'
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: amazon2cis_5_2_1_2_grubby_audit
-
-      - name: "5.2.1.2 | AUDIT | Ensure auditing for processes that start prior to auditd is enabled | Update grubby"
-        when: "'audit=1' not in amazon2cis_5_2_1_2_grubby_audit.stdout"
-        ansible.builtin.shell: grubby --update-kernel ALL --args 'audit=1'
+            regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ amazon2cis_5_2_1_2_grub_cmdline_linux.stdout }} audit=1"'
 
 - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient"
   when:
@@ -89,36 +80,27 @@
   notify: Rebuild_grub
   block:
       - name: "5.2.1.3 | AUDIT | Ensure audit_backlog_limit is sufficient | Get GRUB_CMDLINE_LINUX"
-        ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX=' /etc/default/grub | sed 's/.$//'
+        ansible.builtin.shell: grep 'GRUB_CMDLINE_LINUX_DEFAULT=' /etc/default/grub | cut -f2 -d'"'
         changed_when: false
         failed_when: false
         check_mode: false
         register: amazon2cis_5_2_1_3_grub_cmdline_linux
 
       - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Replace existing setting"
-        ansible.builtin.replace:
-            path: /etc/default/grub
-            regexp: 'audit_backlog_limit=\d+'
-            replace: 'audit_backlog_limit={{ amazon2cis_audit_back_log_limit }}'
         when: "'audit_backlog_limit=' in amazon2cis_5_2_1_3_grub_cmdline_linux.stdout"
+        ansible.builtin.replace:
+            dest: /etc/default/grub
+            regexp: 'audit_backlog_limit=([0-9]+)'
+            replace: 'audit_backlog_limit={{ amazon2cis_audit_back_log_limit }}'
+            after: '^GRUB_CMDLINE_LINUX_DEFAULT="'
+            before: '"'
 
       - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Add audit_backlog_limit setting if missing"
+        when: "'audit_backlog_limit=' not in amazon2cis_5_2_1_3_grub_cmdline_linux.stdout"
         ansible.builtin.lineinfile:
             path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX='
-            line: '{{ amazon2cis_5_2_1_3_grub_cmdline_linux.stdout }} audit_backlog_limit={{ amazon2cis_audit_back_log_limit }}"'
-        when: "'audit_backlog_limit=' not in amazon2cis_5_2_1_3_grub_cmdline_linux.stdout"
-
-      - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Get grubby"
-        ansible.builtin.shell: grubby --info=ALL | grep -Po '\baudit_backlog_limit\b'
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: amazon2cis_5_2_1_3_grubby_backlog
-
-      - name: "5.2.1.3 | PATCH | Ensure audit_backlog_limit is sufficient | Update grubby"
-        when: (amazon2cis_audit_back_log_limit | string) not in amazon2cis_5_2_1_3_grubby_backlog.stdout
-        ansible.builtin.shell: "grubby --update-kernel ALL --args 'audit_backlog_limit={{ amazon2cis_audit_back_log_limit }}'"
+            regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ amazon2cis_5_2_1_3_grub_cmdline_linux.stdout }} audit_backlog_limit={{ amazon2cis_audit_back_log_limit }}"'
 
 - name: "5.2.1.4 | PATCH | Ensure auditd service is enabled"
   when:
