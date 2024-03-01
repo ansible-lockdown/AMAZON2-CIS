@@ -385,7 +385,6 @@
             permissions: rx
             state: present
         loop: "{{ interactive_users_home.stdout_lines }}"
-        when: not system_is_container
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Set other ACL"
         ansible.posix.acl:
@@ -395,7 +394,6 @@
             permissions: 0
             state: present
         loop: "{{ interactive_users_home.stdout_lines }}"
-        when: not system_is_container
 
 - name: "6.2.11 | PATCH | Ensure local interactive user dot files access is configured"
   when:
@@ -427,7 +425,6 @@
         when:
             - amazon2cis_6_2_11_audit.stdout | length > 0
             - amazon2cis_dotperm_ansiblemanaged
-
         ansible.builtin.debug:
             msg:
                 - "Warning!! You have group or world-writable dot files on your system and have configured for manual intervention"
@@ -436,7 +433,6 @@
         when:
             - amazon2cis_6_2_11_audit.stdout | length > 0
             - amazon2cis_dotperm_ansiblemanaged
-
         ansible.builtin.import_tasks:
             file: warning_facts.yml
 
@@ -444,7 +440,6 @@
         when:
             - amazon2cis_6_2_11_audit.stdout | length > 0
             - amazon2cis_dotperm_ansiblemanaged
-
         ansible.builtin.file:
             path: '{{ item }}'
             mode: go-w
