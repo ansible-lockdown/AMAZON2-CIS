@@ -40,6 +40,7 @@ system_is_ec2: true
 
 # Some tasks can have a signifcant impact on a system ensure you agree
 amazon2cis_disruption_high: true
+
 ##########################################
 ### Goss is required on the remote host ###
 ## Refer to vars/auditd.yml for any other settings ##
@@ -495,6 +496,10 @@ amazon2cis_time_synchronization_servers:
 amazon2cis_chrony_server_options: "minpoll 8"
 amazon2cis_ntp_server_options: "iburst"
 
+## Optional settings not part of CIS but can assist systems
+# Disable ipv6 on Chrony if ipv6 not required
+amazon2cis_ipv6_chrony_disable: false
+
 # 2.2.x
 # Service configuration booleans set true to keep service
 # Service configuration
@@ -592,6 +597,7 @@ amazon2cis_nft_tables_autochaincreate: false
 ## Section 4 Variables
 
 # SSH variables
+
 ## Can be VERBOSE or INFO
 amazon2cis_ssh_loglevel: INFO
 # amazon2cis_ssh_maxsessions is the max number of sessions
@@ -614,6 +620,10 @@ amazon2cis_sshd:
 
 amazon2cis_ssh_maxsessions: 10
 amazon2cis_ssh_maxauthtries: 4
+
+## Optional settings not part of CIS but can assist systems
+# Disable ipv6 on ssh if ipv6 not required
+amazon2cis_ipv6_sshd_disable: false
 
 ## Sudo
 amazon2cis_sudolog_location: "/var/log/sudo.log"
@@ -725,6 +735,13 @@ amazon2cis_auditd:
     space_left_action: email
     admin_space_left_action: email
     max_log_file_action: keep_logs
+
+# This can be used to configure other keys in auditd.conf
+amazon2cis_auditd_extra_conf: {}
+# Example:
+# amazon2cis_auditd_extra_conf:
+#     admin_space_left: '10%'
+
 
 # AIDE
 # aide setup via - cron, timer

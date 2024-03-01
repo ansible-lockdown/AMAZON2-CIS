@@ -129,3 +129,63 @@
       state: present
   vars:
       ansible_python_interpreter: /bin/python
+
+- name: "PRELIM | Interactive User accounts home directories"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/false") { print $6 }'
+  changed_when: false
+  register: interactive_users_home
+
+##### Optional #####
+
+- name: "PRELIM | Optional | If IPv6 disable to stop ssh listening"
+  when:
+      - amazon2cis_ipv6_sshd_disable
+      - not amazon2cis_ipv6_required
+  tags:
+      - always
+  ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: ^AddressFamily
+      line: AddressFamily inet
+  notify: Restart_sshd
+
+- name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
+  when:
+      - amazon2cis_ipv6_chrony_disable
+      - not amazon2cis_ipv6_required
+  tags:
+      - always
+  notify: Restart_chronyd
+  block:
+      - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening | Check existence"
+        ansible.builtin.shell: grep -E "OPTIONS=.*-4" /etc/sysconfig/chronyd
+        changed_when: false
+        failed_when: chrony_ipv6_exists.rc not in [ 0, 1]
+        register: chrony_ipv6_exists
+
+      - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
+        when: chrony_ipv6_exists.stdout | length == 0
+        ansible.builtin.lineinfile:
+            backrefs: true
+            path: /etc/sysconfig/chronyd
+            regexp: ^OPTIONS="(.*)"
+            line: OPTIONS="\1 -4"
+
+# Optional extra keys to extend auditd not part of CIS but can influence a system
+# e.g. admin_space_left: '10%'
+
+- name: PRELIM | Optional | Configure other keys for auditd.conf
+  when:
+      - amazon2cis_auditd_extra_conf.keys() | length > 0
+      - amazon2cis_level_2
+  tags:
+      - always
+  ansible.builtin.lineinfile:
+      path: /etc/audit/auditd.conf
+      regexp: "^{{ item }}( |=)"
+      line: "{{ item }} = {{ amazon2cis_auditd_extra_conf[item] }}"
+  notify: Restart_auditd
+  loop: "{{ amazon2cis_auditd_extra_conf.keys() }}"
