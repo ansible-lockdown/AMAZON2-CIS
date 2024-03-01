@@ -38,6 +38,8 @@ amazon2cis_skip_for_travis: false
 amazon2cis_system_is_container: false
 system_is_ec2: true
 
+# Some tasks can have a signifcant impact on a system ensure you agree
+amazon2cis_disruption_high: true
 ##########################################
 ### Goss is required on the remote host ###
 ## Refer to vars/auditd.yml for any other settings ##
