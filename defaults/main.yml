@@ -35,7 +35,6 @@ amazon2cis_selinux_pol: targeted
 
 # Misc. environment variables
 amazon2cis_skip_for_travis: false
-amazon2cis_system_is_container: false
 system_is_ec2: true
 
 # Some tasks can have a signifcant impact on a system ensure you agree

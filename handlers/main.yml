@@ -56,8 +56,6 @@
       value: '1'
       sysctl_set: true
   ignore_errors: true  # noqa ignore-errors
-  when:
-      - not system_is_container
 
 - name: Sysctl_flush_ipv6_routes
   ansible.posix.sysctl:
@@ -65,8 +63,6 @@
       value: '1'
       sysctl_set: true
   ignore_errors: true  # noqa ignore-errors
-  when:
-      - not system_is_container
 
 - name: Restart_rsyslog
   ansible.builtin.service:

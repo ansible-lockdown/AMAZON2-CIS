@@ -3,7 +3,6 @@
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
   when:
       - amazon2cis_rule_2_1_1
-      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated
@@ -47,7 +46,6 @@
   when:
       - amazon2cis_rule_2_1_2
       - amazon2cis_time_synchronization == "chrony"
-      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated
@@ -68,7 +66,6 @@
   when:
       - amazon2cis_rule_2_1_3
       - amazon2cis_time_synchronization == "chrony"
-      - not amazon2cis_system_is_container
   tags:
       - level1
       - automated
