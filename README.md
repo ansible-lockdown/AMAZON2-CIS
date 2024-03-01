@@ -105,8 +105,6 @@ Below is an example of the tag section from a control within this role. Using th
 
 - **devel** - This is the default branch and the working development branch. Community pull requests will pull into this branch
 - **main** - This is the release branch
-- **reports** - This is a protected branch for our scoring reports, no code should ever go here
-- **gh-pages** - This is the github pages branch
 - **all other branches** - Individual community member branches
 
 ## Community Contribution
@@ -122,7 +120,7 @@ We encourage you (the community) to contribute to this role. Please read the rul
 
 uses:
 
-- ansible-core 2.12
+- ansible-core 2.12+
 - ansible collections - pulls in the latest version based on requirements file
 - runs the audit using the devel branch
 - This is an automated test that occurs on pull requests into devel
@@ -135,7 +133,3 @@ If you would are interested in dedicated support to assist or provide bespoke se
 
 - [Ansible Counselor](https://www.mindpointgroup.com/products/ansible-counselor-on-demand-ansible-services-and-consulting/)
 - [Try us out](https://engage.mindpointgroup.com/try-ansible-counselor)
-
-## Credits
-
-This repo originated from work done by [Sam Doran](https://github.com/samdoran/ansible-role-stig)
