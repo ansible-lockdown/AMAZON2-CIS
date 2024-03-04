@@ -133,3 +133,7 @@ If you would are interested in dedicated support to assist or provide bespoke se
 
 - [Ansible Counselor](https://www.mindpointgroup.com/products/ansible-counselor-on-demand-ansible-services-and-consulting/)
 - [Try us out](https://engage.mindpointgroup.com/try-ansible-counselor)
+
+## Credits and Thanks
+
+Massive thanks to the fantastic community and all its members.
