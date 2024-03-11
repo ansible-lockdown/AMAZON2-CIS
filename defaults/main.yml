@@ -593,7 +593,9 @@ amazon2cis_nft_tables_tablename: cis
 # Allow creation of chains
 amazon2cis_nft_tables_autochaincreate: false
 
+##
 ## Section 4 Variables
+##
 
 # SSH variables
 
@@ -698,8 +700,9 @@ amazon2cis_futurepwchgdate_autofix: true
 
 amazon2cis_root_umask: '0027'  # 0027 or more restrictive
 
-
+##
 ## Section 5 Variables
+##
 
 # Preferred method of logging
 # Whether rsyslog or journald preferred method for local logging
