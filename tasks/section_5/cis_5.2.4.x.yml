@@ -38,11 +38,6 @@
       - rule_5.2.4.3
       - rule_5.2.4.4
   block:
-      - name: "5.2.4.2 | AUDIT | Ensure audit log files are mode 0640 or less permissive | discover file"
-        ansible.builtin.shell: grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
-        changed_when: false
-        register: audit_discovered_logfile
-
       - name: "5.2.4.2 | AUDIT | Ensure audit log files are mode 0640 or less permissive | stat file"
         ansible.builtin.stat:
             path: "{{ audit_discovered_logfile.stdout }}"

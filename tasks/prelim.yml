@@ -123,6 +123,46 @@
   vars:
       ansible_python_interpreter: /bin/python
 
+- name: "PRELIM | 5.2.4.x | Ensure audit log files are mode 0640 or less permissive | discover file"
+  ansible.builtin.shell: "grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'"
+  changed_when: false
+  failed_when: audit_discovered_logfile.rc not in [0, 1]
+  register: audit_discovered_logfile
+  when:
+      - amazon2cis_rule_5_2_4_1
+      - amazon2cis_rule_5_2_4_2
+      - amazon2cis_rule_5_2_4_3
+      - amazon2cis_rule_5_2_4_4
+  tags:
+      - level2-server
+      - level2-workstation
+      - patch
+      - auditd
+      - rule_5.2.4.1
+      - rule_5.2.4.2
+      - rule_5.2.4.3
+      - rule_5.2.4.4
+
+- name: "PRELIM | 5.2.4.5/6/7 | Audit conf and rules files | list files"
+  ansible.builtin.find:
+      path: /etc/audit
+      file_type: file
+      recurse: true
+      patterns: '*.conf,*.rules'
+  register: auditd_conf_files
+  when:
+      - amazon2cis_rule_5_2_4_5 or
+        amazon2cis_rule_5_2_4_6 or
+        amazon2cis_rule_5_2_4_7
+  tags:
+      - level2-server
+      - level2-workstation
+      - patch
+      - auditd
+      - rule_5.2.4.5
+      - rule_5.2.4.6
+      - rule_5.2.4.7
+
 - name: "PRELIM | Section 4.1.1.x | Configure cron"
   ansible.builtin.package:
       name: cronie
