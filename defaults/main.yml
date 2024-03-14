@@ -40,6 +40,10 @@ system_is_ec2: true
 # Some tasks can have a signifcant impact on a system ensure you agree
 amazon2cis_disruption_high: true
 
+# Used for audit purposed only
+amazon2cis_level_1: true
+amazon2cis_level_2: true
+
 ##########################################
 ### Goss is required on the remote host ###
 ## Refer to vars/auditd.yml for any other settings ##
@@ -747,7 +751,7 @@ amazon2cis_auditd:
     disk_full_action: halt
     action_mail_acct: root
     space_left_action: email
-    admin_space_left_action: email
+    admin_space_left_action: single
     max_log_file_action: keep_logs
 
 # This can be used to configure other keys in auditd.conf
