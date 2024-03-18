@@ -687,7 +687,7 @@ amazon2cis_pwhistory_remember: 24  # 24 or more recommended
 ## Users and environments
 amazon2cis_encryption: sha512
 # If encryption method changes foce users to change password at next login
-amazon2cis_force_user_passwd_change: true
+amazon2cis_force_user_passwd_change: false
 # Accounts listed below will not have INACTIVE field set in shadow file
 
 # Allow synmic discovery of user accounts minimum and maximun from /etc/login.defs
