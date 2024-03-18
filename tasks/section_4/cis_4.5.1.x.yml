@@ -27,7 +27,7 @@
 
       - name: "4.5.1.1 | PATCH | Ensure strong password hashing algorithm is configured | Captures users who need to change passwd"
         when: amazon2cis_force_user_passwd_change
-        ansible.builtin.shell: "awk -F '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd"
+        ansible.builtin.shell: "awk -F: '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd"
         failed_when: false
         changed_when: false
         register: amazon2cis_4_5_1_1_user_crypt_password
