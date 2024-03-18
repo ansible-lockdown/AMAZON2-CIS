@@ -36,9 +36,8 @@
         when:
             - amazon2cis_force_user_passwd_change
             - amazon2cis_4_5_1_1_user_crypt_password.stdout | length > 0
-        ansible.builtin.shell: "xargs -n 1 chage -d 0 {{ item }}"
-        loop:
-            - amazon2cis_4_5_1_1_user_crypt_password.stdout_lines
+        ansible.builtin.shell: "chage -d 0 {{ item }}"
+        loop: "{{ amazon2cis_4_5_1_1_user_crypt_password.stdout_lines }}"
 
 - name: "4.5.1.2 | PATCH | Ensure password expiration is 365 days or less"
   when:
