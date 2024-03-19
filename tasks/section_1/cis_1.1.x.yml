@@ -82,7 +82,7 @@
 
       - name: "1.1.10 | AUDIT | Ensure separate partition exists for /var | Message if present"
         debug:
-            msg: "Congradulations: /var is on a seperate partition"
+            msg: "Congratulations: /var is on a seperate partition"
         when: "'/var' in mount_names"
   when:
       - amazon2cis_rule_1_1_10
@@ -102,7 +102,7 @@
 
       - name: "1.1.11 | AUDIT | Ensure separate partition exists for /var/tmp | Message if present"
         debug:
-            msg: "Congradulations: /var/tmp is on a seperate partition"
+            msg: "Congratulations: /var/tmp is on a seperate partition"
         when: "'/var/tmp' in mount_names"
   when:
       - amazon2cis_rule_1_1_11
@@ -193,7 +193,7 @@
 
       - name: "1.1.17 | AUDIT | Ensure separate partition exists for /home | Message if present"
         debug:
-            msg: "Congradulations: /home is on a seperate partition"
+            msg: "Congratulations: /home is on a seperate partition"
         when: "'/home' in mount_names"
   when:
       - amazon2cis_rule_1_1_17
