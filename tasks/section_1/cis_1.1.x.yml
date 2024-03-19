@@ -153,7 +153,7 @@
 
       - name: "1.1.15 | PATCH | Ensure separate partition exists for /var/log | Message if present"
         debug:
-            msg: "Congradulations: /var/log is on a seperate partition"
+            msg: "Congratulations: /var/log is on a seperate partition"
         when: "'/var/log' in mount_names"
   when:
       - amazon2cis_rule_1_1_15
@@ -173,7 +173,7 @@
 
       - name: "1.1.16 | AUDIT | Ensure separate partition exists for /var/log/audit | Message if present"
         debug:
-            msg: "Congradulations: /var/log/audit is on a seperate partition"
+            msg: "Congratulations: /var/log/audit is on a seperate partition"
         when: "'/var/log/audit' in mount_names"
   when:
       - amazon2cis_rule_1_1_16
@@ -250,8 +250,6 @@
   shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
   changed_when: false
   failed_when: false
-  args:
-      warn: false
   when:
       - amazon2cis_rule_1_1_22
   tags:
