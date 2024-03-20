@@ -11,7 +11,8 @@
       - name: "1.1.2 | WARN | Ensure /tmp is configured | Absent"
         ansible.builtin.debug:
             msg: "Warning!! /tmp is configured to use fstab but does not exist"
-        when: amazon2_tmp_exists.stdout | length > 0
+        changed_when: true
+        when: amazon2_tmp_exists.stdout | length == 0
   when:
       - amazon2cis_rule_1_1_2
       - not amazon2cis_tmp_svc
