@@ -8,6 +8,9 @@
       masked: false
       state: reloaded
 
+- name: remount tmp
+  command: mount -o remount /tmp
+
 - name: remount dev_shm
   command: mount -o remount /dev/shm
 

@@ -34,7 +34,7 @@
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,{% if amazon2cis_rule_1_1_3 %}noexec,{% endif %}{% if amazon2cis_rule_1_1_4 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_5 %}nosuid{% endif %}
-  notify: Remount_tmp
+  notify: remount tmp
   loop: "{{ ansible_facts.mounts }}"
   loop_control:
       label: "{{ item.device }}"
