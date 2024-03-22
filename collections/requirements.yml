@@ -13,4 +13,3 @@ collections:
     - name: ansible.posix
       source: https://github.com/ansible-collections/ansible.posix
       type: git
-
