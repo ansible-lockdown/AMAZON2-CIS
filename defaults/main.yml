@@ -539,13 +539,13 @@ amazon2cis_ftp_server: false
 amazon2cis_ftp_mask: false
 amazon2cis_message_server: false  # This is for messaging dovecot and cyrus-imap
 amazon2cis_message_mask: false
-amazon2cis_nfs_server: true
+amazon2cis_nfs_server: false
 amazon2cis_nfs_mask: true
 amazon2cis_nis_server: true  # set to mask if nis client required
 amazon2cis_nis_mask: false
 amazon2cis_print_server: false  # replaces cups
 amazon2cis_print_mask: false
-amazon2cis_rpc_server: true
+amazon2cis_rpc_server: false
 amazon2cis_rpc_mask: true
 amazon2cis_rsync_server: false
 amazon2cis_rsync_mask: false
