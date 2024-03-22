@@ -760,7 +760,6 @@ amazon2cis_auditd_extra_conf: {}
 # amazon2cis_auditd_extra_conf:
 #     admin_space_left: '10%'
 
-
 # AIDE
 # aide setup via - cron, timer
 amazon2cis_aide_scan: cron
