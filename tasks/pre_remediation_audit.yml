@@ -34,7 +34,6 @@
   copy:
       src: "{{ audit_local_copy }}"
       dest: "{{ audit_conf_dir }}"
-      mode: 0644
   when:
       - audit_content == 'copy'
 
@@ -80,8 +79,6 @@
 - name: "Pre Audit | Run pre_remediation {{ benchmark }} audit"
   shell: "{{ audit_conf_dir }}/run_audit.sh -v {{ audit_vars_path }} -o {{ pre_audit_outfile }} -g {{ group_names }}"
   changed_when: true
-  vars:
-      warn: false
 
 - name: Pre Audit | Capture audit data if json format
   block:
