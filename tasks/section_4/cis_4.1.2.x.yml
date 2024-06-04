@@ -61,10 +61,10 @@
 #         register: amazon2cis_4_1_2_4_grub_cmdline_linux_settings
 
 #       - name: "4.1.2.4 | PATCH | Ensure audit_backlog_limit is sufficient | Set audit_backlog_limit if not configured"
-    lineinfile:
-        dest: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX(?:_DEFAULT)?)="(.*)( audit_backlog_limit={{ amazon2cis_audit_backlog_limit }})?(.*)"'
-        line: '\1="\2 audit_backlog_limit={{ amazon2cis_audit_backlog_limit }} \3"'
+  lineinfile:
+      dest: /etc/default/grub
+      regexp: '^(GRUB_CMDLINE_LINUX(?:_DEFAULT)?)="(.*)( audit_backlog_limit={{ amazon2cis_audit_backlog_limit }})?(.*)"'
+      line: '\1="\2 audit_backlog_limit={{ amazon2cis_audit_backlog_limit }} \3"'
         # regexp: '^GRUB_CMDLINE_LINUX='
         # line: 'GRUB_CMDLINE_LINUX="{{ amazon2cis_4_1_2_4_grub_cmdline_linux_settings.stdout }} audit_backlog_limit={{ amazon2cis_audit_backlog_limit }}"'
   notify: grub2cfg
