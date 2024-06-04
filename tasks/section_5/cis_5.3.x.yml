@@ -297,7 +297,7 @@
         lineinfile:
             path: /etc/ssh/sshd_config
             regexp: '^ClientAliveCountMax'
-            line: "ClientAliveCountMax 0"
+            line: "ClientAliveCountMax {{ amazon2cis_sshd['clientalivecountmax'] }}"
         notify: restart sshd
   when:
       - amazon2cis_rule_5_3_16
