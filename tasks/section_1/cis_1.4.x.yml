@@ -28,7 +28,7 @@
         lineinfile:
             dest: /usr/lib/systemd/system/rescue.service
             regexp: '/sbin/sulogin'
-            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
   when:
       - amazon2cis_rule_1_4_2
       - ansible_facts['distribution_major_version'] is version('2', '>=')

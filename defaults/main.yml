@@ -411,7 +411,7 @@ amazon2cis_ssh_loglevel: INFO
 # To conform to CIS standards this value nees to be 10 or less
 amazon2cis_ssh_maxsessions: 10
 amazon2cis_sshd:
-    # clientalivecountmax: 0
+    clientalivecountmax: 0
     # clientaliveinterval shoudl be between 1 and 900
     clientaliveinterval: 300
     ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
