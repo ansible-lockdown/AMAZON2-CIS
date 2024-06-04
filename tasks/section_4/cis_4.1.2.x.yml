@@ -64,7 +64,7 @@
   lineinfile:
       dest: /etc/default/grub
       regexp: '^(GRUB_CMDLINE_LINUX(?:_DEFAULT)?)="(.*)( audit_backlog_limit={{ amazon2cis_audit_backlog_limit }})?(.*)"'
-      line: '\1="\2 audit_backlog_limit={{ amazon2cis_audit_backlog_limit }} \3"'
+      line: '\1="\2 audit_backlog_limit={{ amazon2cis_audit_backlog_limit }}\3"'
       backrefs: true
         # regexp: '^GRUB_CMDLINE_LINUX='
         # line: 'GRUB_CMDLINE_LINUX="{{ amazon2cis_4_1_2_4_grub_cmdline_linux_settings.stdout }} audit_backlog_limit={{ amazon2cis_audit_backlog_limit }}"'

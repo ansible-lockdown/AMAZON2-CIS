@@ -51,7 +51,7 @@
   lineinfile:
       path: /etc/default/grub
       regexp: '^(GRUB_CMDLINE_LINUX(?:_DEFAULT)?)="(.*)( audit=1)?(.*)"'
-      line: '\1="\2 audit=1 \3"'
+      line: '\1="\2 audit=1\3"'
       backrefs: true
   notify: grub2cfg
         # when: "'audit=' not in amazon2cis_4_1_1_3_grub_cmdline_linux.stdout"
