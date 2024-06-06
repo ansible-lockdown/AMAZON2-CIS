@@ -76,7 +76,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 - Running Ansible/Tower setup (this role is tested against Ansible version 2.11.1 and newer)
 - Python3 Ansible run environment
-- python-def (should be included in RHEL/CentOS 7) - First task sets up the prerequisites (Tag pre-reqs)for python3 and python2 (where required)
+- python-def - First task sets up the prerequisites (Tag pre-reqs)for python3 and python2 (where required)
   - libselinux-python
   - python3-rpm (package used by py3 to use the rpm pkg)
   - jmespath
