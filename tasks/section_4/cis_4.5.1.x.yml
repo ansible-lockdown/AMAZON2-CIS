@@ -76,7 +76,7 @@
         loop: "{{ amazon2cis_4_5_1_2_max_days.stdout_lines }}"
         when:
             - amazon2cis_disruption_high
-            - (item != 'root') or (not amazon2cis_uses_root)
+            - item not in amazon2cis_user_skip_list
 
 - name: "4.5.1.3 | PATCH | Ensure password expiration warning days is 7 or more"
   when:

@@ -44,6 +44,10 @@ amazon2cis_disruption_high: true
 amazon2cis_level_1: true
 amazon2cis_level_2: true
 
+###
+### Settings for associated Audit role using Goss
+###
+
 ###########################################
 ### Goss is required on the remote host ###
 ### vars/auditd.yml for other settings  ###
@@ -709,7 +713,7 @@ amazon2cis_encryption: sha512
 amazon2cis_force_user_passwd_change: false
 # Accounts listed below will not have INACTIVE field set in shadow file
 
-# Allow synmic discovery of user accounts minimum and maximun from /etc/login.defs
+# Allow dynamic discovery of user accounts minimum and maximun from /etc/login.defs
 # findings will override the uid_min|max below
 amazon2cis_uid_info_dynamic: true
 amazon2cis_uid_min: 1000
@@ -718,6 +722,10 @@ amazon2cis_uid_max: 60000
 amazon2cis_inactive_whitelist:
     - root
     - vagrant
+
+## 4.5.1.2 Add users to be skipped if required
+amazon2cis_user_skip_list:
+    root
 
 amazon2cis_pass:
     max_days: 365
