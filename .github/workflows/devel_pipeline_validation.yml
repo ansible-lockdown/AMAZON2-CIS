@@ -56,6 +56,8 @@
 
           - name: Git clone the lockdown repository to test
             uses: actions/checkout@v4
+            with:
+              ref: ${{ github.event.pull_request.head.sha }}
 
           # Pull in terraform code for linux servers
           - name: Clone GitHub IaC plan
@@ -70,26 +72,25 @@
           - name: configure aws credentials
             uses: aws-actions/configure-aws-credentials@main
             with:
-              role-to-assume: arn:aws:iam::817651307868:role/Ansible_Lockdown_Environment
-              role-session-name: GitHub_to_AWS_via_FederatedOIDC
+              role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+              role-session-name: ${{ secrets.AWS_ROLE_SESSION }}
               aws-region: ${{ env.AWS_REGION }}
-
-          - name: Clone ${{ github.event.repository.name }}
-            uses: actions/checkout@v4
-            with:
-              ref: ${{ github.event.pull_request.head.sha }}
 
           - name: DEBUG - Show IaC files
             if: env.ENABLE_DEBUG == 'true'
             run: |
               echo "OSVAR = $OSVAR"
               echo "benchmark_type = $benchmark_type"
+              echo "PRIVSUBNET_ID = $AWS_PRIVSUBNET_ID"
+              echo "VPC_ID" = $AWS_VPC_SECGRP_ID"
               pwd
               ls
             env:
               # Imported from GitHub variables this is used to load the relevant OS.tfvars file
               OSVAR: ${{ vars.OSVAR }}
               benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+              PRIVSUBNET_ID: ${{ secrets.AWS_PRIVSUBNET_ID }}
+              VPC_ID: ${{ secrets.AWS_VPC_SECGRP_ID }}
 
           - name: Tofu init
             id: init
@@ -112,6 +113,8 @@
             env:
               OSVAR: ${{ vars.OSVAR }}
               TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+              TF_VAR_privsubnet_id: ${{ secrets.AWS_PRIVSUBNET_ID }}
+              TF_VAR_vpc_secgrp_id: ${{ secrets.AWS_VPC_SECGRP_ID }}
             run: tofu apply -var-file "${OSVAR}.tfvars" --auto-approve -input=false
 
 ## Debug Section
@@ -121,7 +124,7 @@
 
     # Aws deployments taking a while to come up insert sleep or playbook fails
 
-          - name: Sleep period of time
+          - name: Sleep to allow system to come up
             run: sleep ${{ vars.BUILD_SLEEPTIME }}
 
         # Run the Ansible playbook
@@ -131,7 +134,7 @@
               ANSIBLE_DEPRECATION_WARNINGS: "false"
               ANSIBLE_VERSION: "2.16.6"
             run: |
-              /opt/ansible_"${ANSIBLE_VERSION}"_venv/bin/ansible-playbook -i .github/workflows/hosts.yml --private-key ~/.ssh/le_runner site.yml
+              /opt/ansible_"${ANSIBLE_VERSION}"_venv/bin/ansible-playbook -i hosts.yml --private-key ~/.ssh/le_runner ../../../site.yml
 
         # Remove test system - User secrets to keep if necessary
 
@@ -140,4 +143,6 @@
             env:
               OSVAR: ${{ vars.OSVAR }}
               TF_VAR_benchmark_type: ${{ vars.BENCHMARK_TYPE }}
+              TF_VAR_privsubnet_id: ${{ secrets.AWS_PRIVSUBNET_ID }}
+              TF_VAR_vpc_secgrp_id: ${{ secrets.AWS_VPC_SECGRP_ID }}
             run: tofu destroy -var-file "${OSVAR}.tfvars" --auto-approve -input=false
