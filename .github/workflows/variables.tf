@@ -1,4 +1,4 @@
-i// Taken from the OSname.tfvars
+// Taken from the OSname.tfvars
 
 variable "aws_region" {
   description = "AWS region"
