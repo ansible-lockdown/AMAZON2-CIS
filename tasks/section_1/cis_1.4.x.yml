@@ -47,7 +47,7 @@
       - NIST800-53R5_CM-6b
   notify: Systemd_daemon_reload
   ansible.builtin.lineinfile:
-      dest: /etc/systemd/coredump.conf
+      path: /etc/systemd/coredump.conf
       regexp: ^ProcessSizeMax
       line: ProcessSizeMax=0
       create: true
@@ -64,7 +64,7 @@
       - coredump
   notify: Systemd_daemon_reload
   ansible.builtin.lineinfile:
-      dest: /etc/systemd/coredump.conf
+      path: /etc/systemd/coredump.conf
       regexp: ^Storage
       line: Storage=none
       create: true

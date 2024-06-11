@@ -68,7 +68,7 @@
         loop_control:
             label: "{{ item.id }}"
 
-      - name: "4.5.2.3 | PATCH | | Ensure system accounts are secured | Lock accounts"
+      - name: "4.5.2.3 | PATCH | Ensure system accounts are secured | Lock accounts"
         when:
             - item.id != "root"
             - item.id != "sync"
