@@ -65,7 +65,7 @@
   ansible.builtin.set_fact:
       update_audit_template: true
 
-- name: "5.2.3.6 | PATCH | Ensure use of privileged commands is collected"
+- name: "5.2.3.6 | AUDIT | Ensure use of privileged commands is collected"
   when:
       - amazon2cis_rule_5_2_3_6
   tags:
