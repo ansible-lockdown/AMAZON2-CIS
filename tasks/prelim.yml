@@ -1,35 +1,74 @@
 ---
+- name: Include audit specific variables
+  when:
+      - run_audit or audit_only
+      - setup_audit
+  tags:
+      - setup_audit
+      - run_audit
+  ansible.builtin.include_vars:
+      file: audit.yml
+
+- name: Include pre-remediation audit tasks
+  when:
+      - run_audit or audit_only
+      - setup_audit
+  tags:
+      - run_audit
+  ansible.builtin.import_tasks:
+      file: pre_remediation_audit.yml
+
 # Preliminary tasks that should always be run
 # List users in order to look files inside each home directory
-- include_tasks: parse_etc_password.yml
-  when:
-      - amazon2cis_section5 or
-        amazon2cis_section6
+- name: Parse etc password
+  ansible.builtin.import_tasks:
+      file: parse_etc_password.yml
+  tags:
+      - always
 
 - name: "PRELIM | List users accounts"
-  command: "awk -F: '{print $1}' /etc/passwd"
+  ansible.builtin.command: "awk -F: '{print $1}' /etc/passwd"
   changed_when: false
   check_mode: false
   register: users
 
 - name: "PRELIM | Gather accounts with empty password fields"
-  shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
+  ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
   check_mode: false
   register: empty_password_accounts
-  tags:
-      - skip_ansible_lint
 
 - name: "PRELIM | Gather UID 0 accounts other than root"
-  shell: "cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") {i++;print $1 } END {exit i}'"
+  ansible.builtin.shell: "cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") {i++;print $1 } END {exit i}'"
   changed_when: false
   check_mode: false
-  register: uid_zero_accounts_except_root
+  register: amazon2cis_uid_zero_accounts_except_root
+
+- name: "PRELIM | Gather interactive user ID min and max"
+  when:
+      - amazon2cis_uid_info_dynamic
   tags:
-      - skip_ansible_lint
+      - always
+  block:
+      - name: "PRELIM | Gather interactive user ID min"
+        ansible.builtin.shell: grep ^UID_MIN /etc/login.defs | awk '{print $2}'
+        changed_when: false
+        failed_when: false
+        register: amazon2cis_min_uid
+
+      - name: "PRELIM | Gather interactive user ID max"
+        ansible.builtin.shell: grep ^UID_MAX /etc/login.defs | awk '{print $2}'
+        changed_when: false
+        failed_when: false
+        register: amazon2cis_max_uid
+
+      - name: "PRELIM | Setting the fact"
+        ansible.builtin.set_fact:
+            amazon2cis_uid_min: "{{ amazon2cis_min_uid.stdout | string }}"
+            amazon2cis_uid_max: "{{ amazon2cis_max_uid.stdout | string }}"
 
 - name: "PRELIM | Check whether machine is UEFI-based"
-  stat:
+  ansible.builtin.stat:
       path: /sys/firmware/efi
   register: amazon2cis_efi_boot
 
@@ -37,7 +76,7 @@
   block:
 
       - name: "PRELIM | set fact if UEFI boot | Amazon Linux 2 "
-        set_fact:
+        ansible.builtin.set_fact:
             amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
             amazon2cis_legacy_boot: false
         when:
@@ -45,66 +84,166 @@
             - ansible_distribution == 'Amazon'
 
       - name: "PRELIM | set if not UEFI boot"
-        set_fact:
+        ansible.builtin.set_fact:
             amazon2cis_bootloader_file: /boot/grub2/grub.cfg
             amazon2cis_legacy_boot: true
         when: not amazon2cis_efi_boot.stat.exists
 
       - name: output bootloader and efi state
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "bootloader file set to {{ amazon2cis_bootloader_file }}"
                 - "legacy boot equals {{ amazon2cis_legacy_boot }}"
 
 - name: "PRELIM | Section 1.1 | Create list of mount points"
-  set_fact:
+  ansible.builtin.set_fact:
       mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
 
-- name: "PRELIM | Section 1.6 | SELinux"
+- name: "PRELIM | Section 1.5 | SELinux"
   block:
-      - name: "PRELIM | Section 1.6 | Ensure SELinux is installed"
-        package:
+      - name: "PRELIM | Section 1.5 | Ensure SELinux is installed"
+        ansible.builtin.package:
             name:
                 - libselinux
                 - policycoreutils-python
             state: present
 
-      - name: "PRELIM | Section 1.6 | Ensure firewalld_t is set to permissive"
-        shell: semanage permissive -a firewalld_t
+      - name: "PRELIM | Section 1.5 | Check current firewalld_t semanage state"
+        ansible.builtin.shell: semanage permissive -l | grep firewalld_t
+        changed_when: false
+        failed_when: false
+        register: firewalld_t_sestate
+
+      - name: "PRELIM | Section 1.5 | Ensure firewalld_t is set to permissive"
+        when: "'firewalld_t' not in firewalld_t_sestate.stdout"
+        ansible.builtin.shell: semanage permissive -a firewalld_t
   when:
       - not amazon2cis_selinux_disable
   vars:
       ansible_python_interpreter: /bin/python
 
-- name: "PRELIM | Section 4.1 | Configure System Accounting (auditd)"
-  package:
+- name: "PRELIM | Find all sudoers files."
+  when:
+      - amazon2cis_rule_4_3_4 or
+        amazon2cis_rule_4_3_5
+  tags:
+      - always
+  ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  register: amazon2cis_sudoers_files
+
+- name: "PRELIM | Section 5.2.x | Configure System Accounting (auditd)"
+  ansible.builtin.package:
       name: audit
       state: present
   vars:
       ansible_python_interpreter: /bin/python
 
-- name: "PRELIM | Section 5.1 | Configure cron"
-  package:
+- name: "PRELIM | 5.2.4.x | Ensure audit log files are mode 0640 or less permissive | discover file"
+  ansible.builtin.shell: "grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'"
+  changed_when: false
+  failed_when: audit_discovered_logfile.rc not in [0, 1]
+  register: audit_discovered_logfile
+  when:
+      - amazon2cis_rule_5_2_4_1
+      - amazon2cis_rule_5_2_4_2
+      - amazon2cis_rule_5_2_4_3
+      - amazon2cis_rule_5_2_4_4
+  tags:
+      - level2-server
+      - level2-workstation
+      - patch
+      - auditd
+      - rule_5.2.4.1
+      - rule_5.2.4.2
+      - rule_5.2.4.3
+      - rule_5.2.4.4
+
+- name: "PRELIM | 5.2.4.5/6/7 | Audit conf and rules files | list files"
+  ansible.builtin.find:
+      path: /etc/audit
+      file_type: file
+      recurse: true
+      patterns: '*.conf,*.rules'
+  register: auditd_conf_files
+  when:
+      - amazon2cis_rule_5_2_4_5 or
+        amazon2cis_rule_5_2_4_6 or
+        amazon2cis_rule_5_2_4_7
+  tags:
+      - level2-server
+      - level2-workstation
+      - patch
+      - auditd
+      - rule_5.2.4.5
+      - rule_5.2.4.6
+      - rule_5.2.4.7
+
+- name: "PRELIM | Section 4.1.1.x | Configure cron"
+  ansible.builtin.package:
       name: cronie
       state: present
   vars:
       ansible_python_interpreter: /bin/python
 
-### NOTE: You will need to adjust the UID range in parenthases below.
-### ALSO NOTE: We weed out any user with a home dir not in standard locations because interactive users shouldn't have those paths as a home dir. Add or removed directory paths as needed below.
-- name: "PRELIM | 6.2.8 | Gather local interactive user directories"
-  shell: "getent passwd {1000..65535} | cut -d: -f6 | sort -u | grep -v '/var/' | grep -v '/nonexistent/*' | grep -v '/run/*'"
+- name: "PRELIM | Interactive User accounts home directories"
+  tags:
+      - always
+  ansible.builtin.shell: >
+      grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '(!index($7, "sbin/nologin") && $7 != "/bin/false") { print $6 }'
   changed_when: false
-  failed_when: false
-  register: amazon2cis_6_2_8_getent
-  tags:
-      - skip_ansible_lint
-      - rule_6.2.8
+  register: interactive_users_home
 
-- name: "PRELIM | 6.2.8 | Set fact for home directory paths for interactive users"
-  set_fact:
-      amazon2cis_stig_interactive_homedir_results: "{{ amazon2cis_6_2_8_getent.stdout_lines }}"
+##### Optional #####
+
+- name: "PRELIM | Optional | If IPv6 disable to stop ssh listening"
   when:
-      - amazon2cis_6_2_8_getent.stdout_lines is defined
+      - amazon2cis_ipv6_sshd_disable
+      - not amazon2cis_ipv6_required
   tags:
-      - rule_6.2.8
+      - always
+  ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: ^AddressFamily
+      line: AddressFamily inet
+  notify: Restart_sshd
+
+- name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
+  when:
+      - amazon2cis_ipv6_chrony_disable
+      - not amazon2cis_ipv6_required
+  tags:
+      - always
+  notify: Restart_chronyd
+  block:
+      - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening | Check existence"
+        ansible.builtin.shell: grep -E "OPTIONS=.*-4" /etc/sysconfig/chronyd
+        changed_when: false
+        failed_when: chrony_ipv6_exists.rc not in [ 0, 1]
+        register: chrony_ipv6_exists
+
+      - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
+        when: chrony_ipv6_exists.stdout | length == 0
+        ansible.builtin.lineinfile:
+            backrefs: true
+            path: /etc/sysconfig/chronyd
+            regexp: ^OPTIONS="(.*)"
+            line: OPTIONS="\1 -4"
+
+# Optional extra keys to extend auditd not part of CIS but can influence a system
+# e.g. admin_space_left: '10%'
+
+- name: PRELIM | Optional | Configure other keys for auditd.conf
+  when:
+      - amazon2cis_auditd_extra_conf.keys() | length > 0
+      - amazon2cis_level_2
+  tags:
+      - always
+  ansible.builtin.lineinfile:
+      path: /etc/audit/auditd.conf
+      regexp: "^{{ item }}( |=)"
+      line: "{{ item }} = {{ amazon2cis_auditd_extra_conf[item] }}"
+  notify: Restart_auditd
+  loop: "{{ amazon2cis_auditd_extra_conf.keys() }}"
