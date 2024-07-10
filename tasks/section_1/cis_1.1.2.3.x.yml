@@ -25,7 +25,7 @@
 
 - name: |
          "1.1.2.3.2 | PATCH | Ensure nodev option set on /home partition
-          1.1.2.3.3 | PATCH | Ensure nosuid option set on /home partition
+          1.1.2.3.3 | PATCH | Ensure nosuid option set on /home partition"
   when:
       - item.mount == "/home"
       - amazon2cis_tmp_svc
