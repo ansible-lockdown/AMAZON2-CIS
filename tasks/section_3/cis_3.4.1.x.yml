@@ -1,0 +1,132 @@
+---
+
+- name: "3.4.1.1 | PATCH | Ensure iptables is installed"
+  when:
+      - amazon2cis_rule_3_4_1_1
+      - "'iptables' not in ansible_facts.packages"
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - iptables
+      - NIST800-53R5_CA-9
+      - rule_3.4.1.1
+  ansible.builtin.package:
+      name:
+          - iptables
+      state: present
+
+- name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use"
+  when:
+      - amazon2cis_rule_3_4_1_2
+  tags:
+      - level1-server
+      - level1-workstation
+      - patch
+      - firewalld
+      - iptables
+      - rule_3.4.1.2
+  block:
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
+        when:
+            - amazon2cis_system_firewall == "firewalld"
+            - amazon2cis_iptables == "mask"
+        ansible.builtin.systemd:
+            name: "{{ item }}"
+            masked: true
+            enabled: "{{ (item in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ (item in ansible_facts.packages) | ternary('stopped', omit) }}"
+        loop:
+            - iptables-services
+            - ip6tables-services
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
+        when:
+            - amazon2cis_system_firewall == "firewalld"
+            - amazon2cis_nftables == "mask"
+        ansible.builtin.systemd:
+            name: nftables
+            masked: true
+            enabled: "{{ ('nftables' in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ ('nftables' in ansible_facts.packages) | ternary('stopped', omit) }}"
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | iptables"
+        when:
+            - amazon2cis_system_firewall == "iptables"
+            - amazon2cis_nftables == "mask"
+        ansible.builtin.systemd:
+            name: nftables
+            masked: true
+            enabled: "{{ ('nftables' in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ ('nftables' in ansible_facts.packages) | ternary('stopped', omit) }}"
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | iptables"
+        when:
+            - amazon2cis_system_firewall == "iptables"
+            - amazon2cis_firewalld == "mask"
+        ansible.builtin.systemd:
+            name: firewalld
+            masked: true
+            enabled: "{{ ('firewalld' in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ ('firewalld' in ansible_facts.packages) | ternary('stopped', omit) }}"
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables"
+        when:
+            - amazon2cis_system_firewall == "nftables"
+            - amazon2cis_iptables == "mask"
+        ansible.builtin.systemd:
+            name: "{{ item }}"
+            masked: true
+            enabled: "{{ (item in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ (item in ansible_facts.packages) | ternary('stopped', omit) }}"
+        loop:
+            - iptables-services
+            - ip6tables-services
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | nftables"
+        when:
+            - amazon2cis_system_firewall == "nftables"
+            - amazon2cis_firewalld == "mask"
+        ansible.builtin.systemd:
+            name: firewalld
+            masked: true
+            enabled: "{{ ('firewalld' in ansible_facts.packages) | ternary(false, omit) }}"
+            state: "{{ ('firewalld' in ansible_facts.packages) | ternary('stopped', omit) }}"
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} package installed"
+        when: "amazon2cis_system_firewall not in ansible_facts.packages"
+        ansible.builtin.package:
+            name: "{{ amazon2cis_system_firewall }}"
+            state: present
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} started and enabled"
+        ansible.builtin.systemd:
+            name: "{{ amazon2cis_system_firewall }}"
+            enabled: true
+            state: started
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | remove nftables"
+        when:
+            - amazon2cis_system_firewall != "nftables"
+            - amazon2cis_nftables == "remove"
+        ansible.builtin.package:
+            name: nftables
+            state: absent
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | remove iptables"
+        when:
+            - amazon2cis_system_firewall != "iptables"
+            - amazon2cis_iptables == "remove"
+        ansible.builtin.package:
+            name:
+                - iptables-services
+                - ip6tables-services
+            state: absent
+
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | remove firewalld"
+        when:
+            - amazon2cis_system_firewall != "firewalld"
+            - amazon2cis_firewalld == "remove"
+        ansible.builtin.package:
+            name: firewalld
+            state: absent

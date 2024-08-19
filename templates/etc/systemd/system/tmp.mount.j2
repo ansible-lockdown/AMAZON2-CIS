@@ -15,7 +15,7 @@ After=swap.target
 What=tmpfs
 Where=/tmp
 Type=tmpfs
-Options=mode=1777,strictatime,{% if amazon2cis_rule_1_1_3 %}noexec,{% endif %}{% if amazon2cis_rule_1_1_4 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_5 %}nosuid{% endif %}
+Options=mode=1777,strictatime,{% if amazon2cis_rule_1_1_2_1_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_1_3 %}nosuid,{% endif %}{% if amazon2cis_rule_1_1_2_1_4 %}noexec{% endif %}
 
 # Make 'systemctl enable tmp.mount' work:
 [Install]

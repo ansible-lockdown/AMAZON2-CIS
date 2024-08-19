@@ -1,8 +1,8 @@
 .env
 *.log
 *.retry
-.vagrant
 .cache
+.vagrant
 tests/*redhat-subscription
 tests/Dockerfile
 *.iso
@@ -10,6 +10,9 @@ tests/Dockerfile
 packer_cache
 delete*
 ignore*
+test_inv
+# temp remove doc while this is built up
+doc/
 # VSCode
 .vscode
 
@@ -40,8 +43,13 @@ travis.env
 benchparse/
 *xccdf.xml
 *.retry
-test_inv
 
-# ignore refactr pipeline test conf
+# GitHub Action/Workflow files
 .github/
 
+# key types
+*.pem
+*.ppk
+*.key
+*.rsa
+*.ecdsa

@@ -1,23 +1,25 @@
 ---
+
 galaxy_info:
-    author: "DFed, George Nalen, Mark Bolwell"
+    author: "George Nalen, Mark Bolwell"
     description: "Apply the Amazon Linux 2 CIS controls"
     company: "MindPoint Group"
     license: MIT
     namespace: mindpointgroup
     role_name: amazon2_cis
-    min_ansible_version: 2.10.1
+    min_ansible_version: 2.11.1
     platforms:
-        - name: Amazon
+        - name: Amazon Linux
           versions:
-              - "2017.03"
-              - "2017.09"
+              - "2"
     galaxy_tags:
         - system
         - security
         - cis
         - hardening
-        - Amazon
+        - benchmark
+        - compliance
+        - amazonlinux
         - complianceascode
 collections:
     - community.general

@@ -25,7 +25,7 @@ resource "aws_security_group" "github_actions" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     from_port   = 80
     to_port     = 80
@@ -77,6 +77,6 @@ resource "local_file" "inventory" {
         setup_audit: true
         run_audit: true
         system_is_ec2: true
+        amazon2cis_rule_4_5_2_4: false  # Don't set root password
     EOF
 }
-

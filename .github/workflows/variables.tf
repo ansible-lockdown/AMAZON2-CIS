@@ -18,13 +18,9 @@ variable "instance_type" {
   type        = string
 }
 
-variable "instance_tags" {
-  description = "Tags to set for instances"
-  type        = map(string)
-}
-
 variable "ami_key_pair_name" {
   description = "Name of key pair in AWS thats used"
+  default     = "Lockdown_enterprise_workflow-sshkey"
   type        = string
 }
 
@@ -35,7 +31,7 @@ variable "ami_os" {
 
 variable "ami_id" {
   description = "AMI ID reference"
-  type = string
+  type        = string
 }
 
 variable "ami_username" {
@@ -50,27 +46,34 @@ variable "ami_user_home" {
 
 variable "namespace" {
   description = "Name used across all tags"
+  default     = "Lockdown_enterprise_workflow"
   type        = string
 }
 
 variable "environment" {
   description = "Env Name used across all tags"
   type        = string
+  default     = "Ansible_Lockdown_Environment"
 }
 
-// taken from github_vars.tfvars &
-
-variable "main_vpc_cidr" {
-  description = "Private cidr block to be used for vpc"
+variable "benchmark_os" {
+  description = "The benchmark OS thats being tested"
   type        = string
 }
 
-variable "public_subnets" {
-  description = "public subnet cidr block"
+variable "benchmark_type" {
+  description = "The benchmark OS thats being tested"
   type        = string
 }
 
-variable "private_subnets" {
-  description = "private subnet cidr block"
+variable "vpc_secgrp_id" {
+  description = "The id of the vpc security group for the runner"
   type        = string
+  sensitive   = true
+}
+
+variable "privsubnet_id" {
+  description = "The id of the private subnet for the runner vpc"
+  type        = string
+  sensitive   = true
 }
