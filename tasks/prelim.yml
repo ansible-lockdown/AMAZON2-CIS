@@ -208,7 +208,7 @@
       path: /etc/ssh/sshd_config
       regexp: ^AddressFamily
       line: AddressFamily inet
-  notify: Restart_sshd
+  notify: restart sshd
 
 - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
   when:
