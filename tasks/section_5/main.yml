@@ -39,3 +39,4 @@
 - name: "SECTION | 5.3.x | Aide"
   ansible.builtin.import_tasks:
       file: cis_5.3.x.yml
+  when: amazon2cis_config_aide
