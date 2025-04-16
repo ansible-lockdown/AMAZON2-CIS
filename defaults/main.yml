@@ -12,7 +12,7 @@ amazon2cis_section6: true
 ## This is used for python3 Installations where python2 OS modules are used in ansible
 python2_bin: /bin/python2.7
 
-## Benchmark name used by audting control role
+## Benchmark name used by auditing control role
 # The audit variable found at the base
 benchmark: AMAZON2-CIS
 benchmark_version: v3.0.0
@@ -20,7 +20,7 @@ benchmark_version: v3.0.0
 ## Ability to skip the os check
 os_check: true
 
-# Ability to stop reboot from occuring until convenient
+# Ability to stop reboot from occurring until convenient
 # set to true if ok to reboot
 skip_reboot: false
 
@@ -37,7 +37,7 @@ amazon2cis_selinux_pol: targeted
 amazon2cis_skip_for_travis: false
 system_is_ec2: true
 
-# Some tasks can have a signifcant impact on a system ensure you agree
+# Some tasks can have a significant impact on a system ensure you agree
 amazon2cis_disruption_high: true
 
 # Used for audit purposed only
@@ -67,7 +67,7 @@ audit_only: false
 
 # How to retrieve audit binary
 # Options are copy or download - detailed settings at the bottom of this file
-# you will need to access to either github or the file already dowmloaded
+# you will need to access to either github or the file already downloaded
 get_audit_binary_method: download
 
 ## if get_audit_binary_method - copy the following needs to be updated for your environment
@@ -97,7 +97,7 @@ audit_log_dir: '/opt'
 fetch_audit_output: false
 
 # Method of getting,uploading the summary files
-## Ensure access and permissions are avaiable for these to occur.
+## Ensure access and permissions are available for these to occur.
 ## options are
 # fetch - fetches from server and moves to location on the ansible controller (could be a mount point available to controller)
 # copy - copies file to a location available to the managed node
@@ -105,7 +105,6 @@ audit_output_collection_method: fetch
 
 # Location to put the audit files
 audit_output_destination: /opt/audit_summaries/
-
 
 ### Goss Settings ##
 ####### END ########
@@ -248,7 +247,7 @@ amazon2cis_rule_2_3_5: true
 ## Section 3 rules
 ##
 # Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
-# ipv6, bluettoth and wireless
+# ipv6, bluetooth and wireless
 amazon2cis_rule_3_1_1: true
 amazon2cis_rule_3_1_2: true
 amazon2cis_rule_3_1_3: true
@@ -646,7 +645,7 @@ amazon2cis_nft_tables_autochaincreate: false
 ## Can be VERBOSE or INFO
 amazon2cis_ssh_loglevel: INFO
 # amazon2cis_ssh_maxsessions is the max number of sessions
-# To conform to CIS standards this value nees to be 10 or less
+# To conform to CIS standards this value needs to be 10 or less
 
 amazon2cis_sshd:
     clientalivecountmax: 3
@@ -694,7 +693,7 @@ amazon2cis_pwquality_difok: 2  # 2 or more required
 amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
 amazon2cis_pwquality_maxsequence: 3  # 3 or less not 0 required
 amazon2cis_pwquality_minlen: 14  # 14 or more required
-# Setting minclass true - mincalls used instead of seperated values
+# Setting minclass true - mincalls used instead of separated values
 amazon2cis_pwquality_minclass: true
 amazon2cis_pwquality_minclass_value: '4'  # Not less than 4
 amazon2cis_pwquality:
@@ -718,7 +717,7 @@ amazon2cis_encryption: sha512
 amazon2cis_force_user_passwd_change: false
 # Accounts listed below will not have INACTIVE field set in shadow file
 
-# Allow dynamic discovery of user accounts minimum and maximun from /etc/login.defs
+# Allow dynamic discovery of user accounts minimum and maximum from /etc/login.defs
 # findings will override the uid_min|max below
 amazon2cis_uid_info_dynamic: true
 amazon2cis_uid_min: 1000
