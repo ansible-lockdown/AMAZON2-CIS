@@ -27,6 +27,10 @@ skip_reboot: false
 # Change to false if using EFI boot changes 1.1.1.4 to stop vfat
 amazon2cis_legacy_boot: true
 
+# Create managed not custom local_facts files
+create_benchmark_facts: true
+ansible_facts_path: /etc/ansible/facts.d
+
 # SELinux policy
 # Enable/Disable SELinux
 amazon2cis_selinux_disable: false
@@ -34,7 +38,6 @@ amazon2cis_selinux_state: enforcing
 amazon2cis_selinux_pol: targeted
 
 # Misc. environment variables
-amazon2cis_skip_for_travis: false
 system_is_ec2: true
 
 # Some tasks can have a significant impact on a system ensure you agree
