@@ -1,8 +1,6 @@
 ---
-
 - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords"
-  when:
-      - amazon2cis_rule_6_2_1
+  when: amazon2cis_rule_6_2_1
   tags:
       - level1-server
       - level1-workstation
@@ -12,7 +10,7 @@
       - rule_6.2.1
       - user_accounts
   vars:
-      warn_control_id: '6.2.1'
+      warn_control_id: "6.2.1"
   block:
       - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords"
         ansible.builtin.shell: awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
@@ -33,8 +31,7 @@
             file: warning_facts.yml
 
 - name: "6.2.2 | PATCH | Ensure /etc/shadow password fields are not empty"
-  when:
-      - amazon2cis_rule_6_2_2
+  when: amazon2cis_rule_6_2_2
   tags:
       - level1-server
       - level1-workstation
@@ -56,12 +53,10 @@
         ansible.builtin.user:
             name: "{{ item }}"
             password_lock: true
-        loop:
-            - "{{ amazon2cis_6_2_2_empty_password_acct.stdout_lines }}"
+        loop: "{{ amazon2cis_6_2_2_empty_password_acct.stdout_lines }}"
 
 - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group"
-  when:
-      - amazon2cis_rule_6_2_3
+  when: amazon2cis_rule_6_2_3
   tags:
       - level1-server
       - level1-workstation
@@ -75,7 +70,7 @@
       - NIST800-53R5_IA-5
       - groups
   vars:
-      warn_control_id: '6.2.3'
+      warn_control_id: "6.2.3"
   block:
       - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Check /etc/passwd entries"
         ansible.builtin.shell: pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
@@ -87,7 +82,7 @@
       - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Print warning about users with invalid GIDs missing GID entries in /etc/group"
         when: amazon2cis_6_2_3_passwd_gid_check.stdout | length > 0
         ansible.builtin.debug:
-            msg: "Warning!! The following users have non-existent GIDs (Groups): {{ amazon2cis_6_2_3_passwd_gid_check.stdout_lines | join (', ') }}"
+            msg: "Warning!! The following users have non-existent GIDs (Groups): {{ amazon2cis_6_2_3_passwd_gid_check.stdout_lines | join(', ') }}"
 
       - name: "6.2.3 | WARN | Ensure all groups in /etc/passwd exist in /etc/group | warn_count"
         when: amazon2cis_6_2_3_passwd_gid_check.stdout | length > 0
@@ -95,8 +90,7 @@
             file: warning_facts.yml
 
 - name: "6.2.4 | AUDIT | Ensure no duplicate UIDs exist"
-  when:
-      - amazon2cis_rule_6_2_4
+  when: amazon2cis_rule_6_2_4
   tags:
       - level1-server
       - level1-workstation
@@ -110,7 +104,7 @@
       - rule_6.2.4
       - user
   vars:
-      warn_control_id: '6.2.4'
+      warn_control_id: "6.2.4"
   block:
       - name: "6.2.4 | AUDIT | Ensure no duplicate UIDs exist | Check for duplicate UIDs"
         ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd"
@@ -130,8 +124,7 @@
             file: warning_facts.yml
 
 - name: "6.2.5 | AUDIT | Ensure no duplicate GIDs exist"
-  when:
-      - amazon2cis_rule_6_2_5
+  when: amazon2cis_rule_6_2_5
   tags:
       - level1-server
       - level1-workstation
@@ -145,7 +138,7 @@
       - rule_6.2.5
       - groups
   vars:
-      warn_control_id: '6.2.5'
+      warn_control_id: "6.2.5"
   block:
       - name: "6.2.5 | AUDIT | Ensure no duplicate GIDs exist | Check for duplicate GIDs"
         ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group"
@@ -165,10 +158,7 @@
             file: warning_facts.yml
 
 - name: "6.2.6 | AUDIT | Ensure no duplicate user names exist"
-  vars:
-      warn_control_id: '6.2.6'
-  when:
-      - amazon2cis_rule_6_2_6
+  when: amazon2cis_rule_6_2_6
   tags:
       - level1-server
       - level1-workstation
@@ -181,6 +171,8 @@
       - NIST800-53R5_CM-7
       - NIST800-53R5_IA-5
       - user
+  vars:
+      warn_control_id: "6.2.6"
   block:
       - name: "6.2.6 | AUDIT | Ensure no duplicate user names exist | Check for duplicate User Names"
         ansible.builtin.shell: "pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd"
@@ -200,8 +192,7 @@
             file: warning_facts.yml
 
 - name: "6.2.7 | AUDIT | Ensure no duplicate group names exist"
-  when:
-      - amazon2cis_rule_6_2_7
+  when: amazon2cis_rule_6_2_7
   tags:
       - level1-server
       - level1-workstation
@@ -215,10 +206,10 @@
       - rule_6.2.7
       - groups
   vars:
-      warn_control_id: '6.2.7'
+      warn_control_id: "6.2.7"
   block:
       - name: "6.2.7 | AUDIT | Ensure no duplicate group names exist | Check for duplicate group names"
-        ansible.builtin.shell: 'getent passwd | cut -d: -f1 | sort -n | uniq -d'
+        ansible.builtin.shell: "getent passwd | cut -d: -f1 | sort -n | uniq -d"
         changed_when: false
         failed_when: false
         check_mode: false
@@ -235,8 +226,7 @@
             file: warning_facts.yml
 
 - name: "6.2.8 | PATCH | Ensure root PATH Integrity"
-  when:
-      - amazon2cis_rule_6_2_8
+  when: amazon2cis_rule_6_2_8
   tags:
       - level1-server
       - level1-workstation
@@ -294,7 +284,7 @@
                   state: directory
                   owner: root
                   group: root
-                  mode: '0755'
+                  mode: "0755"
                   follow: false
               loop: "{{ root_path_perms.results }}"
               loop_control:
@@ -316,14 +306,13 @@
       - NIST800-53R5_CM-7
       - NIST800-53R5_IA-5
       - rule_6.2.9
-  ansible.builtin.shell: passwd -l {{ item }}
+  ansible.builtin.command: passwd -l {{ item }}
   changed_when: false
   failed_when: false
   loop: "{{ amazon2cis_uid_zero_accounts_except_root.stdout_lines }}"
 
 - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist"
-  when:
-      - amazon2cis_rule_6_2_10
+  when: amazon2cis_rule_6_2_10
   tags:
       - level1-server
       - level1-workstation
@@ -336,14 +325,14 @@
       - NIST800-53R5_IA-5
       - rule_6.2.10
   block:
-      - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Create dir if absent"
+      - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Create dir if absent"  # noqa risky-file-permissions
         ansible.builtin.file:
             path: "{{ item.dir }}"
             state: directory
             owner: "{{ item.id }}"
             group: "{{ item.gid }}"
         register: amazon2cis_6_2_10_home_dir
-        loop: "{{ amazon2cis_passwd  | selectattr('uid', '>=', amazon2cis_min_uid | int ) | selectattr('uid', '<=', amazon2cis_max_uid | int ) | list }}"
+        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int) | selectattr('uid', '<=', amazon2cis_max_uid | int) | list }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -362,7 +351,7 @@
         loop_control:
             label: "{{ item }}"
 
-      - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | own their home directories"
+      - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | own their home directories"  # noqa risky-file-permissions
         when:
             - item.uid >= amazon2cis_min_uid | int
             - item.id != 'nobody'
@@ -372,7 +361,7 @@
             path: "{{ item.dir }}"
             owner: "{{ item.id }}"
             state: directory
-        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int ) | selectattr('uid', '<=', amazon2cis_max_uid | int ) | list }}"
+        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int) | selectattr('uid', '<=', amazon2cis_max_uid | int) | list }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -412,7 +401,7 @@
       - rule_6.2.11
       - user
   vars:
-      warn_control_id: '6.2.11'
+      warn_control_id: "6.2.11"
   block:
       - name: "6.2.11 | AUDIT | Ensure local interactive user dot files access is configured | Check for files"
         ansible.builtin.shell: find /home/ -name "\.*" -perm /g+w,o+w
@@ -441,6 +430,6 @@
             - amazon2cis_6_2_11_audit.stdout | length > 0
             - amazon2cis_dotperm_ansiblemanaged
         ansible.builtin.file:
-            path: '{{ item }}'
+            path: "{{ item }}"
             mode: go-w
-        with_items: "{{ amazon2cis_6_2_11_audit.stdout_lines }}"
+        loop: "{{ amazon2cis_6_2_11_audit.stdout_lines }}"

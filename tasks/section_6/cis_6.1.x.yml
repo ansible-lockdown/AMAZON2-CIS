@@ -249,7 +249,7 @@
       warn_control_id: '6.1.12'
   block:
       - name: "6.1.12 | AUDIT | Ensure no ungrouped files or directories exist | Get ungrouped files or directories"
-        ansible.builtin.shell: find {{ item.mount }} -xdev -nogroup -not -fstype nfs
+        ansible.builtin.command: find {{ item.mount }} -xdev -nogroup -not -fstype nfs
         changed_when: false
         failed_when: false
         check_mode: false
@@ -305,7 +305,7 @@
       warn_control_id: '6.1.13'
   block:
       - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find SUID executables"
-        ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -4000 -not -fstype nfs
+        ansible.builtin.command: find {{ item.mount }} -xdev -type f -perm -4000 -not -fstype nfs
         changed_when: false
         failed_when: false
         check_mode: false
@@ -315,7 +315,7 @@
             label: "{{ item.mount }}"
 
       - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables"
-        ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -2000 -not -fstype nfs
+        ansible.builtin.command: find {{ item.mount }} -xdev -type f -perm -2000 -not -fstype nfs
         changed_when: false
         failed_when: false
         check_mode: false
@@ -400,8 +400,8 @@
   vars:
       warn_control_id: '6.1.14'
   block:
-      - name: "6.1.14 | AUDIT | Audit system file permissions | Audit the packages"
-        ansible.builtin.shell: rpm -Va --nomtime --nosize --nomd5 --nolinkto
+      - name: "6.1.14 | AUDIT | Audit system file permissions | Audit the packages"  # noqa: command-instead-of-module
+        ansible.builtin.command: rpm -Va --nomtime --nosize --nomd5 --nolinkto
         changed_when: false
         failed_when: false
         register: amazon2cis_6_1_14_packages_rpm

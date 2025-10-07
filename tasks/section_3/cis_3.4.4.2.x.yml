@@ -157,8 +157,8 @@
       - iptables
       - NIST800-53R5_CA-9
   block:
-      - name: "3.4.4.2.5 | Ensure iptables rules are saved "
-        ansible.builtin.shell: service iptables save
+      - name: "3.4.4.2.5 | Ensure iptables rules are saved"  # noqa: command-instead-of-module
+        ansible.builtin.command: service iptables save
         changed_when: amazon2cis_iptables_save.rc == 0
         failed_when: amazon2cis_iptables_save.rc != 0
         register: amazon2cis_iptables_save

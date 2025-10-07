@@ -72,9 +72,8 @@
       path: /sys/firmware/efi
   register: amazon2cis_efi_boot
 
-- name: set bootloader type
+- name: Set bootloader type
   block:
-
       - name: "PRELIM | set fact if UEFI boot | Amazon Linux 2 "
         ansible.builtin.set_fact:
             amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
@@ -89,7 +88,7 @@
             amazon2cis_legacy_boot: true
         when: not amazon2cis_efi_boot.stat.exists
 
-      - name: output bootloader and efi state
+      - name: PRELIM | Output bootloader and efi state
         ansible.builtin.debug:
             msg:
                 - "bootloader file set to {{ amazon2cis_bootloader_file }}"
@@ -100,6 +99,10 @@
       mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
 
 - name: "PRELIM | Section 1.5 | SELinux"
+  when:
+      - not amazon2cis_selinux_disable
+  vars:
+      ansible_python_interpreter: /bin/python
   block:
       - name: "PRELIM | Section 1.5 | Ensure SELinux is installed"
         ansible.builtin.package:
@@ -116,11 +119,8 @@
 
       - name: "PRELIM | Section 1.5 | Ensure firewalld_t is set to permissive"
         when: "'firewalld_t' not in firewalld_t_sestate.stdout"
-        ansible.builtin.shell: semanage permissive -a firewalld_t
-  when:
-      - not amazon2cis_selinux_disable
-  vars:
-      ansible_python_interpreter: /bin/python
+        ansible.builtin.command: semanage permissive -a firewalld_t
+        changed_when: true
 
 - name: "PRELIM | Find all sudoers files."
   when:
