@@ -44,6 +44,7 @@
 
 - name: Rebuild_grub
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
+  changed_when: true
 
 - name: Restart_postfix
   ansible.builtin.service:
@@ -80,7 +81,7 @@
       state: restarted
 
 - name: Auditd_immutable_check
-  ansible.builtin.shell: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
+  ansible.builtin.command: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
   changed_when: false
   register: auditd_immutable_check
 
@@ -91,19 +92,11 @@
   when:
       - auditd_immutable_check.stdout == '1'
 
-- name: Restart_auditd
-  ansible.builtin.shell: /sbin/service auditd restart
+- name: Restart_auditd  # noqa: command-instead-of-module
+  ansible.builtin.command: /sbin/service auditd restart
+  changed_when: true
 
-- name: grub2cfg
-  ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
-  notify: Change_requires_reboot
-
-- name: restart rsyslog
-  ansible.builtin.service:
-      name: rsyslog
-      state: restarted
-
-- name: restart sshd
+- name: Restart sshd
   ansible.builtin.service:
       name: sshd
       state: restarted
