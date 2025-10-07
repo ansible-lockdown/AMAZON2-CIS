@@ -170,8 +170,8 @@
       - ip6tables
       - NIST800-53R5_CA-9
   block:
-      - name: "3.4.4.3.5 | Ensure ip6tables rules are saved "
-        ansible.builtin.shell: service ip6tables save
+      - name: "3.4.4.3.5 | Ensure ip6tables rules are saved" # noqa: command-instead-of-module
+        ansible.builtin.command: service ip6tables save
         changed_when: amazon2cis_ip6tables_save.rc == 0
         failed_when: amazon2cis_ip6tables_save.rc != 0
         register: amazon2cis_ip6tables_save

@@ -81,7 +81,7 @@
   notify: Restart_rsyslog
   block:
       - name: "5.1.1.5 | AUDIT | Ensure logging is configured | rsyslog current config message out"
-        ansible.builtin.shell: cat /etc/rsyslog.conf
+        ansible.builtin.command: cat /etc/rsyslog.conf
         changed_when: false
         failed_when: false
         check_mode: false

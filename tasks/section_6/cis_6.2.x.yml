@@ -87,7 +87,7 @@
       - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Print warning about users with invalid GIDs missing GID entries in /etc/group"
         when: amazon2cis_6_2_3_passwd_gid_check.stdout | length > 0
         ansible.builtin.debug:
-            msg: "Warning!! The following users have non-existent GIDs (Groups): {{ amazon2cis_6_2_3_passwd_gid_check.stdout_lines | join (', ') }}"
+            msg: "Warning!! The following users have non-existent GIDs (Groups): {{ amazon2cis_6_2_3_passwd_gid_check.stdout_lines | join(', ') }}"
 
       - name: "6.2.3 | WARN | Ensure all groups in /etc/passwd exist in /etc/group | warn_count"
         when: amazon2cis_6_2_3_passwd_gid_check.stdout | length > 0
@@ -316,7 +316,7 @@
       - NIST800-53R5_CM-7
       - NIST800-53R5_IA-5
       - rule_6.2.9
-  ansible.builtin.shell: passwd -l {{ item }}
+  ansible.builtin.command: passwd -l {{ item }}
   changed_when: false
   failed_when: false
   loop: "{{ amazon2cis_uid_zero_accounts_except_root.stdout_lines }}"
@@ -343,7 +343,7 @@
             owner: "{{ item.id }}"
             group: "{{ item.gid }}"
         register: amazon2cis_6_2_10_home_dir
-        loop: "{{ amazon2cis_passwd  | selectattr('uid', '>=', amazon2cis_min_uid | int ) | selectattr('uid', '<=', amazon2cis_max_uid | int ) | list }}"
+        loop: "{{ amazon2cis_passwd  | selectattr( 'uid', '>=', amazon2cis_min_uid | int ) | selectattr( 'uid', '<=', amazon2cis_max_uid | int ) | list }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -372,7 +372,7 @@
             path: "{{ item.dir }}"
             owner: "{{ item.id }}"
             state: directory
-        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int ) | selectattr('uid', '<=', amazon2cis_max_uid | int ) | list }}"
+        loop: "{{ amazon2cis_passwd | selectattr( 'uid', '>=', amazon2cis_min_uid | int ) | selectattr( 'uid', '<=', amazon2cis_max_uid | int ) | list }}"
         loop_control:
             label: "{{ item.id }}"
 

@@ -93,13 +93,13 @@
             enabled: "{{ ('firewalld' in ansible_facts.packages) | ternary(false, omit) }}"
             state: "{{ ('firewalld' in ansible_facts.packages) | ternary('stopped', omit) }}"
 
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} package installed"
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} package installed"  # noqa: name[template]
         when: "amazon2cis_system_firewall not in ansible_facts.packages"
         ansible.builtin.package:
             name: "{{ amazon2cis_system_firewall }}"
             state: present
 
-      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} started and enabled"
+      - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | {{ amazon2cis_system_firewall }} started and enabled"  # noqa: name[template]
         ansible.builtin.systemd:
             name: "{{ amazon2cis_system_firewall }}"
             enabled: true

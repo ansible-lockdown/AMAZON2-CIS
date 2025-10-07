@@ -33,9 +33,11 @@
   block:
       - name: "3.4.3.2 | PATCH | Ensure iptables are flushed | Flush IPv4 tables"
         ansible.builtin.command: iptables -F
+        changed_when: true
 
       - name: "3.4.3.2 | PATCH | Ensure iptables are flushed | Flush IPv6 tables"
         ansible.builtin.command: ip6tables -F
+        changed_when: true
         when:
             - amazon2cis_ipv6_required
 
@@ -83,6 +85,7 @@
 
       - name: "3.4.3.3 | PATCH | Ensure an nftables table exists | Create table if needed"
         ansible.builtin.command: nft create table inet "{{ amazon2cis_nft_tables_tablename }}"
+        changed_when: true
         failed_when: false
         when:
             - amazon2cis_nft_tables_autoNewTable
@@ -140,6 +143,7 @@
         when:
             - amazon2cis_nft_tables_autochaincreate
         ansible.builtin.command: "{{ item }}"
+        changed_when: true
         failed_when: false
         with_items:
             - nft create chain inet "{{ amazon2cis_nft_tables_tablename }}" input { type filter hook input priority 0 \; }
@@ -178,16 +182,19 @@
 
       - name: "3.4.3.5 | PATCH | Ensure nftables loopback traffic is configured | Set iif lo accept rule"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input iif lo accept
+        changed_when: true
         when:
             - '"iif \"lo\" accept" not in amazon2cis_3_4_3_5_iiflo.stdout'
 
       - name: "3.4.3.5 | PATCH | Ensure nftables loopback traffic is configured | Set ip sddr rule"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input ip saddr 127.0.0.0/8 counter drop
+        changed_when: true
         when:
             - '"ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop" not in amazon2cis_3_4_3_5_ipsaddr.stdout'
 
       - name: "3.4.3.5 | PATCH | Ensure nftables loopback traffic is configured | Set ip6 saddr rule"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input ip6 saddr ::1 counter drop
+        changed_when: true
         when:
             - '"ip6 saddr ::1 counter packets 0 bytes 0 drop" not in amazon2cis_3_4_3_5_ip6saddr.stdout'
 
@@ -217,31 +224,37 @@
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add input tcp established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input ip protocol tcp ct state established accept
+        changed_when: true
         when:
             - '"ip protocol tcp ct state established accept" not in amazon2cis_3_4_3_6_inconnectionrule.stdout'
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add input udp established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input ip protocol udp ct state established accept
+        changed_when: true
         when:
             - '"ip protocol udp ct state established accept" not in amazon2cis_3_4_3_6_inconnectionrule.stdout'
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add input icmp established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input ip protocol icmp ct state established accept
+        changed_when: true
         when:
             - '"ip protocol icmp ct state established accept" not in amazon2cis_3_4_3_6_inconnectionrule.stdout'
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add output tcp new, related, established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" output ip protocol tcp ct state new,related,established accept
+        changed_when: true
         when:
             - '"ip protocol tcp ct state established,related,new accept" not in amazon2cis_3_4_3_6_outconnectionrule.stdout'
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add output udp new, related, established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" output ip protocol udp ct state new,related,established accept
+        changed_when: true
         when:
             - '"ip protocol udp ct state established,related,new accept" not in amazon2cis_3_4_3_6_outconnectionrule.stdout'
 
       - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured | Add output icmp new, related, established accpet policy"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" output ip protocol icmp ct state new,related,established accept
+        changed_when: true
         when:
             - '"ip protocol icmp ct state established,related,new accept" not in amazon2cis_3_4_3_6_outconnectionrule.stdout'
 
@@ -283,21 +296,25 @@
 
       - name: "3.4.3.7 | PATCH | Ensure nftables default deny firewall policy | Enable SSH traffic"
         ansible.builtin.command: nft add rule inet "{{ amazon2cis_nft_tables_tablename }}" input tcp dport ssh accept
+        changed_when: true
         when:
             - '"tcp dport ssh accept" not in amazon2cis_3_4_3_7_sshallowcheck.stdout'
 
       - name: "3.4.3.7 | PATCH | Ensure nftables default deny firewall policy | Set hook input deny policy"
         ansible.builtin.command: nft chain inet "{{ amazon2cis_nft_tables_tablename }}" input { policy drop \; }
+        changed_when: true
         when:
             - '"type filter hook input priority 0; policy drop;" not in amazon2cis_3_4_3_7_inputpolicy.stdout'
 
       - name: "3.4.3.7 | PATCH | Ensure nftables default deny firewall policy | Create hook forward deny policy"
         ansible.builtin.command: nft chain inet "{{ amazon2cis_nft_tables_tablename }}" forward { policy drop \; }
+        changed_when: true
         when:
             - '"type filter hook forward priority 0; policy drop;" not in amazon2cis_3_4_3_7_forwardpolicy.stdout'
 
       - name: "3.4.3.7 | PATCH | Ensure nftables default deny firewall policy | Create hook output deny policy"
         ansible.builtin.command: nft chain inet "{{ amazon2cis_nft_tables_tablename }}" output { policy drop \; }
+        changed_when: true
         when:
             - '"type filter hook output priority 0; policy drop;" not in amazon2cis_3_4_3_7_outputpolicy.stdout'
 
