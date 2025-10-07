@@ -9,31 +9,31 @@ ignore: |
     *molecule.yml
 rules:
   braces:
-    max-spaces-inside: 1
-    level: error
+      max-spaces-inside: 1
+      level: error
   brackets:
-    max-spaces-inside: 1
-    level: error
+      max-spaces-inside: 1
+      level: error
   comments:
-    ignore-shebangs: true
-    min-spaces-from-content: 1 # prettier compatibility
+      ignore-shebangs: true
+      min-spaces-from-content: 1 # prettier compatibility
   comments-indentation: false
   empty-lines:
-    max: 1
+      max: 1
   indentation:
-    # Requiring 2 space indentation
-    spaces: 4
-    # Requiring consistent indentation within a file, either indented or not
-    indent-sequences: consistent
+      # Requiring 2 space indentation
+      spaces: 4
+      # Requiring consistent indentation within a file, either indented or not
+      indent-sequences: consistent
   key-duplicates: enable
   line-length: disable
   new-line-at-end-of-file: enable
   new-lines:
-    type: unix
+      type: unix
   octal-values:
-    forbid-implicit-octal: true # yamllint defaults to false
-    forbid-explicit-octal: true
+      forbid-implicit-octal: true # yamllint defaults to false
+      forbid-explicit-octal: true
   trailing-spaces: enable
   truthy:
-    allowed-values: ['true', 'false']
-    check-keys: true
+      allowed-values: ['true', 'false']
+      check-keys: true
