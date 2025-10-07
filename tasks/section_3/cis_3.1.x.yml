@@ -51,7 +51,7 @@
       - rule_3.1.2
       - wireless
   block:
-      - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if nmcli command is available"
+      - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if nmcli command is available"  # noqa: command-instead-of-module
         ansible.builtin.command: rpm -q NetworkManager
         changed_when: false
         failed_when: false
@@ -68,6 +68,7 @@
 
       - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled | Disable wifi if enabled"
         ansible.builtin.command: nmcli radio wifi off
+        changed_when: true
         when:
             - amazon2_3_2_1_wifi_enabled.stdout is defined
             - "'enabled' in amazon2_3_2_1_wifi_enabled.stdout"
