@@ -79,15 +79,6 @@
       name: systemd-journal-upload
       state: restarted
 
-- name: update auditd
-  ansible.builtin.template:
-      src: audit/99_auditd.rules.j2
-      dest: /etc/audit/rules.d/99_auditd.rules
-      owner: root
-      group: root
-      mode: 0600
-  notify: Restart_auditd
-
 - name: Auditd_immutable_check
   ansible.builtin.shell: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
   changed_when: false
