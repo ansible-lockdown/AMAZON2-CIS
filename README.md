@@ -9,58 +9,56 @@
 ## Public Repository 📣
 
 ![Org Stars](https://img.shields.io/github/stars/ansible-lockdown?label=Org%20Stars&style=social)
-![Stars](https://img.shields.io/github/stars/ansible-lockdown/AL2-CIS?label=Repo%20Stars&style=social)
-![Forks](https://img.shields.io/github/forks/ansible-lockdown/AL2-CIS?style=social)
+![Stars](https://img.shields.io/github/stars/ansible-lockdown/AMZN2-CIS?label=Repo%20Stars&style=social)
+![Forks](https://img.shields.io/github/forks/ansible-lockdown/AMZN2-CIS?style=social)
 ![Followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
-![License](https://img.shields.io/github/license/ansible-lockdown/AL2-CIS?label=License)
+![License](https://img.shields.io/github/license/ansible-lockdown/AMZN2-CIS?label=License)
 
 ## Lint & Pre-Commit Tools 🔧
 
-[![Pre-Commit.ci](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/AL2-CIS/pre-commit-ci.json)](https://results.pre-commit.ci/latest/github/ansible-lockdown/AL2-CIS/devel)
 ![YamlLint](https://img.shields.io/badge/yamllint-Present-brightgreen?style=flat&logo=yaml&logoColor=white)
 ![Ansible-Lint](https://img.shields.io/badge/ansible--lint-Present-brightgreen?style=flat&logo=ansible&logoColor=white)
 
 ## Community Release Information 📂
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
-![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/AL2-CIS?label=Release%20Tag&&color=success)
-![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/AL2-CIS?label=Release%20Date)
-![Benchmark Version Main](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/AL2-CIS/benchmark-version-main.json)
-![Benchmark Version Devel](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/AL2-CIS/benchmark-version-devel.json)
+![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/AMZN2-CIS?label=Release%20Tag&&color=success)
+![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/AMZN2-CIS?label=Release%20Date)
+![Benchmark Version Main](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/AMZN2-CIS/benchmark-version-main.json)
+![Benchmark Version Devel](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/AMZN2-CIS/benchmark-version-devel.json)
 
-[![Main Pipeline Status](https://github.com/ansible-lockdown/AL2-CIS/actions/workflows/main_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AL2-CIS/actions/workflows/main_pipeline_validation.yml)
+[![Main Pipeline Status](https://github.com/ansible-lockdown/AMZN2-CIS/actions/workflows/main_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AMZN2-CIS/actions/workflows/main_pipeline_validation.yml)
 
-[![Devel Pipeline Status](https://github.com/ansible-lockdown/AL2-CIS/actions/workflows/devel_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AL2-CIS/actions/workflows/devel_pipeline_validation.yml)
+[![Devel Pipeline Status](https://github.com/ansible-lockdown/AMZN2-CIS/actions/workflows/devel_pipeline_validation.yml/badge.svg?)](https://github.com/ansible-lockdown/AMZN2-CIS/actions/workflows/devel_pipeline_validation.yml)
 
 
-![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/AL2-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
-![Open Issues](https://img.shields.io/github/issues-raw/ansible-lockdown/AL2-CIS?label=Open%20Issues)
-![Closed Issues](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/AL2-CIS?label=Closed%20Issues&&color=success)
-![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/AL2-CIS?label=Pull%20Requests)
+![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/AMZN2-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
+![Open Issues](https://img.shields.io/github/issues-raw/ansible-lockdown/AMZN2-CIS?label=Open%20Issues)
+![Closed Issues](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/AMZN2-CIS?label=Closed%20Issues&&color=success)
+![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/AMZN2-CIS?label=Pull%20Requests)
 
 ---
 
 ## Subscriber Release Information 🔐
 
-![Private Release Branch](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/release-branch.json)
-![Private Benchmark Version](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/benchmark-version.json)
+![Private Release Branch](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AMZN2-CIS/release-branch.json)
+![Private Benchmark Version](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AMZN2-CIS/benchmark-version.json)
 
-[![Private Remediate Pipeline](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/remediate.json)](https://github.com/ansible-lockdown/Private-AL2-CIS/actions/workflows/main_pipeline_validation.yml)
-[![Private GPO Pipeline](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/gpo.json)](https://github.com/ansible-lockdown/Private-AL2-CIS/actions/workflows/main_pipeline_validation_gpo.yml)
+[![Private Remediate Pipeline](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AMZN2-CIS/remediate.json)](https://github.com/ansible-lockdown/Private-AMZN2-CIS/actions/workflows/main_pipeline_validation.yml)
 
-![Private Pull Requests](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/prs.json)
-![Private Closed Issues](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AL2-CIS/issues-closed.json)
+![Private Pull Requests](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AMZN2-CIS/prs.json)
+![Private Closed Issues](https://img.shields.io/endpoint?url=https://ansible-lockdown.github.io/github_linux_IaC/badges/Private-AMZN2-CIS/issues-closed.json)
 
 ---
 
 ## Looking for support? 🤝
 
-[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_AL2_CIS)
+[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_AMZN2-CIS)
 
-[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_AL2_CIS)
+[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_AMZN2-CIS)
 
 ### Community 💬
 
@@ -121,7 +119,7 @@ The control found in defaults main also need to reflect this as this control the
 
 **Technical Dependencies:**
 
-Amazon 2 Linux - Other versions are not supported.
+AMAZON2
 
 - Access to download or add the goss binary and content to the system if using auditing
 (other options are available on how to get the content to the system.)
@@ -141,7 +139,7 @@ This is a much quicker, very lightweight, checking (where possible) config compl
 A new form of auditing has been developed, by using a small (12MB) go binary called [goss](https://github.com/goss-org/goss) along with the relevant configurations to check. Without the need for infrastructure or other tooling.
 This audit will not only check the config has the correct setting but aims to capture if it is running with that configuration also trying to remove [false positives](https://www.mindpointgroup.com/blog/is-compliance-scanning-still-relevant/) in the process.
 
-Refer to [AL2-CIS-Audit](https://github.com/ansible-lockdown/AL2-CIS-Audit).
+Refer to [AMZN2-CIS-Audit](https://github.com/ansible-lockdown/AMZN2-CIS-Audit).
 
 ## Example Audit Summary
 
@@ -152,10 +150,9 @@ Note: More tests are run during audit as we check config and running state.
 
 ok: [default] => {
     "msg": [
-        "msg": [
-        "The pre remediation audit results are: Count: 763, Failed: 234, Skipped: 4, Duration: 9.741s",
-        "The post remediation audit results are: Count: 763, Failed: 19, Skipped: 4, Duration: 12.725s",
-        "Full breakdown can be found in /opt",
+        "The pre remediation results are: ['Total Duration: 5.454s', 'Count: 338, Failed: 47, Skipped: 5'].",
+        "The post remediation results are: ['Total Duration: 5.007s', 'Count: 338, Failed: 46, Skipped: 5'].",
+        "Full breakdown can be found in /var/tmp",
         ""
     ]
 }
@@ -167,10 +164,10 @@ default                    : ok=270  changed=23   unreachable=0    failed=0    s
 ## Documentation 📖
 
 - [Read The Docs](https://ansible-lockdown.readthedocs.io/en/latest/)
-- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_AL2_cis)
-- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_AL2_cis)
-- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_AL2_cis)
-- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_AL2_cis)
+- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_AMZN2_cis)
+- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_AMZN2_cis)
+- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_AMZN2_cis)
+- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_AMZN2_cis)
 
 
 ## Role Variables
@@ -232,6 +229,8 @@ uses:
 - self-hosted runners using OpenTofu
 
 ## Known Issues
+
+Almalinux BaseOS, EPEL and many cloud providers repositories, do not allow gpgcheck(rule_1.2.1.2) or repo_gpgcheck (rule_1.2.1.3) this will cause issues during the playbook unless or a workaround is found.
 
 
 ## Local Testing 💻
