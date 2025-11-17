@@ -36,9 +36,14 @@
             fail_msg: "You have rule 4.5.2.4 enabled this requires that you have a root password set"
             success_msg: "You have a root password set"
 
-- name: "check sugroup exists if used"
+- name: Check sugroup exists if used
+  when:
+      - amazon2cis_sugroup is defined
+      - amazon2cis_rule_4_3_7
+  tags:
+      - rule_4.3.7
   block:
-      - name: "Check su group exists if defined"
+      - name: Check su group exists if defined
         ansible.builtin.command: grep -w "{{ amazon2cis_sugroup }}" /etc/group
         changed_when: false
         failed_when: sugroup_exists.rc >= 2
@@ -48,11 +53,6 @@
         ansible.builtin.assert:
             that: sugroup_exists.rc == 0
             msg: "The variable amazon2cis_sugroup is defined but does not exist please rectify"
-  when:
-      - amazon2cis_sugroup is defined
-      - amazon2cis_rule_4_3_7
-  tags:
-      - rule_4.3.7
 
 - name: Run pre-reqs
   ansible.builtin.import_tasks:
@@ -138,6 +138,39 @@
       - run_audit
   ansible.builtin.import_tasks:
       file: post_remediation_audit.yml
+
+- name: Add ansible file showing Benchmark and levels applied
+  when:
+      - create_benchmark_facts
+      - (post_audit_summary is defined) or
+        (ansible_local['compliance_facts']['lockdown_audit_details']['audit_summary'] is undefined and post_audit_summary is undefined)
+  tags:
+      - always
+      - benchmark
+  block:
+      - name: Create ansible facts directory
+        ansible.builtin.file:
+            path: "{{ ansible_facts_path }}"
+            state: directory
+            owner: root
+            group: root
+            mode: 'u=rwx,go=rx'
+
+      - name: Create ansible facts file
+        ansible.builtin.template:
+            src: etc/ansible/compliance_facts.j2
+            dest: "{{ ansible_facts_path }}/compliance_facts.fact"
+            owner: root
+            group: root
+            mode: "u-x,go-wx"
+
+- name: Fetch audit files
+  ansible.builtin.import_tasks:
+      file: fetch_audit_output.yml
+  when:
+      - fetch_audit_output
+      - run_audit
+  tags: always
 
 - name: Show Audit Summary
   when:

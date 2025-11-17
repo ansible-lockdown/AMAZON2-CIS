@@ -99,8 +99,8 @@
             state: started
             enabled: true
 
-      - name: "5.1.2.2 | AUDIT | Ensure journald service is enabled | Capture status"
-        ansible.builtin.shell: systemctl is-enabled systemd-journald.service
+      - name: "5.1.2.2 | AUDIT | Ensure journald service is enabled | Capture status"  # noqa: command-instead-of-module
+        ansible.builtin.command: systemctl is-enabled systemd-journald.service
         changed_when: false
         failed_when: false
         register: amazon2cis_5_1_2_2_status

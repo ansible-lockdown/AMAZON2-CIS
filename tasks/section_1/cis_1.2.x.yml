@@ -68,7 +68,7 @@
   vars:
       warn_control_id: '1.2.4'
   block:
-      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"
+      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"  # noqa: command-instead-of-module
         ansible.builtin.command: yum repolist
         changed_when: false
         register: amazon2cis_1_2_4_repolist

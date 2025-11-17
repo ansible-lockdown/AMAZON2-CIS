@@ -717,8 +717,8 @@
   vars:
       warn_control_id: '2.2.22'
   block:
-      - name: "2.2.22 | AUDIT | Ensure only approved services are listening on a network interface | Get list of services"
-        ansible.builtin.shell: systemctl list-units --type=service
+      - name: "2.2.22 | AUDIT | Ensure only approved services are listening on a network interface | Get list of services"  # noqa: command-instead-of-module
+        ansible.builtin.command: systemctl list-units --type=service
         changed_when: false
         failed_when: amazon2cis_2_2_22_services.rc not in [ 0, 1 ]
         check_mode: false
