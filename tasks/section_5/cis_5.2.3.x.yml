@@ -273,7 +273,7 @@
       - NIST800-53R5_AU-3
       - NIST800-53R5_MP-2
       - auditd
-      - rule_4.1.20
+      - rule_5.2.3.20
   ansible.builtin.set_fact:
       update_audit_template: true
 
