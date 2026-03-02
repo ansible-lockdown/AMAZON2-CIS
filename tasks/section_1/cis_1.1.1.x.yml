@@ -61,7 +61,7 @@
             create: true
             mode: '0600'
 
-      - name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available | Remove cramfs module"
+      - name: "1.1.1.2 | PATCH | Ensure freevxfs kernel module is not available | Remove freevxfs module"
         community.general.modprobe:
             name: freevxfs
             state: absent
@@ -193,7 +193,7 @@
             create: true
             mode: '0600'
 
-      - name: "1.1.1.6 | PATCH | Ensure cramfs kernel module is not available | Remove squashfs module"
+      - name: "1.1.1.6 | PATCH | Ensure squashfs kernel module is not available | Remove squashfs module"
         community.general.modprobe:
             name: squashfs
             state: absent
@@ -231,7 +231,7 @@
             name: udf
             state: absent
 
-- name: "1.1.1.8 | PATCH | Ensure udf kernel module is not available"
+- name: "1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available"
   when:
       - amazon2cis_rule_1_1_1_8
   tags:

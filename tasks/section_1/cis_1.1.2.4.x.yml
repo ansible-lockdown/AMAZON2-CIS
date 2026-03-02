@@ -1,6 +1,6 @@
 ---
 
-- name: "1.1.2.4.1 | PATCH | Ensure /var is a seperate partition"
+- name: "1.1.2.4.1 | PATCH | Ensure /var is a separate partition"
   when:
       - required_mount not in mount_names
       - amazon2cis_rule_1_1_2_4_1
@@ -25,7 +25,7 @@
 
 - name: |
          "1.1.2.4.2 | PATCH | Ensure nodev option set on /var partition
-          1.1.2.4.3 | PATCH | Ensure nosuid option set on /var partition
+          1.1.2.4.3 | PATCH | Ensure nosuid option set on /var partition"
   when:
       - item.mount == "/var"
       - amazon2cis_tmp_svc
