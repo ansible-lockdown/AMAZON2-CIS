@@ -68,7 +68,7 @@
       name: telnet
       state: absent
 
-- name: "2.3.5 | PATCH | Ensure TFTP client is not installed"
+- name: "2.3.5 | PATCH | Ensure tftp client is not installed"
   when:
       - not amazon2cis_tftp_client
       - "'tftp' in ansible_facts.packages"

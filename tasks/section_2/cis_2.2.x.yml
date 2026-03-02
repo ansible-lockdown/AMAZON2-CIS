@@ -136,7 +136,7 @@
             state: "{{ ('bind' in ansible_facts.packages) | ternary('stopped', omit) }}"
             masked: true
 
-- name: "2.2.5 | PATCH | Ensure dnsmasq server services are not in use"
+- name: "2.2.5 | PATCH | Ensure dnsmasq services are not in use"
   when:
       - amazon2cis_rule_2_2_5
   tags:
@@ -148,7 +148,7 @@
       - NIST800-53R5_CM-7
       - rule_2.2.5
   block:
-      - name: "2.2.5 | PATCH | Ensure dnsmasq server services are not in use | Remove package"
+      - name: "2.2.5 | PATCH | Ensure dnsmasq services are not in use | Remove package"
         when:
             - "'dnsmasq' in ansible_facts.packages"
             - not amazon2cis_dnsmasq_server
@@ -157,7 +157,7 @@
             name: dnsmasq
             state: absent
 
-      - name: "2.2.5 | PATCH | Ensure dnsmasq server services are not in use | Mask service"
+      - name: "2.2.5 | PATCH | Ensure dnsmasq services are not in use | Mask service"
         when:
             - not amazon2cis_dnsmasq_server
             - amazon2cis_dnsmasq_mask
