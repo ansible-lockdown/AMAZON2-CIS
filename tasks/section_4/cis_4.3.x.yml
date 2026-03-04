@@ -58,12 +58,21 @@
       - sudo
       - rule_4.3.4
       - NIST800-53R5_AC-6
-  ansible.builtin.replace:
-      path: "{{ item }}"
-      regexp: '^([^#|{% if system_is_ec2 %}ec2-user{% endif %}].*)NOPASSWD(.*)'
-      replace: '\1PASSWD\2'
-      validate: '/usr/sbin/visudo -cf %s'
-  loop: "{{ amazon2cis_sudoers_files.stdout_lines }}"
+  block:
+    - name: "4.3.4 | PATCH | Ensure users must provide password for escalation | Get files with NOPASSWD set"
+      ansible.builtin.shell: grep -Ei '(nopasswd)' /etc/sudoers /etc/sudoers.d/* | cut -d':' -f1
+      changed_when: false
+      failed_when: false
+      register: discovered_nopasswd_sudoers
+
+    - name: "4.3.4 | PATCH | Ensure users must provide password for escalation | Set value if no results"
+      when: discovered_nopasswd_sudoers.stdout | length > 0
+      ansible.builtin.replace:
+        path: "{{ item }}"
+        regexp: '^((?!#|{% for name in amazon2cis_sudoers_exclude_nopasswd_list %}{{ name }}{% if not loop.last -%}|{%- endif -%}{% endfor %}).*)NOPASSWD(.*)'
+        replace: '\1PASSWD\2'
+        validate: '/usr/sbin/visudo -cf %s'
+      loop: "{{ discovered_nopasswd_sudoers.stdout_lines }}"
 
 - name: "4.3.5 | PATCH | Ensure re-authentication for privilege escalation is not disabled globally"
   when:
