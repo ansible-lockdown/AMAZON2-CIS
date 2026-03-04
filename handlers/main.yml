@@ -86,7 +86,7 @@
     state: restarted
 
 - name: Audit_immutable_fact
-  when: auditd_immutable_check.stdout == '1'
+  when: discovered_auditd_immutable_check.rc == 0
   ansible.builtin.debug:
     msg: "Reboot required for auditd to apply new rules as immutable set"
   notify: Change_requires_reboot
