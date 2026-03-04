@@ -1,91 +1,92 @@
 ---
 
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
-  when:
-      - amazon2cis_rule_2_1_1
+  when: amazon2cis_rule_2_1_1
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_2.1.1
-      - ntp
-      - chrony
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
+    - level1
+    - automated
+    - patch
+    - rule_2.1.1
+    - ntp
+    - chrony
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
   block:
-      - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service install"
-        ansible.builtin.package:
-            name: "{{ amazon2cis_time_synchronization }}"
-            state: present
-        vars:
-            ansible_python_interpreter: /bin/python
+    - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service install"
+      ansible.builtin.package:
+        name: "{{ amazon2cis_time_synchronization }}"
+        state: present
+      vars:
+        ansible_python_interpreter: /bin/python
 
-      - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service start"
-        ansible.builtin.service:
-            name: "{{ amazon2cis_time_synchronization }}d"
-            state: started
-            enabled: true
+    - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service start"
+      ansible.builtin.service:
+        name: "{{ amazon2cis_time_synchronization }}d"
+        state: started
+        enabled: true
 
-      - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop ntp"
-        ansible.builtin.service:
-            name: ntpd
-            state: stopped
-            enabled: false
-        when:
-            - "'ntp' in ansible_facts.packages"
-            - amazon2cis_time_synchronization == "chrony"
+    - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop ntp"
+      when:
+        - "'ntp' in ansible_facts.packages"
+        - amazon2cis_time_synchronization == "chrony"
+      ansible.builtin.service:
+        name: ntpd
+        state: stopped
+        enabled: false
 
-      - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop chrony"
-        ansible.builtin.service:
-            name: chronyd
-        when:
-            - "'chrony' in ansible_facts.packages"
-            - amazon2cis_time_synchronization == "ntp"
+    - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop chrony"
+      when:
+        - "'chrony' in ansible_facts.packages"
+        - amazon2cis_time_synchronization == "ntp"
+      ansible.builtin.service:
+        name: chronyd
+        state: stopped
+        enabled: false
 
 - name: "2.1.2 | PATCH | Ensure chrony is configured | modify /etc/chrony.conf"
   when:
-      - amazon2cis_rule_2_1_2
-      - amazon2cis_time_synchronization == "chrony"
+    - amazon2cis_rule_2_1_2
+    - amazon2cis_time_synchronization == "chrony"
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_2.1.2
-      - ntp
-      - chrony
-      - NIST800-53R5_AU-3
-      - NIST800-53R5_AU-12
+    - level1
+    - automated
+    - patch
+    - rule_2.1.2
+    - ntp
+    - chrony
+    - NIST800-53R5_AU-3
+    - NIST800-53R5_AU-12
   ansible.builtin.template:
-      src: chrony.conf.j2
-      dest: /etc/chrony.conf
-      owner: root
-      group: root
-      mode: '0644'
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
 - name: "2.1.3 | PATCH | Ensure chrony is not run as the root user"
   when:
-      - amazon2cis_rule_2_1_3
-      - amazon2cis_time_synchronization == "chrony"
+    - amazon2cis_rule_2_1_3
+    - amazon2cis_time_synchronization == "chrony"
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_2.1.3
-      - ntp
-      - chrony
+    - level1
+    - automated
+    - patch
+    - rule_2.1.3
+    - ntp
+    - chrony
   block:
-      - name: "2.1.3 | AUDIT | Ensure chrony is not run as the root user | Check Setting"
-        ansible.builtin.command: grep "u chrony" /etc/sysconfig/chronyd
-        changed_when: false
-        failed_when: amazon2_2_1_3_chrony_user.rc not in [ 0, 1 ]
-        register: amazon2_2_1_3_chrony_user
+    - name: "2.1.3 | AUDIT | Ensure chrony is not run as the root user | Check Setting"
+      ansible.builtin.command: grep "u chrony" /etc/sysconfig/chronyd
+      changed_when: false
+      failed_when: discovered_chrony_user.rc not in [ 0, 1 ]
+      register: discovered_chrony_user
 
-      - name: "2.1.3 | PATCH | Ensure chrony is not run as the root user | modify /etc/sysconfig/chronyd"
-        when: "'-u chrony' not in amazon2_2_1_3_chrony_user.stdout"
-        ansible.builtin.lineinfile:
-            path: /etc/sysconfig/chronyd
-            regexp: ^OPTIONS=\"(.*)"
-            line: OPTIONS="\1 -u chrony"
-            create: true
-            backrefs: true
-            mode: '0644'
+    - name: "2.1.3 | PATCH | Ensure chrony is not run as the root user | modify /etc/sysconfig/chronyd"
+      when: "'-u chrony' not in discovered_chrony_user.stdout"
+      ansible.builtin.lineinfile:
+        path: /etc/sysconfig/chronyd
+        regexp: ^OPTIONS=\"(.*)"
+        line: OPTIONS="\1 -u chrony"
+        create: true
+        backrefs: true
+        mode: 'u-x,go-wx'

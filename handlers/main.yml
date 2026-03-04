@@ -2,45 +2,50 @@
 
 - name: Systemd restart tmp.mount
   ansible.builtin.systemd:
-      name: tmp.mount
-      daemon_reload: true
-      enabled: true
-      masked: false
-      state: reloaded
+    name: tmp.mount
+    daemon_reload: true
+    enabled: true
+    masked: false
+    state: reloaded
 
-- name: Remount dev_shm
+- name: Remount /tmp
   ansible.posix.mount:
-      name: /dev/shm
-      state: remounted
+    path: /tmp
+    state: remounted
 
-- name: Remount home
+- name: Remount /dev/shm
   ansible.posix.mount:
-      name: /home
-      state: remounted
+    name: /dev/shm
+    state: remounted
 
-- name: Remount var
+- name: Remount /home
   ansible.posix.mount:
-      name: /var
-      state: remounted
+    name: /home
+    state: remounted
 
-- name: Remount var_tmp
+- name: Remount /var
   ansible.posix.mount:
-      name: /var/tmp
-      state: remounted
+    name: /var
+    state: remounted
 
-- name: Remount var_log
+- name: Remount /var/tmp
   ansible.posix.mount:
-      name: /var/log
-      state: remounted
+    name: /var/tmp
+    state: remounted
 
-- name: Remount var_log_audit
+- name: Remount /var/log
   ansible.posix.mount:
-      name: /var/log/audit
-      state: remounted
+    name: /var/log
+    state: remounted
+
+- name: Remount /var/log/audit
+  ansible.posix.mount:
+    name: /var/log/audit
+    state: remounted
 
 - name: Systemd_daemon_reload
   ansible.builtin.systemd:
-      daemon_reload: true
+    daemon_reload: true
 
 - name: Rebuild_grub
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
@@ -48,37 +53,37 @@
 
 - name: Restart_postfix
   ansible.builtin.service:
-      name: postfix
-      state: restarted
+    name: postfix
+    state: restarted
 
 - name: Sysctl_flush_ipv4_routes
   ansible.posix.sysctl:
-      name: net.ipv4.route.flush
-      value: '1'
-      sysctl_set: true
-  ignore_errors: true  # noqa ignore-errors
+    name: net.ipv4.route.flush
+    value: '1'
+    sysctl_set: true
+  ignore_errors: true # noqa ignore-errors
 
 - name: Sysctl_flush_ipv6_routes
   ansible.posix.sysctl:
-      name: net.ipv6.route.flush
-      value: '1'
-      sysctl_set: true
-  ignore_errors: true  # noqa ignore-errors
+    name: net.ipv6.route.flush
+    value: '1'
+    sysctl_set: true
+  ignore_errors: true # noqa ignore-errors
 
 - name: Restart_rsyslog
   ansible.builtin.service:
-      name: rsyslog
-      state: restarted
+    name: rsyslog
+    state: restarted
 
 - name: Restart_journald
   ansible.builtin.service:
-      name: systemd-journald
-      state: restarted
+    name: systemd-journald
+    state: restarted
 
 - name: Restart_systemd_journal_upload
   ansible.builtin.service:
-      name: systemd-journal-upload
-      state: restarted
+    name: systemd-journal-upload
+    state: restarted
 
 - name: Auditd_immutable_check
   ansible.builtin.command: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
@@ -86,21 +91,20 @@
   register: auditd_immutable_check
 
 - name: Audit_immutable_fact
+  when: auditd_immutable_check.stdout == '1'
   ansible.builtin.debug:
-      msg: "Reboot required for auditd to apply new rules as immutable set"
+    msg: "Reboot required for auditd to apply new rules as immutable set"
   notify: Change_requires_reboot
-  when:
-      - auditd_immutable_check.stdout == '1'
 
-- name: Restart_auditd  # noqa: command-instead-of-module
+- name: Restart_auditd # noqa: command-instead-of-module
   ansible.builtin.command: /sbin/service auditd restart
   changed_when: true
 
 - name: Restart sshd
   ansible.builtin.service:
-      name: sshd
-      state: restarted
+    name: sshd
+    state: restarted
 
 - name: Change_requires_reboot
   ansible.builtin.set_fact:
-      change_requires_reboot: true
+    change_requires_reboot: true

@@ -543,6 +543,12 @@ amazon2cis_rule_6_2_11: true
 
 ## Section 1 variables
 
+## Ability to enable debug on mounts to assist in troubleshooting
+# Mount point changes are set based upon facts created in Prelim
+# these then build the variable and options that is passed to the handler to set the
+# mount point for the controls in section1.
+amazon2cis_debug_mount_data: false
+
 # If set true uses the tmp.mount service else using fstab configuration
 amazon2cis_tmp_svc: true
 

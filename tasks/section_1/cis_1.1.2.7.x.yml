@@ -2,55 +2,94 @@
 
 - name: "1.1.2.7.1 | PATCH | Ensure /var/log/audit is a separate partition"
   when:
-      - required_mount not in mount_names
-      - amazon2cis_rule_1_1_2_7_1
+    - amazon2cis_rule_1_1_2_7_1
+    - required_mount not in prelim_mount_names
   tags:
-      - level2
-      - automated
-      - patch
-      - rule_1.1.2.7.1
-      - mounts
-      - NIST800-53R5_CM-7
+    - level1-server
+    - level1-workstation
+    - audit
+    - mounts
+    - rule_1.1.2.7.1
+    - NIST800-53R5_CM-7
   vars:
-      warn_control_id: '1.1.2.7.1'
-      required_mount: '/var/log/audit'
+    warn_control_id: '1.1.2.7.1'
+    required_mount: '/var/log/audit'
   block:
-      - name: "1.1.2.7.1 | AUDIT | Ensure /var/log/audit is a separate partition | Absent"
-        ansible.builtin.debug:
-            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+    - name: "1.1.2.7.1 | AUDIT | Ensure /var/log/audit is a separate partition | check for mount"
+      ansible.builtin.command: findmnt -kn "{{ required_mount }}"
+      changed_when: false
+      failed_when: discovered_var_log_audit_mount.rc not in [ 0, 1 ]
+      register: discovered_var_log_audit_mount
 
-      - name: "1.1.2.7.1 | AUDIT | Ensure /var/log/audit is a separate partition | Warn Count"
-        ansible.builtin.import_tasks:
-            file: warning_facts.yml
+    - name: "1.1.2.7.1 | AUDIT | Ensure /var/log/audit is a separate partition | Absent"
+      when: discovered_var_log_audit_mount is undefined or discovered_var_log_audit_mount.stdout_lines == []
+      ansible.builtin.debug:
+        msg: "Warning!! {{ required_mount }} is not mounted on a separate partition"
 
-- name: |
-         "1.1.2.7.2 | PATCH | Ensure nodev option set on /var/log/audit partition
-          1.1.2.7.3 | PATCH | Ensure nosuid option set on /var/log/audit partition
-          1.1.2.7.4 | PATCH | Ensure noexec option set on /var/log/audit partition"
+    - name: "1.1.2.7.1 | AUDIT | Ensure /var/log/audit is a separate partition | Present"
+      when: discovered_var_log_audit_mount is undefined or discovered_var_log_audit_mount.stdout_lines == []
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "1.1.2.7.2 | PATCH | Ensure nodev option set on /var/log/audit partition"
   when:
-      - item.mount == "/var/log/audit"
-      - amazon2cis_tmp_svc
-      - amazon2cis_rule_1_1_2_7_2 or
-        amazon2cis_rule_1_1_2_7_3 or
-        amazon2cis_rule_1_1_2_7_4
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amazon2cis_rule_1_1_2_7_2
   tags:
-      - level2
-      - automated
-      - patch
-      - rule_1.1.2.7.2
-      - rule_1.1.2.7.3
-      - rule_1.1.2.7.4
-      - mounts
-      - NIST800-53R5_AC-3
-      - NIST800-53R5_MP-2
-  ansible.posix.mount:
-      name: /var/log/audit
-      src: "{{ item.device }}"
-      fstype: "{{ item.fstype }}"
-      state: present
-      opts: defaults,{% if amazon2cis_rule_1_1_2_7_2 %}nodev,{% endif %}{% if amazon2cis_rule_1_1_2_7_3 %}nosuid,{% endif %}{% if amazon2cis_rule_1_1_2_7_4 %}noexec{% endif %}
-  notify: Remount var_log_audit
-  with_items:
-      - "{{ ansible_mounts }}"
-  loop_control:
-      label: "{{ item.device }}"
+    - level1-server
+    - level1-workstation
+    - patch
+    - mounts
+    - rule_1.1.2.7.2
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: "/var/log/audit"
+    required_option: nodev
+  notify: &mount_option_notify
+    - "Remount {{ mount_point }}"
+  ansible.builtin.set_fact: &mount_option_set_fact
+    prelim_mount_point_fs_and_options: |
+      {{ prelim_mount_point_fs_and_options | combine({mount_point: {'options': (prelim_mount_point_fs_and_options[mount_point]['options'] + [required_option])}}, recursive=True) }}
+  changed_when: &mount_option_changed_when
+    - required_option not in prelim_mount_point_fs_and_options[mount_point]['original_options']
+
+- name: "1.1.2.7.3 | PATCH | Ensure nosuid option set on /var/log/audit partition"
+  when:
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amazon2cis_rule_1_1_2_7_3
+  tags:
+    - level1-server
+    - level1-workstation
+    - patch
+    - mounts
+    - rule_1.1.2.7.3
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: "/var/log/audit"
+    required_option: nosuid
+  notify: *mount_option_notify
+  ansible.builtin.set_fact:
+    <<: *mount_option_set_fact
+  changed_when: *mount_option_changed_when
+
+- name: "1.1.2.7.4 | PATCH | Ensure noexec option set on /var/log/audit partition"
+  when:
+    - prelim_mount_point_fs_and_options[mount_point] is defined
+    - amazon2cis_rule_1_1_2_7_4
+  tags:
+    - level1-server
+    - level1-workstation
+    - patch
+    - mounts
+    - rule_1.1.2.7.4
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+    mount_point: "/var/log/audit"
+    required_option: noexec
+  notify: *mount_option_notify
+  ansible.builtin.set_fact:
+    <<: *mount_option_set_fact
+  changed_when: *mount_option_changed_when
