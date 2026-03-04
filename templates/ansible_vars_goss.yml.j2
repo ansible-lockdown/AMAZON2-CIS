@@ -634,7 +634,7 @@ amazon2cis_system_is_log_server: false
 # AuditD
 # auditd settings
 amazon2cis_auditd:
-    max_log_file_action: keep_logs
+    max_log_file_action: {{ amazon2cis_auditd_max_log_file_action }}
 
 # AIDE
 # AIDE

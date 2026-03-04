@@ -38,16 +38,16 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amazon2_4_2_2_priv_ssh_key_results
+        register: discovered_priv_ssh_key_results
 
       - name: "4.2.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
         ansible.builtin.file:
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
         with_items:
-            - "{{ amazon2_4_2_2_priv_ssh_key_results.files }}"
+            - "{{ discovered_priv_ssh_key_results.files }}"
         loop_control:
             label: "{{ item.path }}"
 
@@ -70,16 +70,16 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amazon2_4_2_3_pub_ssh_key_results
+        register: discovered_pub_ssh_key_results
 
       - name: "4.2.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
         ansible.builtin.file:
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-wx'
         with_items:
-            - "{{ amazon2_4_2_3_pub_ssh_key_results.files }}"
+            - "{{ discovered_pub_ssh_key_results.files }}"
         loop_control:
             label: "{{ item.path }}"
 

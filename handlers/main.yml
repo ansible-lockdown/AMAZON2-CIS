@@ -85,16 +85,18 @@
     name: systemd-journal-upload
     state: restarted
 
-- name: Auditd_immutable_check
-  ansible.builtin.command: grep -c "^-e 2" /etc/audit/rules.d/99_auditd.rules
-  changed_when: false
-  register: auditd_immutable_check
-
 - name: Audit_immutable_fact
   when: auditd_immutable_check.stdout == '1'
   ansible.builtin.debug:
     msg: "Reboot required for auditd to apply new rules as immutable set"
   notify: Change_requires_reboot
+
+- name: Auditd rules reload
+  when: discovered_auditd_immutable_check.rc == 1 or discovered_augenrules_check.stdout is search('No change')
+  ansible.builtin.command: augenrules --load
+  changed_when: true
+  failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
+  register: discovered_augenrule_load
 
 - name: Restart_auditd # noqa: command-instead-of-module
   ansible.builtin.command: /sbin/service auditd restart

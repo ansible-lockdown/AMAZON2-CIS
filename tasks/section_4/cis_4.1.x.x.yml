@@ -152,15 +152,15 @@
       - name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users | Check if cron.allow exists"
         ansible.builtin.stat:
             path: "/etc/cron.allow"
-        register: amazon2cis_4_1_1_8_p
+        register: discovered_cron_allow_status
 
       - name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users | Ensure cron.allow is restricted to authorized users"
         ansible.builtin.file:
             dest: /etc/cron.allow
-            state: '{{ "file" if amazon2cis_4_1_1_8_p.stat.exists else "touch" }}'
+            state: '{{ "file" if discovered_cron_allow_status.stat.exists else "touch" }}'
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
 
 - name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users"
   when:
@@ -182,12 +182,12 @@
       - name: "4.1.2.1 | AUDIT | Ensure at is restricted to authorized users | Check if at.allow exists"
         ansible.builtin.stat:
             path: "/etc/at.allow"
-        register: amazon2cis_4_1_1_9_p
+        register: discovered_at_allow_status
 
       - name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users | Ensure at.allow is restricted to authorized users"
         ansible.builtin.file:
             dest: /etc/at.allow
-            state: '{{ "file" if amazon2cis_4_1_1_9_p.stat.exists else "touch" }}'
+            state: '{{ "file" if discovered_at_allow_status.stat.exists else "touch" }}'
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'

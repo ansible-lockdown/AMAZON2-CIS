@@ -16,11 +16,11 @@
       - name: "4.4.2.3.1 | AUDIT | Ensure pam_pwhistory module is enabled | check if exists"
         ansible.builtin.shell: grep -P "^auth\s+(sufficient|required|requisite)\s+pam_pwhistory.so" /etc/pam.d/{system,password}-auth | wc -l
         changed_when: false
-        failed_when: amazon2cis_4_4_2_3_1_pwhistory_exists.rc not in [ 0, 1 ]
-        register: amazon2cis_4_4_2_3_1_pwhistory_exists
+        failed_when: discovered_pwhistory_exists.rc not in [ 0, 1 ]
+        register: discovered_pwhistory_exists
 
       - name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | present"
-        when: amazon2cis_4_4_2_3_1_pwhistory_exists.stdout|int < 2
+        when: discovered_pwhistory_exists.stdout|int < 2
         community.general.pamd:
             name: "{{ item }}"
             type: password
@@ -36,7 +36,7 @@
             - password-auth
 
       - name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | updated"
-        when: amazon2cis_4_4_2_3_1_pwhistory_exists.stdout | int < 2
+        when: discovered_pwhistory_exists.stdout | int < 2
         community.general.pamd:
             name: "{{ item }}"
             type: password

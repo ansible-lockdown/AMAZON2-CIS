@@ -2,53 +2,53 @@
 
 - name: "SECTION | 1.1.1.x | Configure FileSystem Kernel Modules"
   ansible.builtin.import_tasks:
-      file: cis_1.1.1.x.yml
+    file: cis_1.1.1.x.yml
 
 - name: "SECTION | 1.1.2.1.x | FileSystem Configuration /tmp"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.1.x.yml
+    file: cis_1.1.2.1.x.yml
 
 - name: "SECTION | 1.1.2.2.x | FileSystem Configuration /dev/shm"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.2.x.yml
+    file: cis_1.1.2.2.x.yml
 
 - name: "SECTION | 1.1.2.3.x | FileSystem Configuration /home"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.3.x.yml
+    file: cis_1.1.2.3.x.yml
 
 - name: "SECTION | 1.1.2.4.x | FileSystem Configuration /var"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.4.x.yml
+    file: cis_1.1.2.4.x.yml
 
 - name: "SECTION | 1.1.2.5.x | FileSystem Configuration /var/tmp"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.5.x.yml
+    file: cis_1.1.2.5.x.yml
 
 - name: "SECTION | 1.1.2.6.x | FileSystem Configuration /var/log"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.6.x.yml
+    file: cis_1.1.2.6.x.yml
 
 - name: "SECTION | 1.1.2.7.x | FileSystem Configuration /var/log/audit"
   ansible.builtin.import_tasks:
-      file: cis_1.1.2.7.x.yml
+    file: cis_1.1.2.7.x.yml
 
 - name: "SECTION | 1.2 | Configure Software Updates and Patch Management"
   ansible.builtin.import_tasks:
-      file: cis_1.2.x.yml
+    file: cis_1.2.x.yml
 
 - name: "SECTION | 1.3 | Configure Secure Boot Settings"
   ansible.builtin.import_tasks:
-      file: cis_1.3.x.yml
+    file: cis_1.3.x.yml
 
 - name: "SECTION | 1.4 | Configure Additional Process Hardening"
   ansible.builtin.import_tasks:
-      file: cis_1.4.x.yml
+    file: cis_1.4.x.yml
 
 - name: "SECTION | 1.5 | Mandatory Access Control"
-  ansible.builtin.import_tasks:
-      file: cis_1.5.x.yml
   when: not amazon2cis_selinux_disable
+  ansible.builtin.import_tasks:
+    file: cis_1.5.x.yml
 
 - name: "SECTION | 1.6 | Configure Command Line Warning Banners"
   ansible.builtin.import_tasks:
-      file: cis_1.6.x.yml
+    file: cis_1.6.x.yml

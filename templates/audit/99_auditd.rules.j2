@@ -28,7 +28,7 @@
 -w /etc/sysconfig/network-scripts/ -p wa -k system-locale
 {% endif %}
 {% if amazon2cis_rule_5_2_3_6 %}
-{% for proc in priv_procs.stdout_lines -%}
+{% for proc in discovered_privileged_commands.stdout_lines -%}
 -a always,exit -F path={{ proc }} -F perm=x -F auid>={{ amazon2cis_uid_min }} -F auid!=unset -k privileged
 {% endfor %}
 {% endif %}

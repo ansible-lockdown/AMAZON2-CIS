@@ -1,5 +1,22 @@
 ---
 
+- name: "POST | AUDITD | Ensure use of privileged commands is collected"
+  ansible.builtin.shell: |
+    {%- set egrep_exclude = "(asdfmnop|{{ amazon2cis_priv_command_excluded_mounts | join('|') }})" -%}
+    for i in $(df | grep '^/dev' | grep -Ev '{{ egrep_exclude }}' | awk '{ print $NF }'); do
+      find $i -xdev -type f -perm /6000 2>/dev/null;
+    done
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  register: discovered_privileged_commands
+
+- name: "POST | AUDITD | Check if auditd is immutable before changes"
+  ansible.builtin.shell: auditctl -s | grep "enabled 2"
+  changed_when: false
+  failed_when: discovered_auditd_immutable_check.rc not in [ 0, 1 ]
+  register: discovered_auditd_immutable_check
+
 - name: POST | AUDITD | Apply auditd template - only required rules will be added
   ansible.builtin.template:
     src: audit/99_auditd.rules.j2
@@ -9,6 +26,5 @@
     mode: 'go-rwx'
   register: audit_rules_updated
   notify:
-    - Auditd_immutable_check
     - Audit_immutable_fact
     - Restart_auditd

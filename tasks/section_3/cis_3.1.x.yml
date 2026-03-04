@@ -2,105 +2,101 @@
 
 - name: "3.1.1 | PATCH | Ensure IPv6 status is identified"
   when:
-      - not amazon2cis_ipv6_required
-      - amazon2cis_rule_3_1_1
+    - not amazon2cis_ipv6_required
+    - amazon2cis_rule_3_1_1
   notify: Sysctl_flush_ipv6_routes
   tags:
-      - level1
-      - manual
-      - patch
-      - rule_3.1.1
-      - ipv6
-      - NIST800-53R5_CM-7
+    - level1
+    - manual
+    - patch
+    - rule_3.1.1
+    - ipv6
+    - NIST800-53R5_CM-7
   block:
-      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable all except localhost"
-        ansible.posix.sysctl:
-            name: "{{ item }}"
-            value: '1'
-            sysctl_set: true
-            sysctl_file: "{{ amazon2cis_ipv6_sysctl_file }}"
-        loop:
-            - net.ipv6.conf.all.disable_ipv6
-            - net.ipv6.conf.default.disable_ipv6
+    - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable all except localhost"
+      ansible.posix.sysctl:
+        name: "{{ item }}"
+        value: '1'
+        sysctl_set: true
+        sysctl_file: "{{ amazon2cis_ipv6_sysctl_file }}"
+      loop:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
 
-      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable localhost sysctl"
-        when:
-            - amazon2cis_ipv6_disable_localhost
-        ansible.posix.sysctl:
-            name: net.ipv6.conf.lo.disable_ipv6
-            value: '1'
-            sysctl_set: true
-            sysctl_file: "{{ amazon2cis_ipv6_sysctl_file }}"
+    - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable localhost sysctl"
+      when: amazon2cis_ipv6_disable_localhost
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.lo.disable_ipv6
+        value: '1'
+        sysctl_set: true
+        sysctl_file: "{{ amazon2cis_ipv6_sysctl_file }}"
 
-      - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable localhost /etc/hosts"
-        when:
-            - amazon2cis_ipv6_disable_localhost
-        ansible.builtin.lineinfile:
-            path: /etc/hosts
-            regexp: '^(::1.*)'
-            line: '#\1'
-            backrefs: true
+    - name: "3.1.1 | PATCH | Ensure IPv6 status is identified | disable localhost /etc/hosts"
+      when: amazon2cis_ipv6_disable_localhost
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^(::1.*)'
+        line: '#\1'
+        backrefs: true
 
 - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled"
   when:
-      - amazon2cis_rule_3_1_2
+    - amazon2cis_rule_3_1_2
+    - prelim_wireless_modules.stdout is defined
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_3.1.2
-      - wireless
-      - NIST800-53R5_CM-7
+    - level1
+    - automated
+    - patch
+    - rule_3.1.2
+    - wireless
+    - NIST800-53R5_CM-7
   block:
-      - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if nmcli command is available"  # noqa: command-instead-of-module
-        ansible.builtin.command: rpm -q NetworkManager
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: amazon2_3_1_2_nmcli_available
+    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if nmcli command is available"  # noqa: command-instead-of-module
+      ansible.builtin.command: rpm -q NetworkManager
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_nmcli_available
 
-      - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if wifi is enabled"
-        ansible.builtin.command: nmcli radio wifi
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: amazon2_3_2_1_wifi_enabled
-        when: amazon2_3_1_2_nmcli_available.rc == 0
+    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if wifi is enabled"
+      ansible.builtin.command: nmcli radio wifi
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_wifi_enabled
+      when: discovered_nmcli_available.rc == 0
 
-      - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled | Disable wifi if enabled"
-        ansible.builtin.command: nmcli radio wifi off
-        changed_when: true
-        when:
-            - amazon2_3_2_1_wifi_enabled.stdout is defined
-            - "'enabled' in amazon2_3_2_1_wifi_enabled.stdout"
+    - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled | Disable wifi if enabled"
+      when:
+        - discovered_wifi_enabled.stdout is defined
+        - "'enabled' in discovered_wifi_enabled.stdout"
+      ansible.builtin.command: nmcli radio wifi off
+      changed_when: true
 
 - name: "3.1.3 | PATCH | Ensure bluetooth services are not in use"
-  when:
-      - amazon2cis_rule_3_1_3
+  when: amazon2cis_rule_3_1_3
   tags:
-      - level1-server
-      - level2-workstation
-      - automated
-      - patch
-      - bluetooth
-      - NIST800-53R5_CM-7
-      - rule_3.1.3
+    - level1-server
+    - level2-workstation
+    - automated
+    - patch
+    - bluetooth
+    - NIST800-53R5_CM-7
+    - rule_3.1.3
   block:
-      - name: "3.1.3 | PATCH | Ensure bluetooth services are not in use | pkg"
-        when:
-            - not amazon2cis_bluetooth_service
-            - not amazon2cis_bluetooth_mask
-        ansible.builtin.package:
-            name: bluez
-            state: absent
+    - name: "3.1.3 | PATCH | Ensure bluetooth services are not in use | pkg"
+      when:
+        - not amazon2cis_bluetooth_service
+        - not amazon2cis_bluetooth_mask
+      ansible.builtin.package:
+        name: bluez
+        state: absent
 
-      - name: "3.1.3 | PATCH | Ensure bluetooth services are not in use | mask"
-        when:
-            - not amazon2cis_bluetooth_service
-            - amazon2cis_bluetooth_mask
-        notify: Systemd_daemon_reload
-        ansible.builtin.systemd:
-            name: bluetooth.service
-            enabled: false
-            state: stopped
-            masked: true
+    - name: "3.1.3 | PATCH | Ensure bluetooth services are not in use | mask"
+      when:
+        - not amazon2cis_bluetooth_service
+        - amazon2cis_bluetooth_mask
+      notify: Systemd_daemon_reload
+      ansible.builtin.systemd:
+        name: bluetooth.service
+        masked: true
