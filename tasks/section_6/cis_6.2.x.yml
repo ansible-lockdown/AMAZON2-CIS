@@ -31,7 +31,9 @@
             file: warning_facts.yml
 
 - name: "6.2.2 | PATCH | Ensure /etc/shadow password fields are not empty"
-  when: amazon2cis_rule_6_2_2
+  when:
+  - amazon2cis_rule_6_2_2
+  - prelim_empty_password_accounts.stdout | length > 0
   tags:
       - level1-server
       - level1-workstation
@@ -42,18 +44,17 @@
       - user
       - permissions
   block:
-      - name: "6.2.2 | AUDIT | Ensure /etc/shadow password fields are not empty | Find users with no password"
-        ansible.builtin.shell: awk -F":" '($2 == "" ) { print $1 }' /etc/shadow
-        changed_when: false
-        check_mode: false
-        register: amazon2cis_6_2_2_empty_password_acct
+    - name: "6.2.2 | AUDIT | Ensure /etc/shadow password fields are not empty | Find users with no password"
+      ansible.builtin.shell: awk -F":" '($2 == "" ) { print $1 }' /etc/shadow
+      changed_when: false
+      check_mode: false
+      register: discovered_empty_password_acct
 
-      - name: "6.2.2 | PATCH | Ensure /etc/shadow password fields are not empty | Lock users with empty password"
-        when: amazon2cis_6_2_2_empty_password_acct.stdout | length > 0
-        ansible.builtin.user:
-            name: "{{ item }}"
-            password_lock: true
-        loop: "{{ amazon2cis_6_2_2_empty_password_acct.stdout_lines }}"
+    - name: "6.2.2 | PATCH | Ensure /etc/shadow password fields are not empty | Lock users with empty password"
+      ansible.builtin.user:
+        name: "{{ item }}"
+        password_lock: true
+      loop: "{{ discovered_empty_password_acct.stdout_lines }}"
 
 - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group"
   when: amazon2cis_rule_6_2_3
@@ -292,7 +293,7 @@
 
 - name: "6.2.9 | PATCH | Ensure root is the only UID 0 account"
   when:
-      - amazon2cis_uid_zero_accounts_except_root.rc
+      - prelim_uid_zero_accounts_except_root.rc
       - amazon2cis_rule_6_2_9
   tags:
       - level1-server
@@ -332,7 +333,7 @@
             owner: "{{ item.id }}"
             group: "{{ item.gid }}"
         register: amazon2cis_6_2_10_home_dir
-        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int) | selectattr('uid', '<=', amazon2cis_max_uid | int) | list }}"
+        loop: "{{ prelim_captured_passwd_data | selectattr('uid', '>=', amazon2cis_uid_min | int) | selectattr('uid', '<=', amazon2cis_uid_max | int) | list }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -340,7 +341,7 @@
         ansible.builtin.stat:
             path: "{{ item }}"
         register: amazon2cis_6_2_10_home_dir_perms
-        loop: "{{ interactive_users_home.stdout_lines }}"
+        loop: "{{ prelim_interactive_users_home.stdout_lines }}"
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | set perms if needed"
         ansible.builtin.file:
@@ -353,7 +354,7 @@
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | own their home directories"  # noqa risky-file-permissions
         when:
-            - item.uid >= amazon2cis_min_uid | int
+            - item.uid >= amazon2cis_uid_min | int
             - item.id != 'nobody'
             - (item.id != 'tss' and item.dir != '/dev/null')
             - item.shell != '/sbin/nologin'
@@ -361,7 +362,7 @@
             path: "{{ item.dir }}"
             owner: "{{ item.id }}"
             state: directory
-        loop: "{{ amazon2cis_passwd | selectattr('uid', '>=', amazon2cis_min_uid | int) | selectattr('uid', '<=', amazon2cis_max_uid | int) | list }}"
+        loop: "{{ prelim_captured_passwd_data | selectattr('uid', '>=', amazon2cis_uid_min | int) | selectattr('uid', '<=', amazon2cis_uid_max | int) | list }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -373,7 +374,7 @@
             etype: group
             permissions: rx
             state: present
-        loop: "{{ interactive_users_home.stdout_lines }}"
+        loop: "{{ prelim_interactive_users_home.stdout_lines }}"
 
       - name: "6.2.10 | PATCH | Ensure local interactive user home directories exist | Set other ACL"
         ansible.posix.acl:
@@ -382,7 +383,7 @@
             etype: other
             permissions: 0
             state: present
-        loop: "{{ interactive_users_home.stdout_lines }}"
+        loop: "{{ prelim_interactive_users_home.stdout_lines }}"
 
 - name: "6.2.11 | PATCH | Ensure local interactive user dot files access is configured"
   when:
