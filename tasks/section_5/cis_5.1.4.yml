@@ -19,28 +19,28 @@
 
     - name: "5.1.4 | AUDIT | Ensure all logfiles have appropriate access configured | Set fact"
       when:
-      - item != "/var/log/btmp"
-      - item != "/var/log/utmp"
-      - item != "/var/log/wtmp"
-      - item != "/var/log/lastlog"
+        - item != "/var/log/btmp"
+        - item != "/var/log/utmp"
+        - item != "/var/log/wtmp"
+        - item != "/var/log/lastlog"
       ansible.builtin.file:
-      path: "{{ item }}"
-      mode: 'u-x,g-wx,o-rwx'
-      loop: "{{ discovered_logfiles.stdout_lines }}"
+        path: "{{ item }}"
+        mode: 'u-x,g-wx,o-rwx'
       failed_when: discovered_file_exists_nottmp.state not in '[ file, absent ]'
       register: discovered_file_exists_nottmp
+      loop: "{{ discovered_logfiles.stdout_lines }}"
 
     - name: "5.1.4 | AUDIT | Ensure all logfiles have appropriate access configured | Adjust permissions"
       when:
-          - discovered_system_logfiles.stdout_lines is defined
-          - item == "/var/log/btmp"
-          - item == "/var/log/utmp"
-          - item == "/var/log/wtmp"
-          - item == "/var/log/lastlog"
-          - "'sssd' in item or 'SSSD' in item"
+        - discovered_system_logfiles.stdout_lines is defined
+        - item == "/var/log/btmp"
+        - item == "/var/log/utmp"
+        - item == "/var/log/wtmp"
+        - item == "/var/log/lastlog"
+        - "'sssd' in item or 'SSSD' in item"
       ansible.builtin.file:
-          path: "{{ item }}"
-          mode: 'ug-x,o-wx'
-      loop: "{{ discovered_logfiles.stdout_lines }}"
+        path: "{{ item }}"
+        mode: 'ug-x,o-wx'
       failed_when: discovered_file_exists_tmp.state not in '[ file, absent ]'
       register: discovered_file_exists_tmp
+      loop: "{{ discovered_logfiles.stdout_lines }}"
