@@ -22,7 +22,7 @@ os_check: true
 
 # Ability to stop reboot from occurring until convenient
 # set to true if ok to reboot
-skip_reboot: false
+skip_reboot: true
 
 # Change to false if using EFI boot changes 1.1.1.4 to stop vfat
 amazon2cis_legacy_boot: true
