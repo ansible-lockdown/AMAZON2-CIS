@@ -700,6 +700,12 @@ amazon2cis_ipv6_sshd_disable: false
 amazon2cis_sudolog_location: "/var/log/sudo.log"
 amazon2cis_sudo_timestamp_timeout: 15
 
+# 4.3.4 sudoers NOPASSWD
+# Accounts listed below will skip the NOPASSWD check and leave NOPASSWD set
+amazon2cis_sudoers_exclude_nopasswd_list:
+    - ec2-user
+    - vagrant
+
 # Group to be used for su
 # this group needs to exists groups will not be created for remediation this is considered sys admins
 
@@ -758,11 +764,10 @@ amazon2cis_inactive_whitelist:
 amazon2cis_user_skip_list:
     root
 
-amazon2cis_pass:
-    max_days: 365
-    min_days: 1
-    warn_age: 7
-    inactive: 30  # should not be 0 or -1 (little details in control)
+amazon2cis_pass_max_days: 365
+amazon2cis_pass_min_days: 1
+amazon2cis_pass_warn_age: 7
+amazon2cis_pass_inactive: 30  # should not be 0 or -1 (little details in control)
 
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)

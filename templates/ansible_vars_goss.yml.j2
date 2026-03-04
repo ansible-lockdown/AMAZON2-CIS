@@ -617,8 +617,8 @@ amazon2cis_sugroup_users: ""
 amazon2cis_pwquality_minclass: true
 
 amazon2cis_pass:
-    max_days: 365
-    warn_age: 7
+    max_days: {{ amazon2cis_pass_max_days }}
+    warn_age: {{ amazon2cis_pass_warn_age }}
 
 ####
 ## Section 5 Variables
