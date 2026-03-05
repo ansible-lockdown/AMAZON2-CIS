@@ -143,7 +143,7 @@
         - nft create chain inet "{{ amazon2cis_nft_tables_tablename }}" output { type filter hook output priority 0 \; }
 
 - name: "3.4.3.5 | PATCH | Ensure nftables loopback traffic is configured"
-  when: amazon2cis_rule_3.4.3.5
+  when: amazon2cis_rule_3_4_3_5
   tags:
   - level1
   - automated
