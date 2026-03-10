@@ -243,7 +243,7 @@
       changed_when: false
       failed_when: false
       check_mode: false
-      register: discovered_audit_unowned
+      register: discovered_unowned_files
       loop: "{{ ansible_facts.mounts }}"
       loop_control:
         label: "{{ item.mount }}"
@@ -254,7 +254,7 @@
 
     - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Alert on unowned files and directories"
       when:
-        - not rhel8cis_ownership_adjust
+        - not amazon2cis_ownership_adjust
         - discovered_unowned_files_flatten | length > 0
       ansible.builtin.debug:
         msg:
@@ -264,18 +264,18 @@
 
     - name: "6.1.12 | PATCH | Ensure no unowned or ungrouped files or directories exist | Set files/directories to configured owner and group"
       when:
-        - rhel8cis_ownership_adjust
+        - amazon2cis_ownership_adjust
         - discovered_unowned_files_flatten | length > 0
       ansible.builtin.file:
         path: "{{ item }}"
-        owner: "{{ rhel8cis_unowned_owner }}"
-        group: "{{ rhel8cis_unowned_group }}"
+        owner: "{{ amazon2cis_unowned_owner }}"
+        group: "{{ amazon2cis_unowned_group }}"
       with_items:
         - "{{ discovered_unowned_files_flatten }}"
 
     - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Warn Count"
       when:
-        - not rhel8cis_ownership_adjust
+        - not amazon2cis_ownership_adjust
         - discovered_unowned_files_flatten | length > 0
       ansible.builtin.import_tasks:
         file: warning_facts.yml

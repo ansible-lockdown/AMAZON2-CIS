@@ -868,7 +868,13 @@ amazon2cis_suid_adjust: false
 amazon2cis_sgid_adjust: false
 
 # 6.1.12
+# This variable is a toggle for enabling/disabling the automated
+# setting of an owner (specified in variable `rhel8cis_unowned_owner`)
+# for all unowned files and directories.
+# Possible values are `true` and `false`.
+amazon2cis_ownership_adjust: true
 amazon2cis_exclude_unowned_search_path: (! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "*/kubelet/plugins/*" -a ! -path "/sys/fs/cgroup/memory/*" -a ! -path "/var/*/private/*")
+amazon2cis_unowned_owner: root
 
 # 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true
