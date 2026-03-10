@@ -23,7 +23,7 @@
     - patch
     - firewalld
     - iptables
-    - rule_3.1.2
+    - rule_3.4.1.2
   block:
     - name: "3.4.1.2 | PATCH | Ensure a single firewall configuration utility is in use | firewalld"
       when:
