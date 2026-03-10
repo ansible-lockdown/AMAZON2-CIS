@@ -22,7 +22,7 @@ os_check: true
 
 # Ability to stop reboot from occurring until convenient
 # set to true if ok to reboot
-skip_reboot: false
+skip_reboot: true
 
 # Change to false if using EFI boot changes 1.1.1.4 to stop vfat
 amazon2cis_legacy_boot: true
@@ -543,6 +543,12 @@ amazon2cis_rule_6_2_11: true
 
 ## Section 1 variables
 
+## Ability to enable debug on mounts to assist in troubleshooting
+# Mount point changes are set based upon facts created in Prelim
+# these then build the variable and options that is passed to the handler to set the
+# mount point for the controls in section1.
+amazon2cis_debug_mount_data: false
+
 # If set true uses the tmp.mount service else using fstab configuration
 amazon2cis_tmp_svc: true
 
@@ -700,6 +706,12 @@ amazon2cis_ipv6_sshd_disable: false
 amazon2cis_sudolog_location: "/var/log/sudo.log"
 amazon2cis_sudo_timestamp_timeout: 15
 
+# 4.3.4 sudoers NOPASSWD
+# Accounts listed below will skip the NOPASSWD check and leave NOPASSWD set
+amazon2cis_sudoers_exclude_nopasswd_list:
+    - ec2-user
+    - vagrant
+
 # Group to be used for su
 # this group needs to exists groups will not be created for remediation this is considered sys admins
 
@@ -758,11 +770,10 @@ amazon2cis_inactive_whitelist:
 amazon2cis_user_skip_list:
     root
 
-amazon2cis_pass:
-    max_days: 365
-    min_days: 1
-    warn_age: 7
-    inactive: 30  # should not be 0 or -1 (little details in control)
+amazon2cis_pass_max_days: 365
+amazon2cis_pass_min_days: 1
+amazon2cis_pass_warn_age: 7
+amazon2cis_pass_inactive: 30  # should not be 0 or -1 (little details in control)
 
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)
@@ -793,6 +804,13 @@ amazon2cis_remote_log_protocol: tcp
 amazon2cis_remote_log_retrycount: 100
 amazon2cis_remote_log_queuesize: 1000
 
+
+# 5.2.3.6 exclude listed mountpoints from the find command to locate privileged binaries
+# Allows operator to exclude mounted devices from being considered as within scope to find privileged binaries; mainly in the case of
+# external/temporary mounted USB drives.
+#   amazon2cis_priv_command_excluded_mounts: ["/mnt/backup_disk", "/mnt/usb_external_storage"]
+amazon2cis_priv_command_excluded_mounts: []
+
 # amazon2cis_logrotate sets the daily, weekly, monthly, yearly value for the log rotation
 # To conform to CIS standards this just needs to comply with your site policy
 amazon2cis_logrotate: "daily"
@@ -804,13 +822,12 @@ amazon2cis_audit_back_log_limit: 8192
 amazon2cis_max_log_file_size: 10
 
 # auditd settings
-amazon2cis_auditd:
-    disk_error_action: halt
-    disk_full_action: halt
-    action_mail_acct: root
-    space_left_action: email
-    admin_space_left_action: single
-    max_log_file_action: keep_logs
+amazon2cis_auditd_disk_error_action: halt
+amazon2cis_auditd_disk_full_action: halt
+amazon2cis_auditd_action_mail_acct: root
+amazon2cis_auditd_space_left_action: email
+amazon2cis_auditd_admin_space_left_action: single
+amazon2cis_auditd_max_log_file_action: keep_logs
 
 # This can be used to configure other keys in auditd.conf
 amazon2cis_auditd_extra_conf: {}
@@ -823,15 +840,14 @@ amazon2cis_auditd_extra_conf: {}
 amazon2cis_aide_scan: cron
 amazon2cis_config_aide: true
 # AIDE cron settings
-amazon2cis_aide_cron:
-    cron_user: root
-    cron_file: /etc/cron.d/cis_aide
-    aide_job: '/usr/sbin/aide --check'
-    aide_minute: 0
-    aide_hour: 5
-    aide_day: '*'
-    aide_month: '*'
-    aide_weekday: '*'
+amazon2cis_aide_cron_user: root
+amazon2cis_aide_cron_file: /etc/cron.d/cis_aide
+amazon2cis_aide_cron_job: '/usr/sbin/aide --check'
+amazon2cis_aide_cron_minute: 0
+amazon2cis_aide_cron_hour: 5
+amazon2cis_aide_cron_day: '*'
+amazon2cis_aide_cron_month: '*'
+amazon2cis_aide_cron_weekday: '*'
 
 ##
 ## Section 6 variables
@@ -850,6 +866,15 @@ amazon2cis_ungrouped_adjust: false
 ## Remove suid/sgid from files
 amazon2cis_suid_adjust: false
 amazon2cis_sgid_adjust: false
+
+# 6.1.12
+# This variable is a toggle for enabling/disabling the automated
+# setting of an owner (specified in variable `rhel8cis_unowned_owner`)
+# for all unowned files and directories.
+# Possible values are `true` and `false`.
+amazon2cis_ownership_adjust: true
+amazon2cis_exclude_unowned_search_path: (! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "*/kubelet/plugins/*" -a ! -path "/sys/fs/cgroup/memory/*" -a ! -path "/var/*/private/*")
+amazon2cis_unowned_owner: root
 
 # 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true

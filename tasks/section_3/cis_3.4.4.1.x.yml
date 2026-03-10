@@ -1,21 +1,15 @@
 ---
 
 - name: "3.4.4.1.1 | PATCH | Ensure iptables packages are installed"
-  when:
-      - amazon2cis_rule_3_4_4_1_1
+  when: amazon2cis_rule_3_4_4_1_1
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_3.4.4.1.1
-      - firewall
-      - iptables
-      - NIST800-53R5_CA-9
-  vars:
-      ansible_python_interpreter: /bin/python
+    - level1
+    - automated
+    - patch
+    - rule_3.4.4.1.1
+    - firewall
+    - iptables
+    - NIST800-53R5_CA-9
   ansible.builtin.package:
-      name: "{{ item }}"
-      state: present
-  with_items:
-      - iptables
-      - iptables-services
+    name: ['iptables', 'iptables-persistent']
+    state: present

@@ -12,6 +12,14 @@ ignore*
 # VSCode
 .vscode
 vagrant
+.cursor/
+.claude/
+*report.md
+prompt.md
+plan.md
+history.md
+*recommendations.json
+*.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

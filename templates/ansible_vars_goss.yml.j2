@@ -616,9 +616,8 @@ amazon2cis_sugroup_users: ""
 
 amazon2cis_pwquality_minclass: true
 
-amazon2cis_pass:
-    max_days: 365
-    warn_age: 7
+amazon2cis_pass_max_days: {{ amazon2cis_pass_max_days }}
+amazon2cis_pass_warn_age: {{ amazon2cis_pass_warn_age }}
 
 ####
 ## Section 5 Variables
@@ -634,7 +633,7 @@ amazon2cis_system_is_log_server: false
 # AuditD
 # auditd settings
 amazon2cis_auditd:
-    max_log_file_action: keep_logs
+    max_log_file_action: {{ amazon2cis_auditd_max_log_file_action }}
 
 # AIDE
 # AIDE

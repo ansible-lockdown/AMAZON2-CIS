@@ -38,16 +38,16 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amazon2_4_2_2_priv_ssh_key_results
+        register: discovered_priv_ssh_key_results
 
       - name: "4.2.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
         ansible.builtin.file:
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-rwx'
         with_items:
-            - "{{ amazon2_4_2_2_priv_ssh_key_results.files }}"
+            - "{{ discovered_priv_ssh_key_results.files }}"
         loop_control:
             label: "{{ item.path }}"
 
@@ -70,16 +70,16 @@
             patterns: 'ssh_host_*_key'
             recurse: true
             file_type: any
-        register: amazon2_4_2_3_pub_ssh_key_results
+        register: discovered_pub_ssh_key_results
 
       - name: "4.2.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
         ansible.builtin.file:
             path: "{{ item.path }}"
             owner: root
             group: root
-            mode: '0600'
+            mode: 'u-x,go-wx'
         with_items:
-            - "{{ amazon2_4_2_3_pub_ssh_key_results.files }}"
+            - "{{ discovered_pub_ssh_key_results.files }}"
         loop_control:
             label: "{{ item.path }}"
 
@@ -131,7 +131,7 @@
         notify: Restart sshd
         when: "amazon2cis_sshd['denygroups']|default('') | length > 0"
 
-- name: "4.2.5 | PATCH | Ensure SSH banner is configured"
+- name: "4.2.5 | PATCH | Ensure sshd Banner is configured"
   when:
       - amazon2cis_rule_4_2_5
   tags:
@@ -152,7 +152,7 @@
       line: 'Banner /etc/issue.net'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.6 | PATCH | Ensure only strong Ciphers are used"
+- name: "4.2.6 | PATCH | Ensure sshd Ciphers are configured"
   when:
       - amazon2cis_rule_4_2_6
   tags:
@@ -280,7 +280,7 @@
       line: 'IgnoreRhosts yes'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.12 | PATCH | Ensure only strong Key Exchange algorithms are used"
+- name: "4.2.12 | PATCH | Ensure sshd KexAlgorithms is configured"
   when:
       - amazon2cis_rule_4_2_12
   tags:
@@ -314,7 +314,7 @@
       line: "LoginGraceTime {{ amazon2cis_sshd['logingracetime'] }}"
       validate: 'sshd -t -f %s'
 
-- name: "4.2.14 | PATCH | Ensure SSH LogLevel is configured"
+- name: "4.2.14 | PATCH | Ensure sshd LogLevel is configured"
   when:
       - amazon2cis_rule_4_2_14
   tags:
@@ -392,7 +392,7 @@
       line: 'MaxSessions {{ amazon2cis_ssh_maxsessions }}'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.18 | PATCH | Ensure SSH MaxStartups is configured"
+- name: "4.2.18 | PATCH | Ensure sshd MaxStartups is configured"
   when:
       - amazon2cis_rule_4_2_18
   tags:

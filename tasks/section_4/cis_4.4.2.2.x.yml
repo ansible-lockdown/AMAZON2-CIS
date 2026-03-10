@@ -93,7 +93,7 @@
             line: "minclass = {{ amazon2cis_pwquality_minclass_value }}"
         when: amazon2cis_pwquality_minclass
 
-      - name: "4.4.2.2.4 | PATCH | Ensure password complexity is configured | seperated values"
+      - name: "4.4.2.2.4 | PATCH | Ensure password complexity is configured | separated values"
         ansible.builtin.lineinfile:
             path: /etc/security/pwquality.conf
             regexp: ^{{ item.key }}

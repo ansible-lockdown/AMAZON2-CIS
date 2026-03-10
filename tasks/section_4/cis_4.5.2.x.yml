@@ -58,13 +58,13 @@
             - item.id != "shutdown"
             - item.id != "halt"
             - item.id != "nfsnobody"
-            - item.uid < amazon2cis_min_uid | int
+            - item.uid < amazon2cis_uid_min | int
             - item.shell != "      /bin/false"
             - item.shell != "      /usr/sbin/nologin"
         ansible.builtin.user:
             name: "{{ item.id }}"
             shell: /usr/sbin/nologin
-        loop: "{{ amazon2cis_passwd }}"
+        loop: "{{ prelim_captured_passwd_data }}"
         loop_control:
             label: "{{ item.id }}"
 
@@ -75,13 +75,13 @@
             - item.id != "shutdown"
             - item.id != "halt"
             - item.id != "nfsnobody"
-            - item.uid < amazon2cis_min_uid | int
+            - item.uid < amazon2cis_uid_min | int
             - item.shell != "      /bin/false"
             - item.shell != "      /usr/sbin/nologin"
         ansible.builtin.user:
             name: "{{ item.id }}"
             password_lock: true
-        loop: "{{ amazon2cis_passwd }}"
+        loop: "{{ prelim_captured_passwd_data }}"
         loop_control:
             label: "{{ item.id }}"
 

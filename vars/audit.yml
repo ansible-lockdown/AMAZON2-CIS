@@ -1,6 +1,6 @@
 ---
 
-#### Audit Configuration Settings ####
+  #### Audit Configuration Settings ####
 
 # Timeout for those cmds that take longer to run where timeout set
 audit_cmd_timeout: 120000
@@ -38,3 +38,4 @@ audit_results: |
       {% if not audit_only %}The post remediation audit results are: {{ post_audit_results }}{% endif %}
 
       Full breakdown can be found in {{ audit_log_dir }}
+

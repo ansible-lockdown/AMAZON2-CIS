@@ -1,7 +1,8 @@
 ---
+
 - name: Run the ansible-lockdown remediation role
   hosts: all
   become: true
 
   roles:
-      - role: "{{ playbook_dir }}"
+    - role: "{{ playbook_dir }}"
