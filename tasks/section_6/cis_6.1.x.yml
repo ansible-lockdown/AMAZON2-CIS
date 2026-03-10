@@ -238,42 +238,45 @@
   vars:
     warn_control_id: '6.1.12'
   block:
-    - name: "6.1.12 | AUDIT | Ensure no ungrouped files or directories exist | Get ungrouped files or directories"
-      ansible.builtin.command: find {{ item }} -xdev -nogroup -not -fstype nfs
+    - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Get list files or directories"
+      ansible.builtin.command: "find {{ amazon2cis_exclude_unowned_search_path }} {{ item.mount }} -xdev \\( -nouser -o -nogroup \\) -not -fstype nfs"
       changed_when: false
       failed_when: false
       check_mode: false
-      register: discovered_ungrouped_items
-      loop: "{{ prelim_mount_names }}"
+      register: discovered_audit_unowned
+      loop: "{{ ansible_facts.mounts }}"
+      loop_control:
+        label: "{{ item.mount }}"
 
-    - name: "6.1.12 | AUDIT | Ensure no ungrouped files or directories exist | Flatten ungrouped_items results for easier use"
+    - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Flatten no_user_items results for easier use"
       ansible.builtin.set_fact:
-        discovered_ungrouped_items_flatten: "{{ discovered_ungrouped_items.results | map(attribute='stdout_lines') | flatten }}"
+        discovered_unowned_files_flatten: "{{ discovered_unowned_files.results | map(attribute='stdout_lines') | flatten }}"
 
-    - name: "6.1.12 | AUDIT | Ensure no ungrouped files or directories exist | Alert on ungrouped files and directories"
+    - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Alert on unowned files and directories"
       when:
-        - not amazon2cis_ungrouped_adjust
-        - discovered_ungrouped_items_flatten | length > 0
+        - not rhel8cis_ownership_adjust
+        - discovered_unowned_files_flatten | length > 0
       ansible.builtin.debug:
         msg:
-          - "Warning!! You have ungrouped files/directories and are configured to not auto-remediate for this task"
-          - "Please review the files/directories below and assign a group"
-          - "{{ discovered_ungrouped_items_flatten }}"
+          - "Warning!! You have unowned files and are configured to not auto-remediate for this task"
+          - "Please review the files/directories below and assign an owner"
+          - "{{ discovered_unowned_files_flatten }}"
 
-    - name: "6.1.12 | PATCH | Ensure no ungrouped files or directories exist | Set ungrouped files/directories to configured group"
+    - name: "6.1.12 | PATCH | Ensure no unowned or ungrouped files or directories exist | Set files/directories to configured owner and group"
       when:
-        - amazon2cis_ungrouped_adjust
-        - discovered_ungrouped_items_flatten | length > 0
+        - rhel8cis_ownership_adjust
+        - discovered_unowned_files_flatten | length > 0
       ansible.builtin.file:
         path: "{{ item }}"
-        group: "{{ amazon2cis_ungrouped_group }}"
-      loop:
-        - "{{ discovered_ungrouped_items_flatten }}"
+        owner: "{{ rhel8cis_unowned_owner }}"
+        group: "{{ rhel8cis_unowned_group }}"
+      with_items:
+        - "{{ discovered_unowned_files_flatten }}"
 
-    - name: "6.1.12 | AUDIT | Ensure no ungrouped files or directories exist | Warn Count"
+    - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Warn Count"
       when:
-        - amazon2cis_ungrouped_adjust
-        - discovered_ungrouped_items_flatten | length > 0
+        - not rhel8cis_ownership_adjust
+        - discovered_unowned_files_flatten | length > 0
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

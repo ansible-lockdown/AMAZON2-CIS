@@ -867,5 +867,8 @@ amazon2cis_ungrouped_adjust: false
 amazon2cis_suid_adjust: false
 amazon2cis_sgid_adjust: false
 
+# 6.1.12
+amazon2cis_exclude_unowned_search_path: (! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "*/kubelet/plugins/*" -a ! -path "/sys/fs/cgroup/memory/*" -a ! -path "/var/*/private/*")
+
 # 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true
