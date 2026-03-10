@@ -1,6 +1,6 @@
 ---
 
-- name: "3.4.2.1 | PATCH | Ensure FirewallD is installed"
+- name: "3.4.2.1 | PATCH | Ensure firewalld is installed"
   when: amazon2cis_rule_3_4_2_1
   tags:
     - level1
@@ -16,7 +16,7 @@
     name: firewalld
     state: present
 
-- name: "3.4.2.2 | PATCH | Ensure firewalld service is enabled and running"
+- name: "3.4.2.2 | PATCH | Ensure firewalld service enabled and running"
   when: amazon2cis_rule_3_4_2_2
   tags:
     - level1

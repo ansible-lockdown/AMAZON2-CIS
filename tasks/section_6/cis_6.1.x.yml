@@ -222,7 +222,7 @@
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
-- name: "6.1.12 | PATCH | Ensure no ungrouped files or directories exist"
+- name: "6.1.12 | PATCH | Ensure no unowned or ungrouped files or directories exist"
   when:
     - amazon2cis_rule_6_1_12
     - amazon2cis_disruption_high

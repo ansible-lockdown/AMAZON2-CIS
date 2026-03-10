@@ -131,7 +131,7 @@
         notify: Restart sshd
         when: "amazon2cis_sshd['denygroups']|default('') | length > 0"
 
-- name: "4.2.5 | PATCH | Ensure SSH banner is configured"
+- name: "4.2.5 | PATCH | Ensure sshd Banner is configured"
   when:
       - amazon2cis_rule_4_2_5
   tags:
@@ -152,7 +152,7 @@
       line: 'Banner /etc/issue.net'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.6 | PATCH | Ensure only strong Ciphers are used"
+- name: "4.2.6 | PATCH | Ensure sshd Ciphers are configured"
   when:
       - amazon2cis_rule_4_2_6
   tags:
@@ -280,7 +280,7 @@
       line: 'IgnoreRhosts yes'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.12 | PATCH | Ensure only strong Key Exchange algorithms are used"
+- name: "4.2.12 | PATCH | Ensure sshd KexAlgorithms is configured"
   when:
       - amazon2cis_rule_4_2_12
   tags:
@@ -314,7 +314,7 @@
       line: "LoginGraceTime {{ amazon2cis_sshd['logingracetime'] }}"
       validate: 'sshd -t -f %s'
 
-- name: "4.2.14 | PATCH | Ensure SSH LogLevel is configured"
+- name: "4.2.14 | PATCH | Ensure sshd LogLevel is configured"
   when:
       - amazon2cis_rule_4_2_14
   tags:
@@ -392,7 +392,7 @@
       line: 'MaxSessions {{ amazon2cis_ssh_maxsessions }}'
       validate: 'sshd -t -f %s'
 
-- name: "4.2.18 | PATCH | Ensure SSH MaxStartups is configured"
+- name: "4.2.18 | PATCH | Ensure sshd MaxStartups is configured"
   when:
       - amazon2cis_rule_4_2_18
   tags:

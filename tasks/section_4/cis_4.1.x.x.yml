@@ -131,7 +131,7 @@
       group: root
       mode: '0700'
 
-- name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users"
+- name: "4.1.1.8 | PATCH | Ensure crontab is restricted to authorized users"
   when:
       - amazon2cis_rule_4_1_1_8
   tags:

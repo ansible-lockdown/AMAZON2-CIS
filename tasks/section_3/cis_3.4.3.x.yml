@@ -16,7 +16,7 @@
     name: nftables
     state: present
 
-- name: "3.4.3.2 | PATCH | Ensure iptables are flushed"
+- name: "3.4.3.2 | PATCH | Ensure iptables are flushed with nftables"
   when:
     - "'iptables' in ansible_facts.packages"
     - amazon2cis_firewall != "iptables"

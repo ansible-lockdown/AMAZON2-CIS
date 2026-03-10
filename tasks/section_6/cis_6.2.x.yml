@@ -226,7 +226,7 @@
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
-- name: "6.2.8 | PATCH | Ensure root PATH Integrity"
+- name: "6.2.8 | PATCH | Ensure root path integrity"
   when: amazon2cis_rule_6_2_8
   tags:
     - level1-server
@@ -312,7 +312,7 @@
   failed_when: false
   loop: "{{ prelim_uid_zero_accounts_except_root.stdout_lines }}"
 
-- name: "6.2.10 | PATCH | Ensure local interactive user home directories exist"
+- name: "6.2.10 | PATCH | Ensure local interactive user home directories are configured"
   when: amazon2cis_rule_6_2_10
   tags:
     - level1-server
