@@ -370,7 +370,7 @@
         - not amazon2cis_rpc_server
         - not amazon2cis_rpc_mask
       ansible.builtin.package:
-        name: cups
+        name: rpcbind
         state: absent
 
     - name: "2.2.12 | PATCH | Ensure rpcbind services are not in use | Mask service"
