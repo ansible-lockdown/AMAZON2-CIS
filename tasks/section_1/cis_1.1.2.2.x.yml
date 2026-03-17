@@ -2,18 +2,18 @@
 
 - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition"
   when:
-      - required_mount not in prelim_mount_names
-      - amazon2cis_rule_1_1_2_2_1
+    - required_mount not in prelim_mount_names
+    - amazon2cis_rule_1_1_2_2_1
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.1.2.2.1
-      - mounts
-      - NIST800-53R5_CM-7
+    - level1
+    - automated
+    - patch
+    - rule_1.1.2.2.1
+    - mounts
+    - NIST800-53R5_CM-7
   vars:
-      warn_control_id: '1.1.2.2.1'
-      required_mount: '/dev/shm'
+    warn_control_id: '1.1.2.2.1'
+    required_mount: '/dev/shm'
   block:
     - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | check for mount"
       ansible.builtin.command: findmnt -kn "{{ required_mount }}"

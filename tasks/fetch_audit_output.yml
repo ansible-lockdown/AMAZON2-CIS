@@ -41,6 +41,6 @@
 
     - name: "POST | FETCH | Fetch files and copy to controller | Warning if issues with fetch_audit_files"
       vars:
-          warn_control_id: "FETCH_AUDIT_FILES"
+        warn_control_id: "FETCH_AUDIT_FILES"
       ansible.builtin.import_tasks:
         file: warning_facts.yml

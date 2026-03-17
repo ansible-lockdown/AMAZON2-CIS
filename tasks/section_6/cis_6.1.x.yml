@@ -34,7 +34,7 @@
     group: root
     mode: 'u-x,go-wx'
 
-- name: "6.1.3 | PATCH | Ensure permissions on /etc/group are configured"
+- name: "6.1.3 | PATCH | Ensure permissions on /etc/security/opasswd are configured"
   when: amazon2cis_rule_6_1_3
   tags:
     - level1-server
@@ -46,12 +46,12 @@
     - permissions
     - rule_6.1.3
   ansible.builtin.file:
-    path: /etc/group
+    path: /etc/security/opasswd
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: 'u-x,go-rwx'
 
-- name: "6.1.4 | PATCH | Ensure permissions on /etc/group- are configured"
+- name: "6.1.4 | PATCH |  Ensure permissions on /etc/group are configured"
   when: amazon2cis_rule_6_1_4
   tags:
     - level1-server
@@ -63,12 +63,12 @@
     - permissions
     - rule_6.1.4
   ansible.builtin.file:
-    path: /etc/group-
+    path: /etc/group
     owner: root
     group: root
     mode: 'u-x,go-wx'
 
-- name: "6.1.5 | PATCH | Ensure permissions on /etc/shadow are configured"
+- name: "6.1.5 | PATCH | Ensure permissions on /etc/group- are configured"
   when: amazon2cis_rule_6_1_5
   tags:
     - level1-server
@@ -80,12 +80,12 @@
     - permissions
     - rule_6.1.5
   ansible.builtin.file:
-    path: /etc/shadow
+    path: /etc/group-
     owner: root
     group: root
-    mode: 'ugo-rwx'
+    mode: 'u-x,go-wx'
 
-- name: "6.1.6 | PATCH | Ensure permissions on /etc/shadow- are configured"
+- name: "6.1.6 | PATCH | Ensure permissions on /etc/shadow are configured"
   when: amazon2cis_rule_6_1_6
   tags:
     - level1-server
@@ -97,12 +97,12 @@
     - permissions
     - rule_6.1.6
   ansible.builtin.file:
-    path: /etc/shadow-
+    path: /etc/shadow
     owner: root
     group: root
     mode: 'ugo-rwx'
 
-- name: "6.1.7 | PATCH | Ensure permissions on /etc/gshadow are configured"
+- name: "6.1.7 | PATCH | Ensure permissions on /etc/shadow- are configured"
   when: amazon2cis_rule_6_1_7
   tags:
     - level1-server
@@ -114,12 +114,12 @@
     - permissions
     - rule_6.1.7
   ansible.builtin.file:
-    path: /etc/gshadow
+    path: /etc/shadow-
     owner: root
     group: root
     mode: 'ugo-rwx'
 
-- name: "6.1.8 | PATCH | Ensure permissions on /etc/gshadow- are configured"
+- name: "6.1.8 | PATCH | Ensure permissions on /etc/gshadow are configured"
   when: amazon2cis_rule_6_1_8
   tags:
     - level1-server
@@ -131,12 +131,12 @@
     - permissions
     - rule_6.1.8
   ansible.builtin.file:
-    path: /etc/gshadow-
+    path: /etc/gshadow
     owner: root
     group: root
     mode: 'ugo-rwx'
 
-- name: "6.1.9 | PATCH | Ensure permissions on /etc/shells are configured"
+- name: "6.1.9 | PATCH | Ensure permissions on /etc/gshadow- are configured"
   when: amazon2cis_rule_6_1_9
   tags:
     - level1-server
@@ -148,12 +148,12 @@
     - permissions
     - rule_6.1.9
   ansible.builtin.file:
-    path: /etc/shells
+    path: /etc/gshadow-
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: 'ugo-rwx'
 
-- name: "6.1.10 | PATCH | Ensure permissions on /etc/security/opasswd are configured"
+- name: "6.1.10 | PATCH | Ensure permissions on /etc/shells are configured"
   when: amazon2cis_rule_6_1_10
   tags:
     - level1-server
@@ -165,10 +165,10 @@
     - permissions
     - rule_6.1.10
   ansible.builtin.file:
-    path: /etc/security/opasswd
+    path: /etc/shells
     owner: root
     group: root
-    mode: 'u-x,go-rwx'
+    mode: 'u-x,go-wx'
 
 - name: "6.1.11 | PATCH | Ensure world writable files and directories are secured"
   when:
@@ -239,18 +239,19 @@
     warn_control_id: '6.1.12'
   block:
     - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Get list files or directories"
-      ansible.builtin.command: "find {{ amazon2cis_exclude_unowned_search_path }} {{ item.mount }} -xdev \\( -nouser -o -nogroup \\) -not -fstype nfs"
+      ansible.builtin.command: find {{ amazon2cis_exclude_unowned_search_path }} {{ item.mount }} -xdev \( -nouser -o -nogroup \) -not -fstype nfs
       changed_when: false
       failed_when: false
       check_mode: false
       register: discovered_unowned_files
-      loop: "{{ ansible_facts.mounts }}"
+      with_items:
+        - "{{ ansible_facts.mounts }}"
       loop_control:
         label: "{{ item.mount }}"
 
     - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Flatten no_user_items results for easier use"
       ansible.builtin.set_fact:
-        discovered_unowned_files_flatten: "{{ discovered_unowned_files.results | map(attribute='stdout_lines') | flatten }}"
+        discovered_unowned_files_flatten: "{{ discovered_unowned_files.results | selectattr('stdout_lines', 'defined') | map(attribute='stdout_lines') | flatten }}"
 
     - name: "6.1.12 | AUDIT | Ensure no unowned or ungrouped files or directories exist | Alert on unowned files and directories"
       when:
@@ -269,7 +270,7 @@
       ansible.builtin.file:
         path: "{{ item }}"
         owner: "{{ amazon2cis_unowned_owner }}"
-        group: "{{ amazon2cis_unowned_group }}"
+        group: "{{ amazon2cis_ungrouped_group }}"
       with_items:
         - "{{ discovered_unowned_files_flatten }}"
 
@@ -380,23 +381,22 @@
       register: discovered_packages_rpm
 
     - name: "6.1.14 | AUDIT | Audit system file permissions | Create list and warning"
+      when: discovered_packages_rpm.stdout | length > 0
       block:
         - name: "6.1.14 | AUDIT | Audit system file permissions | Add file discrepancy list to system"
           ansible.builtin.copy:
-            dest: "{{ amazon2cis_rpm_audit_file }}"  # noqa template-instead-of-copy
+            dest: "{{ amazon2cis_rpm_audit_file }}" # noqa template-instead-of-copy
             content: "{{ discovered_packages_rpm.stdout }}"
             owner: root
             group: root
             mode: 'u-x,go-wx'
 
-        - name: "6.1.14 | AUDIT | Audit system file permissions | Message out alert for package descrepancies"
-          when: discovered_packages_rpm.stdout | length > 0
-          ansible.builtin.debug:
-            msg: |
-              "Warning!! You have some package descrepancies issues.
-              The file list can be found in {{ amazon2cis_rpm_audit_file }}"
+    - name: "6.1.14 | AUDIT | Audit system file permissions | Message out alert for package discrepancies"
+      ansible.builtin.debug:
+        msg: |
+          "Warning!! You have some package discrepancy issues.
+          The file list can be found in {{ amazon2cis_rpm_audit_file }}"
 
-        - name: "6.1.14 | AUDIT | Audit system file permissions | Warn Count"
-          when: amazon2cis_6_1_14_packages_rpm.stdout | length > 0
-          ansible.builtin.import_tasks:
-              file: warning_facts.yml
+    - name: "6.1.14 | AUDIT | Audit system file permissions | Warn Count"
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml

@@ -19,7 +19,6 @@
 - name: "3.4.3.2 | PATCH | Ensure iptables are flushed with nftables"
   when:
     - "'iptables' in ansible_facts.packages"
-    - amazon2cis_firewall != "iptables"
     - amazon2cis_rule_3_4_3_2
   tags:
     - level1
@@ -66,7 +65,7 @@
     - name: "3.4.3.3 | AUDIT | Ensure an nftables table exists | Alert on no tables"
       when:
         - discovered_nft_tables.stdout | length == 0
-        - not amazon2cis_nft_tables_autoNewTable
+        - not amazon2cis_nft_tables_autonewtable
       ansible.builtin.debug:
         msg:
           - "Warning! You currently have no nft tables, please review your setup"
@@ -77,7 +76,7 @@
       vars:
         warn_control_id: '3.4.3.3'
       ansible.builtin.import_tasks:
-          file: warning_facts.yml
+        file: warning_facts.yml
 
     - name: "3.4.3.3 | PATCH | Ensure an nftables table exists | Create table if needed"
       when: amazon2cis_nft_tables_autoNewTable
@@ -130,7 +129,7 @@
       vars:
         warn_control_id: '3.4.3.4'
       ansible.builtin.import_tasks:
-          file: warning_facts.yml
+        file: warning_facts.yml
 
     - name: "3.4.3.4 | PATCH | Ensure nftables base chains exist | Create chains if needed"
       when: amazon2cis_nft_tables_autochaincreate
@@ -145,13 +144,13 @@
 - name: "3.4.3.5 | PATCH | Ensure nftables loopback traffic is configured"
   when: amazon2cis_rule_3_4_3_5
   tags:
-  - level1
-  - automated
-  - patch
-  - rule_3.4.3.5
-  - firewall
-  - nftables
-  - NIST800-53R5_CA-9
+    - level1
+    - automated
+    - patch
+    - rule_3.4.3.5
+    - firewall
+    - nftables
+    - NIST800-53R5_CA-9
   block:
     - name: "3.4.3.5 | AUDIT | Ensure nftables loopback traffic is configured | Gather iif lo accept existence"
       ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
@@ -189,13 +188,13 @@
 - name: "3.4.3.6 | PATCH | Ensure nftables outbound and established connections are configured"
   when: amazon2cis_rule_3_4_3_6
   tags:
-  - level1
-  - manual
-  - patch
-  - rule_3.4.3.6
-  - firewall
-  - nftables
-  - NIST800-53R5_CA-9
+    - level1
+    - manual
+    - patch
+    - rule_3.4.3.6
+    - firewall
+    - nftables
+    - NIST800-53R5_CA-9
   block:
     - name: "3.4.3.6 | AUDIT | Ensure nftables outbound and established connections are configured | Gather incoming connection rules"
       ansible.builtin.shell: nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
@@ -242,13 +241,13 @@
 - name: "3.4.3.7 | PATCH | Ensure nftables default deny firewall policy"
   when: amazon2cis_rule_3_4_3_7
   tags:
-  - level1
-  - manual
-  - patch
-  - rule_3.4.3.7
-  - firewall
-  - nftables
-  - NIST800-53R5_CA-9
+    - level1
+    - manual
+    - patch
+    - rule_3.4.3.7
+    - firewall
+    - nftables
+    - NIST800-53R5_CA-9
   block:
     - name: "3.4.3.7 | AUDIT | Ensure nftables default deny firewall policy | Check for hook input deny policy"
       ansible.builtin.shell: nft list table inet "{{ amazon2cis_nft_tables_tablename }}" | grep 'hook input'
@@ -297,13 +296,13 @@
 - name: "3.4.3.8 | PATCH | Ensure nftables service is enabled and active"
   when: amazon2cis_rule_3_4_3_8
   tags:
-  - level1
-  - automated
-  - patch
-  - rule_3.4.3.8
-  - firewall
-  - nftables
-  - NIST800-53R5_CA-9
+    - level1
+    - automated
+    - patch
+    - rule_3.4.3.8
+    - firewall
+    - nftables
+    - NIST800-53R5_CA-9
   ansible.builtin.systemd:
     name: nftables
     enabled: true
@@ -312,13 +311,13 @@
 - name: "3.4.3.9 | PATCH | Ensure nftables rules are permanent"
   when: amazon2cis_rule_3_4_3_9
   tags:
-  - level1
-  - automated
-  - patch
-  - rule_3.4.3.9
-  - firewall
-  - nftables
-  - NIST800-53R5_CA-9
+    - level1
+    - automated
+    - patch
+    - rule_3.4.3.9
+    - firewall
+    - nftables
+    - NIST800-53R5_CA-9
   ansible.builtin.lineinfile:
     path: /etc/sysconfig/nftables.conf
     state: present

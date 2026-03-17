@@ -93,7 +93,7 @@
       vars:
         warn_control_id: '3.4.4.2.3'
       ansible.builtin.import_tasks:
-          file: warning_facts.yml
+        file: warning_facts.yml
 
 - name: "3.4.4.2.4 | PATCH | Ensure iptables default deny firewall policy"
   when:

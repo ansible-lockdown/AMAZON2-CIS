@@ -268,28 +268,28 @@
 
     - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions"
       block:
-          - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions"
-            ansible.builtin.stat:
-              path: "{{ item }}"
-            register: discovered_root_path_perms
-            loop: "{{ discovered_root_paths_split.stdout_lines }}"
+        - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions"
+          ansible.builtin.stat:
+            path: "{{ item }}"
+          register: discovered_root_path_perms
+          loop: "{{ discovered_root_paths_split.stdout_lines }}"
 
-          - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Set permissions"
-            when:
-              - item.stat.exists
-              - item.stat.isdir
-              - item.stat.pw_name != 'root' or item.stat.gr_name != 'root' or item.stat.woth or item.stat.wgrp
-              - (item != 'root') and (not amazon2cis_uses_root)
-            ansible.builtin.file:
-              path: "{{ item.stat.path }}"
-              state: directory
-              owner: root
-              group: root
-              mode: "0755"
-              follow: false
-            loop: "{{ discovered_root_path_perms.results }}"
-            loop_control:
-              label: "{{ item }}"
+        - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Set permissions"
+          when:
+            - item.stat.exists
+            - item.stat.isdir
+            - item.stat.pw_name != 'root' or item.stat.gr_name != 'root' or item.stat.woth or item.stat.wgrp
+            - (item != 'root') and (not amazon2cis_uses_root)
+          ansible.builtin.file:
+            path: "{{ item.stat.path }}"
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+            follow: false
+          loop: "{{ discovered_root_path_perms.results }}"
+          loop_control:
+            label: "{{ item }}"
 
 - name: "6.2.9 | PATCH | Ensure root is the only UID 0 account"
   when:
@@ -339,7 +339,7 @@
 
     - name: "6.2.10 | AUDIT | Ensure local interactive user home directories exist | get perms stat"
       ansible.builtin.stat:
-          path: "{{ item }}"
+        path: "{{ item }}"
       register: discovered_home_dir_perms
       loop: "{{ prelim_interactive_users_home.stdout_lines }}"
 
@@ -410,7 +410,7 @@
         - discovered_dot_files_audit.stdout | length > 0
         - amazon2cis_dotperm_ansiblemanaged
       ansible.builtin.import_tasks:
-          file: warning_facts.yml
+        file: warning_facts.yml
 
     - name: "6.2.11 | PATCH | Ensure local interactive user dot files access is configured | Changes files if configured"
       when:

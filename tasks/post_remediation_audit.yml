@@ -30,4 +30,4 @@
 
     - name: Post Audit | Set Fact for audit summary
       ansible.builtin.set_fact:
-          post_audit_results: "{{ post_audit_summary_documentation.stdout }}"
+        post_audit_results: "{{ post_audit_summary_documentation.stdout }}"
