@@ -347,8 +347,7 @@
           - "{{ discovered_sgid_executables_flatten }}"
 
     - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Warn Count"
-      when:
-        - (discovered_suid_executables_flatten | length > 0 and not amazon2cis_suid_adjust) or
+      when: (discovered_suid_executables_flatten | length > 0 and not amazon2cis_suid_adjust) or
           (discovered_sgid_executables_flatten | length > 0 and not amazon2cis_sgid_adjust)
       ansible.builtin.import_tasks:
         file: warning_facts.yml
@@ -356,7 +355,7 @@
 - name: "6.1.14 | AUDIT | Audit system file permissions"
   when:
     - amazon2cis_rule_6_1_14
-      - amazon2cis_disruption_high
+    - amazon2cis_disruption_high
   tags:
     - level2-server
     - level2-workstation

@@ -157,9 +157,7 @@
       register: prelim_wireless_modules
 
 - name: "PRELIM | Find all sudoers files."
-  when:
-    - amazon2cis_rule_4_3_4 or
-      amazon2cis_rule_4_3_5
+  when: amazon2cis_rule_4_3_4 or amazon2cis_rule_4_3_5
   tags: always
   ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
   changed_when: false
@@ -195,8 +193,7 @@
   register: prelim_audit_discovered_logfile
 
 - name: "PRELIM | Audit conf and rules files | list files"
-  when:
-    - amazon2cis_rule_5_2_4_5 or
+  when: amazon2cis_rule_5_2_4_5 or
       amazon2cis_rule_5_2_4_6 or
       amazon2cis_rule_5_2_4_7
   tags:
