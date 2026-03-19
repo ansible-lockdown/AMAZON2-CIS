@@ -6,7 +6,6 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: latest
-  register: python2_packages
   loop:
     - python2-rpm
     - libselinux-python
@@ -18,4 +17,3 @@
   ansible.builtin.package:
     name: python3-rpm
     state: present
-  register: python3reqs_installed

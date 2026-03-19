@@ -4,16 +4,16 @@
   when: os_check
   tags: always
   ansible.builtin.assert:
-      that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2', '=='))
-      fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
-      success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
+    that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2', '=='))
+    fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
+    success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
 
 - name: Check ansible version
   tags: always
   ansible.builtin.assert:
-      that: ansible_version.full is version_compare(min_ansible_version, '>=')
-      fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
-      success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
+    that: ansible_version.full is version_compare(min_ansible_version, '>=')
+    fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
+    success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
 
 - name: Ensure root password is set
   when: amazon2cis_rule_4_5_2_4
@@ -23,11 +23,11 @@
       ansible.builtin.shell: passwd -S root | egrep -e "(Password set, SHA512 crypt|Password locked)"
       changed_when: false
       failed_when: false
-      register: root_passwd_set
+      register: prelim_root_passwd_set
 
     - name: Ensure root password is set
       ansible.builtin.assert:
-        that: root_passwd_set.rc == 0
+        that: prelim_root_passwd_set.rc == 0
         fail_msg: "You have rule 4.5.2.4 enabled this requires that you have a root password set"
         success_msg: "You have a root password set"
 
@@ -40,18 +40,18 @@
     - name: Check su group exists if defined
       ansible.builtin.command: grep -w "{{ amazon2cis_sugroup }}" /etc/group
       changed_when: false
-      failed_when: sugroup_exists.rc >= 2
-      register: sugroup_exists
+      failed_when: prelim_sugroup_exists.rc >= 2
+      register: prelim_sugroup_exists
 
     - name: Check sugroup if defined exists before continuing
       ansible.builtin.assert:
-        that: sugroup_exists.rc == 0
+        that: prelim_sugroup_exists.rc == 0
         msg: "The variable amazon2cis_sugroup is defined but does not exist please rectify"
 
 - name: Run pre-reqs
   tags: always
   ansible.builtin.import_tasks:
-      file: check_prereqs.yml
+    file: check_prereqs.yml
 
 - name: Run prelim tasks
   tags: always
@@ -61,7 +61,7 @@
 - name: Gather the package facts
   tags: always
   ansible.builtin.package_facts:
-      manager: auto
+    manager: auto
 
 - name: Import section 1 tasks
   when: amazon2cis_section1

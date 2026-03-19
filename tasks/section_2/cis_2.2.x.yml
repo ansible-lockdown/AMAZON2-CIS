@@ -250,10 +250,10 @@
         - amazon2cis_message_mask
       notify: Systemd_daemon_reload
       ansible.builtin.systemd:
-          name: "{{ item }}"
-          enabled: "{{ (item in ansible_facts.packages) | ternary(false, omit) }}"
-          state: "{{ (item in ansible_facts.packages) | ternary('stopped', omit) }}"
-          masked: true
+        name: "{{ item }}"
+        enabled: "{{ (item in ansible_facts.packages) | ternary(false, omit) }}"
+        state: "{{ (item in ansible_facts.packages) | ternary('stopped', omit) }}"
+        masked: true
       loop:
         - "dovecot.socket"
         - "dovecot.service"
@@ -370,7 +370,7 @@
         - not amazon2cis_rpc_server
         - not amazon2cis_rpc_mask
       ansible.builtin.package:
-        name: rpcbind
+        name: cups
         state: absent
 
     - name: "2.2.12 | PATCH | Ensure rpcbind services are not in use | Mask service"
@@ -672,7 +672,7 @@
     - NIST800-53R5_CM-7
     - rule_2.2.22
   vars:
-      warn_control_id: '2.2.22'
+    warn_control_id: '2.2.22'
   block:
     - name: "2.2.22 | AUDIT | Ensure only approved services are listening on a network interface | Get list of services"  # noqa: command-instead-of-module
       ansible.builtin.command: systemctl list-units --type=service

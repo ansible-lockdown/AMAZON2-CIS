@@ -24,7 +24,6 @@
     owner: root
     group: root
     mode: 'go-rwx'
-  register: audit_rules_updated
   notify:
     - Audit_immutable_fact
     - Restart_auditd

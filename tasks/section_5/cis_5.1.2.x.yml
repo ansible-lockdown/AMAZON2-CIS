@@ -166,8 +166,8 @@
 
 - name: "5.1.2.6 | PATCH | Ensure journald log rotation is configured per site policy"
   when:
-      - amazon2cis_rule_5_1_2_6
-      - amazon2cis_syslog == 'journald'
+    - amazon2cis_rule_5_1_2_6
+    - amazon2cis_syslog == 'journald'
   tags:
     - level1-server
     - level1-workstation

@@ -14,11 +14,10 @@ ignore*
 vagrant
 .cursor/
 .claude/
-*report.md
+qa_report_*.md
 prompt.md
 plan.md
 history.md
-*recommendations.json
 *.pdf
 
 # Byte-compiled / optimized / DLL files

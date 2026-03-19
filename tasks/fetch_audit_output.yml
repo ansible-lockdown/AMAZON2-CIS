@@ -32,8 +32,7 @@
     - "{{ post_audit_outfile }}"
 
 - name: "POST | FETCH | Fetch files and copy to controller | Warning if issues with fetch_audit_files"
-  when:
-    - (audit_output_collection_method == "fetch" and not discovered_audit_fetch_state.changed) or
+  when: (audit_output_collection_method == "fetch" and not discovered_audit_fetch_state.changed) or
       (audit_output_collection_method == "copy" and not discovered_audit_copy_state.changed)
   block:
     - name: "POST | FETCH | Fetch files and copy to controller | Warning if issues with fetch_audit_files"
@@ -42,6 +41,6 @@
 
     - name: "POST | FETCH | Fetch files and copy to controller | Warning if issues with fetch_audit_files"
       vars:
-          warn_control_id: "FETCH_AUDIT_FILES"
+        warn_control_id: "FETCH_AUDIT_FILES"
       ansible.builtin.import_tasks:
         file: warning_facts.yml

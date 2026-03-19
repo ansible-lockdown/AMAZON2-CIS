@@ -1,28 +1,28 @@
 ---
 
 galaxy_info:
-    author: "George Nalen, Mark Bolwell"
-    description: "Apply the Amazon Linux 2 CIS controls"
-    company: "MindPoint Group"
-    license: MIT
-    namespace: mindpointgroup
-    role_name: amazon2_cis
-    min_ansible_version: 2.11.1
-    platforms:
-        - name: Amazon Linux
-          versions:
-              - "2"
-    galaxy_tags:
-        - system
-        - security
-        - cis
-        - hardening
-        - benchmark
-        - compliance
-        - amazonlinux
-        - complianceascode
+  author: "George Nalen, Mark Bolwell"
+  description: "Apply the Amazon Linux 2 CIS controls"
+  company: "MindPoint Group"
+  license: MIT
+  namespace: mindpointgroup
+  role_name: amazon2_cis
+  min_ansible_version: 2.11.1
+  platforms:
+    - name: Amazon Linux
+      versions:
+        - "2"
+  galaxy_tags:
+    - system
+    - security
+    - cis
+    - hardening
+    - benchmark
+    - compliance
+    - amazonlinux
+    - complianceascode
 collections:
-    - community.general
-    - community.crypto
-    - ansible.posix
+  - community.general
+  - community.crypto
+  - ansible.posix
 dependencies: []

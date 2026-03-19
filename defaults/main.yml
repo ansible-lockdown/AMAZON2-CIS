@@ -31,6 +31,12 @@ amazon2cis_legacy_boot: true
 create_benchmark_facts: true
 ansible_facts_path: /etc/ansible/facts.d
 
+# Root by default is not used unless setup by user
+# The role will only run certain commands if set to true
+# This allows the ability to skip tasks that may cause an issue
+# With the understanding root has full access
+amazon2cis_uses_root: false
+
 # SELinux policy
 # Enable/Disable SELinux
 amazon2cis_selinux_disable: false
@@ -77,8 +83,7 @@ audit_only: false
 ### As part of audit_only ###
 # This will enable files to be copied back to control node in audit_only mode
 fetch_audit_files: false
-# Path to copy the files to will create dir structure in audit_only mode
-audit_capture_files_dir: /some/location to copy to on control node
+
 #############################
 
 ## How to retrieve audit binary(Goss)
@@ -194,6 +199,11 @@ amazon2cis_rule_1_1_2_7_1: true
 amazon2cis_rule_1_1_2_7_2: true
 amazon2cis_rule_1_1_2_7_3: true
 amazon2cis_rule_1_1_2_7_4: true
+
+# /tmp mount options (noexec, nodev, nosuid - used in etc/tmp_mount.j2)
+amazon2cis_rule_1_1_3: true
+amazon2cis_rule_1_1_4: true
+amazon2cis_rule_1_1_5: true
 
 # Software and Patch management
 amazon2cis_rule_1_2_1: true
@@ -563,10 +573,10 @@ amazon2cis_warning_banner: |
 ## Section 2 variables
 amazon2cis_time_synchronization: chrony
 amazon2cis_time_synchronization_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
 
 amazon2cis_chrony_server_options: "minpoll 8"
 amazon2cis_ntp_server_options: "iburst"
@@ -661,14 +671,23 @@ amazon2cis_nftables: mask
 amazon2cis_iptables: mask
 amazon2cis_firewalld: none
 
-# Allow automated creation of nftables table
-amazon2cis_nft_tables_autonewtable: false
 # give that table a name
 amazon2cis_nft_tables_tablename: cis
 
 # Allow creation of chains
 amazon2cis_nft_tables_autochaincreate: false
 
+# Allow automated creation of nftables table
+amazon2cis_nft_tables_autonewtable: false
+# Alias used in tasks/section_3/cis_3.4.3.x.yml
+amazon2cis_nft_tables_autoNewTable: false
+
+# Firewall interface for Goss audit (used in ansible_vars_goss.yml.j2)
+amazon2cis_firewall_interface: ""
+
+# Permanently save iptables and ip6tables rules
+amazon2cis_save_iptables_cis_rules: true
+amazon2cis_save_ip6tables_cis_rules: true
 ##
 ## Section 4 Variables
 ##
@@ -680,20 +699,36 @@ amazon2cis_ssh_loglevel: INFO
 # amazon2cis_ssh_maxsessions is the max number of sessions
 # To conform to CIS standards this value needs to be 10 or less
 
-amazon2cis_sshd:
-    clientalivecountmax: 3
-    # clientaliveinterval shoudl be between 1 and 900
-    clientaliveinterval: 15
-    ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
-    macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
-    kex: "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"
-    # logingracetime value is in seconds and needs to be set to 1 minute or less
-    logingracetime: 60
-    # WARNING: make sure you understand the precedence when working with these values!!
-    # allowusers:
-    # allowgroups: systems dba
-    # denyusers:
-    # denygroups:
+amazon2cis_sshd_clientalivecountmax: 3
+# clientaliveinterval should be between 1 and 900
+amazon2cis_sshd_clientaliveinterval: 15
+amazon2cis_sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+amazon2cis_sshd_macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
+amazon2cis_sshd_kex: "curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"
+# logingracetime value is in seconds and needs to be set to 1 minute or less
+amazon2cis_sshd_logingracetime: 60
+
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
+# access for users whose user name matches one of the patterns. This is done
+# by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
+amazon2cis_sshd_allowusers: "{% if ansible_facts.user_id != 'root' %}{{ ansible_facts.user_id }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
+## Control 4.2.4 - Ensure sshd access is configured
+# (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
+# for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
+amazon2cis_sshd_allowgroups: ""
+## Control 4.2.4 - Ensure sshd access is configured
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
+# for users whose user name matches one of the patterns. This is done
+# by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
+amazon2cis_sshd_denyusers: "nobody"
+## Control 4.2.4 - Ensure sshd access is configured
+# This variable, if specified, configures a list of GROUP name patterns, separated by spaces,
+# to prevent SSH access for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
+amazon2cis_sshd_denygroups: ""
 
 amazon2cis_ssh_maxsessions: 10
 amazon2cis_ssh_maxauthtries: 4
@@ -709,8 +744,8 @@ amazon2cis_sudo_timestamp_timeout: 15
 # 4.3.4 sudoers NOPASSWD
 # Accounts listed below will skip the NOPASSWD check and leave NOPASSWD set
 amazon2cis_sudoers_exclude_nopasswd_list:
-    - ec2-user
-    - vagrant
+  - ec2-user
+  - vagrant
 
 # Group to be used for su
 # this group needs to exists groups will not be created for remediation this is considered sys admins
@@ -719,14 +754,12 @@ amazon2cis_sugroup: wheel
 
 # pam variables
 amazon2cis_pam_faillock:
-    deny: 5
-    interval: 900
-    unlock_time: 900
-    fail_for_root: "no"
-    remember: 5
-    pwhash: sha512
-amazon2cis_inactivelock:
-    lock_days: 30
+  deny: 5
+  interval: 900
+  unlock_time: 900
+  fail_for_root: "no"
+  remember: 5
+  pwhash: sha512
 
 amazon2cis_pwquality_difok: 2  # 2 or more required
 amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
@@ -736,16 +769,16 @@ amazon2cis_pwquality_minlen: 14  # 14 or more required
 amazon2cis_pwquality_minclass: true
 amazon2cis_pwquality_minclass_value: '4'  # Not less than 4
 amazon2cis_pwquality:
-    - key: '#minclass'
-      value: "{{ ubtu22cis_pwquality_minclass_value }}"
-    - key: 'dcredit'
-      value: '-1'  # not 0 or greater
-    - key: 'ucredit'
-      value: '-1'  # not 0 or greater
-    - key: 'ocredit'
-      value: '-1'  # not 0 or greater
-    - key: 'lcredit'
-      value: '-1'  # not 0 or greater
+  - key: '#minclass'
+    value: "{{ ubtu22cis_pwquality_minclass_value }}"
+  - key: 'dcredit'
+    value: '-1'  # not 0 or greater
+  - key: 'ucredit'
+    value: '-1'  # not 0 or greater
+  - key: 'ocredit'
+    value: '-1'  # not 0 or greater
+  - key: 'lcredit'
+    value: '-1'  # not 0 or greater
 
 # pwhistory
 amazon2cis_pwhistory_remember: 24  # 24 or more recommended
@@ -762,13 +795,9 @@ amazon2cis_uid_info_dynamic: true
 amazon2cis_uid_min: 1000
 amazon2cis_uid_max: 60000
 
-amazon2cis_inactive_whitelist:
-    - root
-    - vagrant
-
 ## 4.5.1.2 Add users to be skipped if required
 amazon2cis_user_skip_list:
-    root
+  root
 
 amazon2cis_pass_max_days: 365
 amazon2cis_pass_min_days: 1
@@ -778,10 +807,8 @@ amazon2cis_pass_inactive: 30  # should not be 0 or -1 (little details in control
 # Session timeout setting file (TMOUT setting can be set in multiple files)
 # Timeout value is in seconds. (60 seconds * 10 = 600)
 amazon2cis_shell_session_timeout:
-    file: /etc/profile.d/tmout.sh
-    timeout: 600
-# Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
-amazon2cis_futurepwchgdate_autofix: true
+  file: /etc/profile.d/tmout.sh
+  timeout: 600
 
 amazon2cis_root_umask: '0027'  # 0027 or more restrictive
 
@@ -804,6 +831,17 @@ amazon2cis_remote_log_protocol: tcp
 amazon2cis_remote_log_retrycount: 100
 amazon2cis_remote_log_queuesize: 1000
 
+# Journald
+amazon2cis_journal_upload_url: https://logagg.example.com
+amazon2cis_journal_upload_serverkeyfile: /etc/ssl/private/journal-upload.pem
+amazon2cis_journal_servercertificatefile: /etc/ssl/certs/journal-upload.pem
+amazon2cis_journal_trustedcertificatefile: /etc/ssl/ca/trusted.pem
+
+amazon2cis_journald_systemmaxuse: 10M
+amazon2cis_journald_systemkeepfree: 100G
+amazon2cis_journald_runtimemaxuse: 10M
+amazon2cis_journald_runtimekeepfree: 100G
+amazon2cis_journald_maxfilesec: 1month
 
 # 5.2.3.6 exclude listed mountpoints from the find command to locate privileged binaries
 # Allows operator to exclude mounted devices from being considered as within scope to find privileged binaries; mainly in the case of
@@ -824,7 +862,6 @@ amazon2cis_max_log_file_size: 10
 # auditd settings
 amazon2cis_auditd_disk_error_action: halt
 amazon2cis_auditd_disk_full_action: halt
-amazon2cis_auditd_action_mail_acct: root
 amazon2cis_auditd_space_left_action: email
 amazon2cis_auditd_admin_space_left_action: single
 amazon2cis_auditd_max_log_file_action: keep_logs
@@ -858,23 +895,23 @@ amazon2cis_rpm_audit_file: /var/tmp/rpm_file_check
 
 # Allow ansible to adjust world-writable files. False will just display world-writable files, True will remove world-writable
 amazon2cis_no_world_write_adjust: true
-amazon2cis_passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
 
-## adjust files if ungrouped
-amazon2cis_ungrouped_adjust: false
-
-## Remove suid/sgid from files
-amazon2cis_suid_adjust: false
-amazon2cis_sgid_adjust: false
-
-# 6.1.12
+## Control 6.1.12 - Ensure no unowned or ungrouped files or directories exist
 # This variable is a toggle for enabling/disabling the automated
-# setting of an owner (specified in variable `rhel8cis_unowned_owner`)
+# setting of an owner (specified in variable `amazon2cis_unowned_owner`)
 # for all unowned files and directories.
 # Possible values are `true` and `false`.
 amazon2cis_ownership_adjust: true
+# This variable holds the part of the command that helps detect which files and
+# directories do not have an owner and an affiliated group.
 amazon2cis_exclude_unowned_search_path: (! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a ! -path "*/kubelet/plugins/*" -a ! -path "/sys/fs/cgroup/memory/*" -a ! -path "/var/*/private/*")
+# The value of this variable specifies the owner that will be set for unowned files and directories.
 amazon2cis_unowned_owner: root
+# The value of this variable specifies the group that will be set for ungrouped files and directories.
+amazon2cis_ungrouped_group: root
+## Remove suid/sgid from files
+amazon2cis_suid_adjust: false
+amazon2cis_sgid_adjust: false
 
 # 6.2.12
 amazon2cis_dotperm_ansiblemanaged: true

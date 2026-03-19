@@ -1,7 +1,7 @@
 ---
 
 - name: "1.2.1 | PATCH | Ensure GPG keys are configured"
-  when:  amazon2cis_rule_1_2_1
+  when: amazon2cis_rule_1_2_1
   tags:
     - level1
     - automated

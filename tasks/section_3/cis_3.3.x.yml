@@ -129,8 +129,8 @@
         sysctl_file: "{{ amazon2cis_ipv4_sysctl_file }}"
       notify: Sysctl_flush_ipv4_routes
       loop:
-          - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
-          - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
+        - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
+        - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
 
     - name: "3.3.5 | PATCH | Ensure ICMP redirects are not accepted | Set ICMP redirects IPv6"
       when: amazon2cis_ipv6_required or amazon2cis_ipv6_sysctl_force

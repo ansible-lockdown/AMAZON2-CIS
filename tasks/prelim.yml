@@ -25,12 +25,6 @@
   ansible.builtin.import_tasks:
     file: parse_etc_password.yml
 
-- name: "PRELIM | List users accounts"
-  ansible.builtin.command: "awk -F: '{print $1}' /etc/passwd"
-  changed_when: false
-  check_mode: false
-  register: users
-
 - name: "PRELIM | Gather accounts with empty password fields"
   ansible.builtin.shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
   changed_when: false
@@ -157,9 +151,7 @@
       register: prelim_wireless_modules
 
 - name: "PRELIM | Find all sudoers files."
-  when:
-    - amazon2cis_rule_4_3_4 or
-      amazon2cis_rule_4_3_5
+  when: amazon2cis_rule_4_3_4 or amazon2cis_rule_4_3_5
   tags: always
   ansible.builtin.shell: "find /etc/sudoers /etc/sudoers.d/ -type f ! -name '*~' ! -name '*.*'"
   changed_when: false
@@ -195,8 +187,7 @@
   register: prelim_audit_discovered_logfile
 
 - name: "PRELIM | Audit conf and rules files | list files"
-  when:
-    - amazon2cis_rule_5_2_4_5 or
+  when: amazon2cis_rule_5_2_4_5 or
       amazon2cis_rule_5_2_4_6 or
       amazon2cis_rule_5_2_4_7
   tags:
@@ -251,11 +242,11 @@
     - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening | Check existence"
       ansible.builtin.shell: grep -E "OPTIONS=.*-4" /etc/sysconfig/chronyd
       changed_when: false
-      failed_when: chrony_ipv6_exists.rc not in [ 0, 1]
-      register: chrony_ipv6_exists
+      failed_when: prelim_chrony_ipv6_exists.rc not in [ 0, 1]
+      register: prelim_chrony_ipv6_exists
 
     - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening"
-      when: chrony_ipv6_exists.stdout | length == 0
+      when: prelim_chrony_ipv6_exists.stdout | length == 0
       ansible.builtin.lineinfile:
         backrefs: true
         path: /etc/sysconfig/chronyd
