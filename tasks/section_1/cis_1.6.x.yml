@@ -1,115 +1,109 @@
 ---
 
 - name: "1.6.1 | PATCH | Ensure message of the day is configured properly"
-  when:
-      - amazon2cis_rule_1_6_1
+  when: amazon2cis_rule_1_6_1
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.1
-      - banner
-      - NIST800-53R5_CM-1
-      - NIST800-53R5_CM-3
-      - NIST800-53R5_CM-6
+    - level1
+    - automated
+    - patch
+    - rule_1.6.1
+    - banner
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-3
+    - NIST800-53R5_CM-6
   ansible.builtin.template:
-      src: etc/motd.j2
-      dest: /etc/motd
-      owner: root
-      group: root
-      mode: '0644'
+    src: etc/motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
 - name: "1.6.2 | PATCH | Ensure local login warning banner is configured properly"
-  when:
-      - amazon2cis_rule_1_6_2
+  when: amazon2cis_rule_1_6_2
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.2
-      - banner
-      - NIST800-53R5_CM-1
-      - NIST800-53R5_CM-3
-      - NIST800-53R5_CM-6
+    - level1
+    - automated
+    - patch
+    - rule_1.6.2
+    - banner
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-3
+    - NIST800-53R5_CM-6
   ansible.builtin.template:
-      src: etc/issue.j2
-      dest: /etc/issue
-      owner: root
-      group: root
-      mode: '0644'
+    src: etc/issue.j2
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
 - name: "1.6.3 | PATCH | Ensure remote login warning banner is configured properly"
-  when:
-      - amazon2cis_rule_1_6_3
+  when: amazon2cis_rule_1_6_3
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.3
-      - banner
-      - NIST800-53R5_CM-1
-      - NIST800-53R5_CM-3
-      - NIST800-53R5_CM-6
+    - level1
+    - automated
+    - patch
+    - rule_1.6.3
+    - banner
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-3
+    - NIST800-53R5_CM-6
   ansible.builtin.template:
-      src: etc/issue.net.j2
-      dest: /etc/issue.net
-      owner: root
-      group: root
-      mode: '0644'
+    src: etc/issue.net.j2
+    dest: /etc/issue.net
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
-- name: "1.6.4 | PATCH | Ensure permissions on /etc/motd are configured"
-  when:
-      - amazon2cis_rule_1_6_4
+- name: "1.6.4 | PATCH | Ensure access to /etc/motd is configured"
+  when: amazon2cis_rule_1_6_4
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.4
-      - banner
-      - permissions
-      - NIST800-53R5_MP-2
-      - NIST800-53R5_AC-3
+    - level1
+    - automated
+    - patch
+    - rule_1.6.4
+    - banner
+    - permissions
+    - NIST800-53R5_MP-2
+    - NIST800-53R5_AC-3
   ansible.builtin.file:
-      path: /etc/motd
-      state: file
-      owner: root
-      group: root
-      mode: '0644'
+    path: /etc/motd
+    state: file
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
-- name: "1.6.5 | PATCH | Ensure permissions on /etc/issue are configured"
-  when:
-      - amazon2cis_rule_1_6_5
+- name: "1.6.5 | PATCH | Ensure access to /etc/issue is configured"
+  when: amazon2cis_rule_1_6_5
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.5
-      - banner
-      - permissions
-      - NIST800-53R5_MP-2
-      - NIST800-53R5_AC-3
+    - level1
+    - automated
+    - patch
+    - rule_1.6.5
+    - banner
+    - permissions
+    - NIST800-53R5_MP-2
+    - NIST800-53R5_AC-3
   ansible.builtin.file:
-      path: /etc/issue
-      state: file
-      owner: root
-      group: root
-      mode: '0644'
+    path: /etc/issue
+    state: file
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'
 
-- name: "1.6.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
-  when:
-      - amazon2cis_rule_1_6_6
+- name: "1.6.6 | PATCH | Ensure access to /etc/issue.net is configured"
+  when: amazon2cis_rule_1_6_6
   tags:
-      - level1
-      - automated
-      - patch
-      - rule_1.6.6
-      - banner
-      - permissions
-      - NIST800-53R5_MP-2
-      - NIST800-53R5_AC-3
+    - level1
+    - automated
+    - patch
+    - rule_1.6.6
+    - banner
+    - permissions
+    - NIST800-53R5_MP-2
+    - NIST800-53R5_AC-3
   ansible.builtin.file:
-      path: /etc/issue.net
-      state: file
-      owner: root
-      group: root
-      mode: '0644'
+    path: /etc/issue.net
+    state: file
+    owner: root
+    group: root
+    mode: 'u-x,go-wx'

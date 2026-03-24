@@ -22,10 +22,9 @@ amazon2cis_selinux_state: {{ amazon2cis_selinux_state }}
 amazon2cis_level_1: {{ amazon2cis_level_1 }}
 amazon2cis_level_2: {{ amazon2cis_level_2 }}
 # to enable rules that may have IO impact on a system e.g. full filesystem scans or CPU heavy
-amazon2cis_run_heavy_tests: {{ audit_run_heavy_tests }}
+audit_run_heavy_tests: {{ audit_run_heavy_tests }}
 
 amazon2cis_bootloader_file: /boot/grub2/grub.cfg
-amazon2cis_bootloader_user: /boot/grub2/user.cfg
 
 # These variables correspond with the CIS rule IDs or paragraph numbers defined in
 # the CIS benchmark documents.
@@ -550,61 +549,34 @@ amazon2cis_firewall_interface:
 
 # SSH variables
 
+amazon2cis_sshd_clientalivecountmax: {{ amazon2cis_sshd_clientalivecountmax }}
+# clientaliveinterval should be between 1 and 900
+amazon2cis_sshd_clientaliveinterval: {{ amazon2cis_sshd_clientaliveinterval }}
+amazon2cis_sshd_ciphers: {{ amazon2cis_sshd_ciphers }}
+amazon2cis_sshd_macs: {{ amazon2cis_sshd_macs }}
+amazon2cis_sshd_kex: {{ amazon2cis_sshd_kex }}
 
-amazon2cis_sshd:
-    clientalivecountmax: {{ amazon2cis_sshd.clientalivecountmax }}
-    # clientaliveinterval shoudl be between 1 and 900
-    clientaliveinterval: {{ amazon2cis_sshd.clientaliveinterval }}
-    ciphers: {{ amazon2cis_sshd.ciphers }}
-    macs: {{ amazon2cis_sshd.macs }}
-    kex: {{ amazon2cis_sshd.kex }}
-amazon2cis_sshd_limited: false
-# Note the following to understand precedence and layout
-{% if amazon2cis_sshd.allowusers is defined %}
-  - AllowUser {% for allowuser in amazon2cis_sshd.allowusers %}{{ allowuser }}{% endfor %}
-{% endif %}
-{% if amazon2cis_sshd.allowgroups is defined %}
-  - AllowGroup {% for allowgroup in amazon2cis_sshd.allowgroups %}{{ allowgroup }}{% endfor %}
-{% endif %}
-{% if amazon2cis_sshd.denyusers is defined %}
-  - DenyUser {% for denyuser in amazon2cis_sshd.denyusers %}{{ denyuser }}{% endfor %}
-{% endif %}
-{% if amazon2cis_sshd.denygroups is defined %}
-  - DenyGroup {% for denygroup in amazon2cis_sshd.denygroups %}{{ denygroup }}{% endfor %}
-{% endif %}
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to allow SSH
+# access for users whose user name matches one of the patterns. This is done
+# by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
+amazon2cis_sshd_allowusers: "{% if ansible_facts.user_id != 'root' %}{{ ansible_facts.user_id }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
 
-amazon2cis_ssh_weak_ciphers:
-  - 3des-cbc
-  - aes128-cbc
-  - aes192-cbc
-  - aes256-cbc
-  - arcfour
-  - arcfour128
-  - arcfour256
-  - blowfish-cbc
-  - cast128-cbc
-  - rijndael-cbc@lysator.liu.se
+# (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
+# for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
+amazon2cis_sshd_allowgroups: {{ amazon2cis_sshd_allowgroups }}
 
-amazon2cis_ssh_weak_kex:
-  - diffie-hellman-group1-sha1
-  - diffie-hellman-group14-sha1
-  - diffie-hellman-group-exchange-sha1
+# This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
+# for users whose user name matches one of the patterns. This is done
+# by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
+# If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
+amazon2cis_sshd_denyusers: {{ amazon2cis_sshd_denyusers }}
 
-amazon2cis_ssh_weak_macs:
-  - hmac-md5
-  - hmac-md5-96
-  - hmac-ripemd160
-  - hmac-sha1
-  - hmac-sha1-96
-  - umac-64@openssh.com
-  - umac-128@openssh.com
-  - hmac-md5-etm@openssh.com
-  - hmac-md5-96-etm@openssh.com
-  - hmac-ripemd160-etm@openssh.com
-  - hmac-sha1-etm@openssh.com
-  - hmac-sha1-96-etm@openssh.com
-  - umac-64-etm@openssh.com
-  - umac-128-etm@openssh.com
+# This variable, if specified, configures a list of GROUP name patterns, separated by spaces,
+# to prevent SSH access for users whose primary group or supplementary group list matches one of the patterns. This is done
+# by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
+amazon2cis_sshd_denygroups: {{ amazon2cis_sshd_denygroups }}
 
 ## Sudo
 
@@ -612,13 +584,11 @@ amazon2cis_ssh_weak_macs:
 # this group needs to exists groups will not be created for remediation this is considered sys admins
 
 amazon2cis_sugroup: wheel
-amazon2cis_sugroup_users: ""
 
 amazon2cis_pwquality_minclass: true
 
-amazon2cis_pass:
-    max_days: 365
-    warn_age: 7
+amazon2cis_pass_max_days: {{ amazon2cis_pass_max_days }}
+amazon2cis_pass_warn_age: {{ amazon2cis_pass_warn_age }}
 
 ####
 ## Section 5 Variables
@@ -633,8 +603,7 @@ amazon2cis_system_is_log_server: false
 
 # AuditD
 # auditd settings
-amazon2cis_auditd:
-    max_log_file_action: keep_logs
+amazon2cis_auditd_max_log_file_action: {{ amazon2cis_auditd_max_log_file_action }}
 
 # AIDE
 # AIDE
