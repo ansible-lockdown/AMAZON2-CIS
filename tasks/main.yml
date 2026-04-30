@@ -15,6 +15,25 @@
     fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
     success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
 
+- name: "Setup rules if container"
+  when: ansible_connection == 'docker' or ansible_facts.virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - container_discovery
+    - always
+  block:
+    - name: "Discover and set container variable if required"
+      ansible.builtin.set_fact:
+        system_is_container: true
+
+    - name: "Load variable for container"
+      ansible.builtin.include_vars:
+        file: "{{ container_vars_file }}"
+
+    - name: "Output if discovered is a container"
+      when: system_is_container
+      ansible.builtin.debug:
+        msg: system has been discovered as a container
+
 - name: Ensure root password is set
   when: amazon2cis_rule_4_5_2_4
   tags: always

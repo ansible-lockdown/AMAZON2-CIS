@@ -1,7 +1,9 @@
 ---
 
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
-  when: amazon2cis_rule_2_1_1
+  when:
+    - amazon2cis_rule_2_1_1
+    - not system_is_container
   tags:
     - level1
     - automated

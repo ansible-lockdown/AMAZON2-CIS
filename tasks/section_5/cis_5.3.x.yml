@@ -40,6 +40,7 @@
     - amazon2cis_rule_5_3_2
     - amazon2cis_config_aide
     - not system_is_ec2
+    - not system_is_container
   tags:
     - level1-server
     - level1-workstation

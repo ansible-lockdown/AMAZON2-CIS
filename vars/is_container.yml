@@ -1,0 +1,148 @@
+---
+
+# File to skip controls if container
+# Based on standard image no changes
+# it expected all pkgs required for the container are already installed
+
+## controls
+
+# Firewall
+amazon2cis_firewalld: none
+
+# SElinux
+amazon2cis_selinux_disable: true
+
+## Related individual rules
+
+# kernel sysctls (read-only /proc/sys/kernel)
+amazon2cis_rule_1_4_1: false
+amazon2cis_rule_1_4_2: false
+
+# kernel filesystem modules
+amazon2cis_rule_1_1_1_1: false
+amazon2cis_rule_1_1_1_2: false
+amazon2cis_rule_1_1_1_3: false
+amazon2cis_rule_1_1_1_4: false
+amazon2cis_rule_1_1_1_5: false
+amazon2cis_rule_1_1_1_6: false
+amazon2cis_rule_1_1_1_7: false
+amazon2cis_rule_1_1_1_8: false
+
+# single-user mode
+amazon2cis_rule_1_3_1: false
+
+# time sync
+amazon2cis_rule_2_1_1: false
+amazon2cis_rule_2_1_3: false
+
+# MTA
+amazon2cis_rule_2_2_21: false
+
+# AIDE schedule
+amazon2cis_rule_5_3_2: false
+
+# Firewall sub-section imports (3.4.2/3/4)
+amazon2cis_system_firewall: none
+
+# root profile / password
+amazon2cis_rule_4_5_2_2: false
+amazon2cis_rule_4_5_2_4: false
+
+# 3.3.x network sysctls (read-only /proc/sys/net)
+amazon2cis_rule_3_3_1: false
+amazon2cis_rule_3_3_2: false
+amazon2cis_rule_3_3_3: false
+amazon2cis_rule_3_3_4: false
+amazon2cis_rule_3_3_5: false
+amazon2cis_rule_3_3_6: false
+amazon2cis_rule_3_3_7: false
+amazon2cis_rule_3_3_8: false
+amazon2cis_rule_3_3_9: false
+amazon2cis_rule_3_3_10: false
+amazon2cis_rule_3_3_11: false
+
+# firewall service start
+amazon2cis_rule_3_4_1_2: false
+
+# cron / anacron
+amazon2cis_rule_4_1_1_1: false
+amazon2cis_rule_4_1_1_2: false
+amazon2cis_rule_4_1_1_3: false
+amazon2cis_rule_4_1_1_4: false
+amazon2cis_rule_4_1_1_5: false
+amazon2cis_rule_4_1_1_6: false
+amazon2cis_rule_4_1_1_7: false
+amazon2cis_rule_4_1_1_8: false
+amazon2cis_rule_4_1_2_1: false
+
+# sshd
+amazon2cis_rule_4_2_1: false
+amazon2cis_rule_4_2_2: false
+amazon2cis_rule_4_2_3: false
+amazon2cis_rule_4_2_4: false
+amazon2cis_rule_4_2_5: false
+amazon2cis_rule_4_2_6: false
+amazon2cis_rule_4_2_7: false
+amazon2cis_rule_4_2_8: false
+amazon2cis_rule_4_2_9: false
+amazon2cis_rule_4_2_10: false
+amazon2cis_rule_4_2_11: false
+amazon2cis_rule_4_2_12: false
+amazon2cis_rule_4_2_13: false
+amazon2cis_rule_4_2_14: false
+amazon2cis_rule_4_2_15: false
+amazon2cis_rule_4_2_16: false
+amazon2cis_rule_4_2_17: false
+amazon2cis_rule_4_2_18: false
+amazon2cis_rule_4_2_19: false
+amazon2cis_rule_4_2_20: false
+amazon2cis_rule_4_2_21: false
+amazon2cis_rule_4_2_22: false
+
+# 5.2.1.x auditd service
+amazon2cis_rule_5_2_1_1: false
+amazon2cis_rule_5_2_1_2: false
+amazon2cis_rule_5_2_1_3: false
+amazon2cis_rule_5_2_1_4: false
+
+# 5.2.2.x audit data retention
+amazon2cis_rule_5_2_2_1: false
+amazon2cis_rule_5_2_2_2: false
+amazon2cis_rule_5_2_2_3: false
+amazon2cis_rule_5_2_2_4: false
+
+# 5.2.3.x audit rules
+amazon2cis_rule_5_2_3_1: false
+amazon2cis_rule_5_2_3_2: false
+amazon2cis_rule_5_2_3_3: false
+amazon2cis_rule_5_2_3_4: false
+amazon2cis_rule_5_2_3_5: false
+amazon2cis_rule_5_2_3_6: false
+amazon2cis_rule_5_2_3_7: false
+amazon2cis_rule_5_2_3_8: false
+amazon2cis_rule_5_2_3_9: false
+amazon2cis_rule_5_2_3_10: false
+amazon2cis_rule_5_2_3_11: false
+amazon2cis_rule_5_2_3_12: false
+amazon2cis_rule_5_2_3_13: false
+amazon2cis_rule_5_2_3_14: false
+amazon2cis_rule_5_2_3_15: false
+amazon2cis_rule_5_2_3_16: false
+amazon2cis_rule_5_2_3_17: false
+amazon2cis_rule_5_2_3_18: false
+amazon2cis_rule_5_2_3_19: false
+amazon2cis_rule_5_2_3_20: false
+amazon2cis_rule_5_2_3_21: false
+
+# 5.2.4.x audit log file perms
+amazon2cis_rule_5_2_4_1: false
+amazon2cis_rule_5_2_4_2: false
+amazon2cis_rule_5_2_4_3: false
+amazon2cis_rule_5_2_4_4: false
+amazon2cis_rule_5_2_4_5: false
+amazon2cis_rule_5_2_4_6: false
+amazon2cis_rule_5_2_4_7: false
+amazon2cis_rule_5_2_4_8: false
+amazon2cis_rule_5_2_4_9: false
+amazon2cis_rule_5_2_4_10: false
+

@@ -647,6 +647,7 @@
   when:
     - not amazon2cis_is_mail_server
     - amazon2cis_rule_2_2_21
+    - not system_is_container
   tags:
     - level1-server
     - level1-workstation

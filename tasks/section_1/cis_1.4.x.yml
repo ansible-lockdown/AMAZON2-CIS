@@ -1,7 +1,9 @@
 ---
 
 - name: "1.4.1 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
-  when: amazon2cis_rule_1_4_1
+  when:
+    - amazon2cis_rule_1_4_1
+    - not system_is_container
   tags:
     - level1
     - automated
@@ -18,7 +20,9 @@
     sysctl_file: "{{ kernel_sysctl_file }}"
 
 - name: "1.4.2 | PATCH | Ensure ptrace_scope is restricted"
-  when: amazon2cis_rule_1_4_2
+  when:
+    - amazon2cis_rule_1_4_2
+    - not system_is_container
   tags:
     - level1
     - automated

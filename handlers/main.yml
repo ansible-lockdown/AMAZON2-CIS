@@ -1,6 +1,7 @@
 ---
 
 - name: Systemd restart tmp.mount
+  when: not system_is_container
   ansible.builtin.systemd:
     name: tmp.mount
     daemon_reload: true
@@ -44,19 +45,23 @@
     state: remounted
 
 - name: Systemd_daemon_reload
+  when: not system_is_container
   ansible.builtin.systemd:
     daemon_reload: true
 
 - name: Rebuild_grub
+  when: not system_is_container
   ansible.builtin.command: /sbin/grub2-mkconfig -o "{{ amazon2cis_bootloader_file }}"
   changed_when: true
 
 - name: Restart_postfix
+  when: not system_is_container
   ansible.builtin.service:
     name: postfix
     state: restarted
 
 - name: Sysctl_flush_ipv4_routes
+  when: not system_is_container
   ansible.posix.sysctl:
     name: net.ipv4.route.flush
     value: '1'
@@ -64,6 +69,7 @@
   ignore_errors: true # noqa ignore-errors
 
 - name: Sysctl_flush_ipv6_routes
+  when: not system_is_container
   ansible.posix.sysctl:
     name: net.ipv6.route.flush
     value: '1'
@@ -71,16 +77,19 @@
   ignore_errors: true # noqa ignore-errors
 
 - name: Restart_rsyslog
+  when: not system_is_container
   ansible.builtin.service:
     name: rsyslog
     state: restarted
 
 - name: Restart_journald
+  when: not system_is_container
   ansible.builtin.service:
     name: systemd-journald
     state: restarted
 
 - name: Restart_systemd_journal_upload
+  when: not system_is_container
   ansible.builtin.service:
     name: systemd-journal-upload
     state: restarted
@@ -99,10 +108,12 @@
   register: discovered_augenrule_load
 
 - name: Restart_auditd # noqa: command-instead-of-module
+  when: not system_is_container
   ansible.builtin.command: /sbin/service auditd restart
   changed_when: true
 
 - name: Restart sshd
+  when: not system_is_container
   ansible.builtin.service:
     name: sshd
     state: restarted
