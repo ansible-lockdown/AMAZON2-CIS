@@ -27,7 +27,7 @@
 
     - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop ntp"
       when:
-        - "'ntp' in ansible_facts.packages"
+        - "'ntp' in ansible_facts['packages']"
         - amazon2cis_time_synchronization == "chrony"
       ansible.builtin.service:
         name: ntpd
@@ -36,7 +36,7 @@
 
     - name: "2.1.1 | PATCH | Ensure time synchronization is in use | service stop chrony"
       when:
-        - "'chrony' in ansible_facts.packages"
+        - "'chrony' in ansible_facts['packages']"
         - amazon2cis_time_synchronization == "ntp"
       ansible.builtin.service:
         name: chronyd
