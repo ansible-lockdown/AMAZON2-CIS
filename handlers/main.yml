@@ -1,17 +1,9 @@
 ---
 
-- name: Systemd restart tmp.mount
-  ansible.builtin.systemd:
-    name: tmp.mount
-    daemon_reload: true
-    enabled: true
-    masked: false
-    state: reloaded
-
-- name: Remount /tmp
-  ansible.posix.mount:
-    path: /tmp
-    state: remounted
+- name: "Remount tmp filesystem"
+  ansible.builtin.include_tasks:
+    file: remount_tmp.yml
+  listen: "Remount /tmp"
 
 - name: Remount /dev/shm
   ansible.posix.mount:
@@ -91,13 +83,6 @@
     msg: "Reboot required for auditd to apply new rules as immutable set"
   notify: Change_requires_reboot
 
-- name: Auditd rules reload
-  when: discovered_auditd_immutable_check.rc == 1 or discovered_augenrules_check.stdout is search('No change')
-  ansible.builtin.command: augenrules --load
-  changed_when: true
-  failed_when: discovered_augenrule_load.rc not in [ 0, 1 ]
-  register: discovered_augenrule_load
-
 - name: Restart_auditd # noqa: command-instead-of-module
   ansible.builtin.command: /sbin/service auditd restart
   changed_when: true
@@ -105,6 +90,11 @@
 - name: Restart sshd
   ansible.builtin.service:
     name: sshd
+    state: restarted
+
+- name: Restart_chronyd
+  ansible.builtin.service:
+    name: chronyd
     state: restarted
 
 - name: Change_requires_reboot
