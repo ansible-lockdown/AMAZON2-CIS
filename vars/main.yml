@@ -1,7 +1,7 @@
 ---
 # vars file for amazon linux 2
 
-min_ansible_version: 2.11.1
+min_ansible_version: 2.16.1
 
 reboot_required: false
 change_requires_reboot: false
@@ -12,6 +12,11 @@ update_audit_template: false
 # system_is_container to true. Otherwise, the default value
 # 'false' is left unchanged.
 system_is_container: false
+
+# Ability to change the default shell
+# Note this can change how some of the ansible.builtin.shell tasks work and may require adjustments to args.executable for those tasks
+# Used mainly for overriding to use a more POSIX compliant shell such as dash or ash when running in a container environment
+amazon2cis_shell_executable: /bin/bash
 
 # Used to control warning summary
 warn_control_list: ""

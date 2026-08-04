@@ -1,9 +1,7 @@
 ---
 
-- name: "1.1.2.3.1 | PATCH | Ensure separate partition exists for /home"
-  when:
-    - amazon2cis_rule_1_1_2_3_1
-    - required_mount not in prelim_mount_names
+- name: "1.1.2.3.1 | AUDIT | Ensure separate partition exists for /home"
+  when: amazon2cis_rule_1_1_2_3_1
   tags:
     - level1-server
     - level1-workstation
@@ -12,7 +10,6 @@
     - rule_1.1.2.3.1
     - NIST800-53R5_CM-7
   vars:
-    warn_control_id: "1.1.2.3.1"
     required_mount: "/home"
   block:
     - name: "1.1.2.3.1 | AUDIT | Ensure separate partition exists for /home | check for mount"
@@ -28,6 +25,8 @@
 
     - name: "1.1.2.3.1 | AUDIT | Ensure separate partition exists for /home | Present"
       when: discovered_home_mount is undefined or discovered_home_mount.stdout_lines == []
+      vars:
+        warn_control_id: "1.1.2.3.1"
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

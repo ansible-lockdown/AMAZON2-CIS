@@ -4,9 +4,9 @@
   when: os_check
   tags: always
   ansible.builtin.assert:
-    that: (ansible_facts.distribution == 'Amazon' and ansible_facts.distribution_major_version is version_compare('2', '=='))
-    fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
-    success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
+    that: (ansible_facts['distribution'] == 'Amazon' and ansible_facts['distribution_major_version'] is version_compare('2', '=='))
+    fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }} is not supported."
+    success_msg: "This role is running against a supported OS {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }}"
 
 - name: Check ansible version
   tags: always
@@ -20,7 +20,11 @@
   tags: always
   block:
     - name: Ensure root password is set
-      ansible.builtin.shell: passwd -S root | egrep -e "(Password set, SHA512 crypt|Password locked)"
+      ansible.builtin.shell: |
+        set -o pipefail
+        passwd -S root | egrep -e "(Password set, SHA512 crypt|Password locked)"
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: prelim_root_passwd_set

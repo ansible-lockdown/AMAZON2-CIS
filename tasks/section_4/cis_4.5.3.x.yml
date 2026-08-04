@@ -35,7 +35,7 @@
     state: "{{ item.state }}"
     marker: "# {mark} - CIS benchmark - Ansible-lockdown"
     create: true
-    mode: '0644'
+    mode: 'u-x,go-wx'
     block: |
       TMOUT={{ amazon2cis_shell_session_timeout.timeout }}
       readonly TMOUT

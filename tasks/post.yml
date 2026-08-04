@@ -10,8 +10,6 @@
   ansible.builtin.meta: flush_handlers
 
 - name: POST | reboot system if changes require it and not skipped
-  vars:
-    warn_control_id: Reboot_required
   tags: always
   block:
     - name: POST | Reboot system if changes require it and not skipped
@@ -32,6 +30,8 @@
       when:
         - reboot_required
         - skip_reboot
+      vars:
+        warn_control_id: Reboot_required
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

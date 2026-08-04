@@ -60,8 +60,6 @@
     - patch
     - rule_1.2.4
     - NIST800-53R5_SI-2
-  vars:
-    warn_control_id: '1.2.4'
   block:
     - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"  # noqa: command-instead-of-module
       ansible.builtin.command: yum repolist
@@ -75,6 +73,8 @@
           - "{{ discovered_repolist.stdout_lines }}"
 
     - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Warn Count"
+      vars:
+        warn_control_id: '1.2.4'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

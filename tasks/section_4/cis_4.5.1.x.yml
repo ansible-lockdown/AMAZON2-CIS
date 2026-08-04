@@ -25,7 +25,11 @@
 
     - name: "4.5.1.1 | PATCH | Ensure strong password hashing algorithm is configured | Captures users who need to change passwd"
       when: amazon2cis_force_user_passwd_change
-      ansible.builtin.shell: "awk -F: '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       failed_when: false
       changed_when: false
       register: discovered_user_crypt_password
@@ -62,7 +66,11 @@
         insertafter: "# Password aging controls"
 
     - name: "4.5.1.2 | PATCH | Ensure password expiration is 365 days or less | Get existing users PASS_MAX_DAYS"
-      ansible.builtin.shell: "awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_max_days
@@ -93,7 +101,11 @@
         line: "PASS_WARN_AGE {{ amazon2cis_pass_warn_age }}"
 
     - name: "4.5.1.3 | PATCH | Ensure password expiration warning days is 7 or more | Get existing users WARN_DAYS"
-      ansible.builtin.shell: "awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_users_warn_days.rc not in [ 0, 1 ]
       register: discovered_users_warn_days
@@ -118,7 +130,11 @@
     - rule_4.5.1.4
   block:
     - name: "4.5.1.4 | AUDIT | Ensure inactive password lock is 30 days or less | capture default state"
-      ansible.builtin.shell: useradd -D | grep INACTIVE | cut -d= -f2
+      ansible.builtin.shell: |
+        set -o pipefail
+        useradd -D | grep INACTIVE | cut -d= -f2
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_users_inactive_def.rc not in [ 0, 1 ]
       register: discovered_users_inactive_def
@@ -132,7 +148,10 @@
 
     - name: "4.5.1.4 | AUDIT | Ensure inactive password lock is 30 days or less | capture users not matching"
       ansible.builtin.shell: |
+        set -o pipefail
         awk -F: '/^[^#:]+:[^!*:]*:[^:]*:[^:]*:[^:]*:[^:]*:(\s*|-1|3[1-9]|[4-9][0-9]|[1-9][0-9][0-9]+):[^:]*:[^:]*\s*$/ {print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_users_inactive.rc not in [ 0, 1 ]
       register: discovered_users_inactive
@@ -155,8 +174,6 @@
     - patch
     - shadow_suite
     - rule_4.5.1.5
-  vars:
-    warn_control_id: "4.5.1.5"
   block:
     - name: "4.5.1.5 | FACT | Ensure inactive password lock is 30 days or less | set fact days since_epoch"
       ansible.builtin.set_fact:
@@ -164,7 +181,10 @@
 
     - name: "4.5.1.5 | AUDIT | Ensure inactive password lock is 30 days or less | capture users date in future"
       ansible.builtin.shell: |
+        set -o pipefail
         awk -F: '{ if ($3 > "{{ days_since_epoch }}") { print $1 }  }' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_users_user_future.rc not in [ 0, 1 ]
       register: discovered_users_user_future
@@ -182,5 +202,7 @@
       when:
         - discovered_users_user_future
         - discovered_users_user_future.stdout | length > 0
+      vars:
+        warn_control_id: '4.5.1.5'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
