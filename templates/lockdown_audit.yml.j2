@@ -64,8 +64,8 @@ amazon2cis_rule_1_1_2_3_3: {{ amazon2cis_rule_1_1_2_3_3 }}
 
 # /var
 amazon2cis_rule_1_1_2_4_1: {{ amazon2cis_rule_1_1_2_4_1 }}
-amazon2cis_rule_1_1_2_4_2: {{ amazon2cis_rule_1_1_2_4_1 }}
-amazon2cis_rule_1_1_2_4_3: {{ amazon2cis_rule_1_1_2_4_1 }}
+amazon2cis_rule_1_1_2_4_2: {{ amazon2cis_rule_1_1_2_4_2 }}
+amazon2cis_rule_1_1_2_4_3: {{ amazon2cis_rule_1_1_2_4_3 }}
 
 # /var/tmp
 amazon2cis_rule_1_1_2_5_1: {{ amazon2cis_rule_1_1_2_5_1 }}
@@ -536,12 +536,11 @@ amazon2cis_is_router: {{ amazon2cis_is_router }}
 # The firewall to be configured
 amazon2cis_system_firewall: {{ amazon2cis_system_firewall }}
 # Set the following to remove or mask - note will not effect system_firewall # set to none
-amazon2cis_nftables: {{ amazon2cis_nfs_mask }}
+amazon2cis_nftables: {{ amazon2cis_nftables }}
 amazon2cis_iptables: {{ amazon2cis_iptables }}
 amazon2cis_firewalld: {{ amazon2cis_firewalld }}
 
-amazon2cis_firewall_interface:
-- eth0
+amazon2cis_firewall_interface: {{ ansible_facts['default_ipv4']['interface'] }}
 
 ####
 ## Section 4 Variables
@@ -560,7 +559,7 @@ amazon2cis_sshd_kex: {{ amazon2cis_sshd_kex }}
 # access for users whose user name matches one of the patterns. This is done
 # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
 # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
-amazon2cis_sshd_allowusers: "{% if ansible_facts.user_id != 'root' %}{{ ansible_facts.user_id }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
+amazon2cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
 
 # (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
 # for users whose primary group or supplementary group list matches one of the patterns. This is done
