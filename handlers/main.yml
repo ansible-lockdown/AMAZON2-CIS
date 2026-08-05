@@ -5,35 +5,122 @@
     file: remount_tmp.yml
   listen: "Remount /tmp"
 
-- name: Remount /dev/shm
+# Mount option handlers are paired: the first writes the accumulated option
+# set from prelim_mount_point_fs_and_options back to fstab, the second
+# applies it. Remounting alone would only re-read an unchanged fstab entry.
+- name: Adding options for /dev/shm
+  vars:
+    mount_point: /dev/shm
   ansible.posix.mount:
-    name: /dev/shm
-    state: remounted
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /dev/shm
 
-- name: Remount /home
+- name: Remounting /dev/shm
+  vars:
+    mount_point: /dev/shm
   ansible.posix.mount:
-    name: /home
+    path: '{{ mount_point }}'
     state: remounted
+  listen: Remount /dev/shm
 
-- name: Remount /var
+- name: Adding options for /home
+  vars:
+    mount_point: /home
   ansible.posix.mount:
-    name: /var
-    state: remounted
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /home
 
-- name: Remount /var/tmp
+- name: Remounting /home
+  vars:
+    mount_point: /home
   ansible.posix.mount:
-    name: /var/tmp
+    path: '{{ mount_point }}'
     state: remounted
+  listen: Remount /home
 
-- name: Remount /var/log
+- name: Adding options for /var
+  vars:
+    mount_point: /var
   ansible.posix.mount:
-    name: /var/log
-    state: remounted
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var
 
-- name: Remount /var/log/audit
+- name: Remounting /var
+  vars:
+    mount_point: /var
   ansible.posix.mount:
-    name: /var/log/audit
+    path: '{{ mount_point }}'
     state: remounted
+  listen: Remount /var
+
+- name: Adding options for /var/tmp
+  vars:
+    mount_point: /var/tmp
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/tmp
+
+- name: Remounting /var/tmp
+  vars:
+    mount_point: /var/tmp
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/tmp
+
+- name: Adding options for /var/log
+  vars:
+    mount_point: /var/log
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/log
+
+- name: Remounting /var/log
+  vars:
+    mount_point: /var/log
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/log
+
+- name: Adding options for /var/log/audit
+  vars:
+    mount_point: /var/log/audit
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: Remount /var/log/audit
+
+- name: Remounting /var/log/audit
+  vars:
+    mount_point: /var/log/audit
+  ansible.posix.mount:
+    path: '{{ mount_point }}'
+    state: remounted
+  listen: Remount /var/log/audit
 
 - name: Systemd_daemon_reload
   ansible.builtin.systemd:
