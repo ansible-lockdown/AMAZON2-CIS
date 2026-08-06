@@ -1,7 +1,7 @@
 ---
 
 - name: "Configure and remount /tmp with appropriate options | not systemd tmp.mount"
-  when: not rhel10cis_tmp_svc
+  when: not amazon2cis_tmp_svc
   vars:
     mount_point: '/tmp'
   block:
@@ -21,7 +21,7 @@
       register: discovered_remount_tmp
 
 - name: "Reloading /tmp systemd service"
-  when: rhel10cis_tmp_svc
+  when: amazon2cis_tmp_svc
   vars:
     mount_point: '/tmp'
   ansible.builtin.systemd:
