@@ -1,18 +1,15 @@
 ---
 
-- name: "1.1.2.1.1 | PATCH | Ensure /tmp is a separate partition"
-  when:
-    - required_mount in prelim_mount_names
-    - amazon2cis_rule_1_1_2_1_1
+- name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition"
+  when: amazon2cis_rule_1_1_2_1_1
   tags:
     - level1
     - automated
-    - patch
+    - audit
     - rule_1.1.2.1.1
     - mounts
     - NIST800-53R5_CM-7
   vars:
-    warn_control_id: '1.1.2.1.1'
     required_mount: '/tmp'
   block:
     - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | check for mount"
@@ -28,6 +25,8 @@
 
     - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Present"
       when: discovered_tmp_mount is undefined or discovered_tmp_mount.stdout_lines == []
+      vars:
+        warn_control_id: '1.1.2.1.1'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

@@ -1,4 +1,5 @@
 ---
+
 - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords"
   when: amazon2cis_rule_6_2_1
   tags:
@@ -9,11 +10,13 @@
     - NIST800-53R5_IA-5
     - rule_6.2.1
     - user_accounts
-  vars:
-    warn_control_id: "6.2.1"
   block:
     - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords"
-      ansible.builtin.shell: awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_nonshadowed_users
@@ -27,6 +30,8 @@
 
     - name: "6.2.1 | WARN | Ensure accounts in /etc/passwd use shadowed passwords | warn_count"
       when: discovered_nonshadowed_users.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.1'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -45,7 +50,11 @@
     - permissions
   block:
     - name: "6.2.2 | AUDIT | Ensure /etc/shadow password fields are not empty | Find users with no password"
-      ansible.builtin.shell: awk -F":" '($2 == "" ) { print $1 }' /etc/shadow
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F":" '($2 == "" ) { print $1 }' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       check_mode: false
       register: discovered_empty_password_acct
@@ -70,11 +79,13 @@
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
     - groups
-  vars:
-    warn_control_id: "6.2.3"
   block:
     - name: "6.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Check /etc/passwd entries"
-      ansible.builtin.shell: pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -87,6 +98,8 @@
 
     - name: "6.2.3 | WARN | Ensure all groups in /etc/passwd exist in /etc/group | warn_count"
       when: discovered_passwd_gid_check.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.3'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -104,11 +117,13 @@
     - NIST800-53R5_IA-5
     - rule_6.2.4
     - user
-  vars:
-    warn_control_id: "6.2.4"
   block:
     - name: "6.2.4 | AUDIT | Ensure no duplicate UIDs exist | Check for duplicate UIDs"
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -121,6 +136,8 @@
 
     - name: "6.2.4 | AUDIT | Ensure no duplicate UIDs exist | Set warning count"
       when: discovered_user_uid_check.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.4'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -138,11 +155,13 @@
     - NIST800-53R5_IA-5
     - rule_6.2.5
     - groups
-  vars:
-    warn_control_id: "6.2.5"
   block:
     - name: "6.2.5 | AUDIT | Ensure no duplicate GIDs exist | Check for duplicate GIDs"
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -155,6 +174,8 @@
 
     - name: "6.2.5 | AUDIT | Ensure no duplicate GIDs exist | Set warning count"
       when: discovered_user_user_check.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.5'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -172,11 +193,13 @@
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
     - user
-  vars:
-    warn_control_id: "6.2.6"
   block:
     - name: "6.2.6 | AUDIT | Ensure no duplicate user names exist | Check for duplicate User Names"
-      ansible.builtin.shell: "pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -189,6 +212,8 @@
 
     - name: "6.2.6 | WARN | Ensure no duplicate user names exist | Set warning count"
       when: discovered_username_check.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.6'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -206,11 +231,13 @@
     - NIST800-53R5_IA-5
     - rule_6.2.7
     - groups
-  vars:
-    warn_control_id: "6.2.7"
   block:
     - name: "6.2.7 | AUDIT | Ensure no duplicate group names exist | Check for duplicate group names"
-      ansible.builtin.shell: "getent passwd | cut -d: -f1 | sort -n | uniq -d"
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd | cut -d: -f1 | sort -n | uniq -d
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       check_mode: false
@@ -223,6 +250,8 @@
 
     - name: "6.2.7 | AUDIT | Ensure no duplicate group names exist | Set warning count"
       when: discovered_group_check.stdout | length > 0
+      vars:
+        warn_control_id: '6.2.7'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
@@ -241,12 +270,20 @@
     - rule_6.2.8
   block:
     - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths"
-      ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+      ansible.builtin.shell: |
+        set -o pipefail
+        sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       register: discovered_root_paths
 
     - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths"
-      ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2 | tr ":" "\n"
+      ansible.builtin.shell: |
+        set -o pipefail
+        sudo -Hiu root env | grep '^PATH' | cut -d= -f2 | tr ":" "\n"
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       register: discovered_root_paths_split
 
@@ -255,13 +292,21 @@
         root_paths: "{{ discovered_root_paths.stdout }}"
 
     - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for empty dirs"
-      ansible.builtin.shell: 'echo {{ root_paths }} | grep -q "::" && echo "roots path contains a empty directory (::)"'
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo {{ root_paths }} | grep -q "::" && echo "roots path contains a empty directory (::)"
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_root_path_empty_dir.rc not in [ 0, 1 ]
       register: discovered_root_path_empty_dir
 
     - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for trailing ':'"
-      ansible.builtin.shell: '{{ root_paths }} | cut -d= -f2 | grep -q ":$" && echo "roots path contains a trailing (:)"'
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ root_paths }} | cut -d= -f2 | grep -q ":$" && echo "roots path contains a trailing (:)"
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_root_path_trailing_colon.rc not in [ 0, 1 ]
       register: discovered_root_path_trailing_colon
@@ -285,16 +330,14 @@
             state: directory
             owner: root
             group: root
-            mode: "0755"
+            mode: 'go-w'
             follow: false
           loop: "{{ discovered_root_path_perms.results }}"
           loop_control:
             label: "{{ item }}"
 
 - name: "6.2.9 | PATCH | Ensure root is the only UID 0 account"
-  when:
-    - prelim_uid_zero_accounts_except_root | length > 0
-    - amazon2cis_rule_6_2_9
+  when: amazon2cis_rule_6_2_9
   tags:
     - level1-server
     - level1-workstation
@@ -307,10 +350,23 @@
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
     - rule_6.2.9
-  ansible.builtin.command: passwd -l {{ item }}
-  changed_when: false
-  failed_when: false
-  loop: "{{ prelim_uid_zero_accounts_except_root.stdout_lines }}"
+  block:
+
+    - name: "6.2.9 | AUDIT | Ensure root is the only UID 0 account"
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat /etc/passwd | awk -F: '($3 == 0 && $1 != "root") {i++;print $1 } END {exit i}'
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      check_mode: false
+      register: discovered_uid_zero_accounts_except_root
+
+    - name: "6.2.9 | PATCH | Ensure root is the only UID 0 account"
+      ansible.builtin.command: passwd -l {{ item }}
+      changed_when: false
+      failed_when: false
+      loop: "{{ discovered_uid_zero_accounts_except_root.stdout_lines }}"
 
 - name: "6.2.10 | PATCH | Ensure local interactive user home directories are configured"
   when: amazon2cis_rule_6_2_10
@@ -387,11 +443,13 @@
     - NIST800-53R5_IA-5
     - rule_6.2.11
     - user
-  vars:
-    warn_control_id: "6.2.11"
   block:
     - name: "6.2.11 | AUDIT | Ensure local interactive user dot files access is configured | Check for files"
-      ansible.builtin.shell: find /home/ -name "\.*" -perm /g+w,o+w
+      ansible.builtin.shell: |
+        set -o pipefail
+        find /home/ -name "\.*" -perm /g+w,o+w
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: discovered_dot_files_audit.rc not in [ 0, 1 ]
       check_mode: false
@@ -409,6 +467,8 @@
       when:
         - discovered_dot_files_audit.stdout | length > 0
         - amazon2cis_dotperm_ansiblemanaged
+      vars:
+        warn_control_id: '6.2.11'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

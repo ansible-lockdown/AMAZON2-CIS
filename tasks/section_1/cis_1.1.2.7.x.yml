@@ -1,9 +1,7 @@
 ---
 
-- name: "1.1.2.7.1 | PATCH | Ensure separate partition exists for /var/log/audit"
-  when:
-    - amazon2cis_rule_1_1_2_7_1
-    - required_mount not in prelim_mount_names
+- name: "1.1.2.7.1 | AUDIT | Ensure separate partition exists for /var/log/audit"
+  when: amazon2cis_rule_1_1_2_7_1
   tags:
     - level1-server
     - level1-workstation
@@ -12,7 +10,6 @@
     - rule_1.1.2.7.1
     - NIST800-53R5_CM-7
   vars:
-    warn_control_id: '1.1.2.7.1'
     required_mount: '/var/log/audit'
   block:
     - name: "1.1.2.7.1 | AUDIT | Ensure separate partition exists for /var/log/audit | check for mount"
@@ -28,6 +25,8 @@
 
     - name: "1.1.2.7.1 | AUDIT | Ensure separate partition exists for /var/log/audit | Present"
       when: discovered_var_log_audit_mount is undefined or discovered_var_log_audit_mount.stdout_lines == []
+      vars:
+        warn_control_id: '1.1.2.7.1'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 

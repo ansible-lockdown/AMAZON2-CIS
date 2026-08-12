@@ -11,7 +11,7 @@
     - libselinux-python
 
 - name: "PREREQ | Check required packages installed | Python3"
-  when: ansible_facts.python.version.major is version('3', '=')
+  when: ansible_facts['python']['version']['major'] is version('3', '=')
   vars:
     ansible_python_interpreter: "{{ python2_bin }}"
   ansible.builtin.package:

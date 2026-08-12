@@ -12,7 +12,11 @@
     - rule_5.1.4
   block:
     - name: "5.1.4 | AUDIT | Ensure all logfiles have appropriate access configured | find files"
-      ansible.builtin.shell: find /var/log/ -type f -exec ls {} \;
+      ansible.builtin.shell: |
+        set -o pipefail
+        find /var/log/ -type f -exec ls {} \;
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_logfiles

@@ -92,11 +92,13 @@
     - selinux
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
-  vars:
-    warn_control_id: '1.5.1.6'
   block:
     - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Find the unconfined services"
-      ansible.builtin.shell: ps -eZ | grep unconfined_service_t
+      ansible.builtin.shell: |
+        set -o pipefail
+        ps -eZ | grep unconfined_service_t
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
       changed_when: false
       failed_when: false
       register: discovered_unconfined_services
@@ -107,6 +109,8 @@
       when: discovered_unconfined_services.stdout | length > 0
 
     - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Warn Count"
+      vars:
+        warn_control_id: '1.5.1.6'
       ansible.builtin.import_tasks:
         file: warning_facts.yml
 
