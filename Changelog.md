@@ -31,6 +31,7 @@
 - CONTRIBUTING.rst: fixed duplicate word typo
 - `.gitignore`: added `qa_report.md`, `prompt.md`, `test_inv`
 - Mount tasks 1.1.2.x.1 relabelled to AUDIT
+- README updates and updated contributing and contributors
 
 ---
 
