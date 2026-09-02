@@ -2,7 +2,7 @@
 
 ## Configure a Amazon 2 Linux machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [CIS Amazon 2 Linux Benchmark v4.0.0](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [CIS Amazon 2 Linux Benchmark v3.0.0](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
