@@ -1,7 +1,7 @@
 ---
 
 - name: "Remount tmp filesystem"
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: remount_tmp.yml
   listen: "Remount /tmp"
 
@@ -159,11 +159,6 @@
     name: systemd-journald
     state: restarted
 
-- name: Restart_systemd_journal_upload
-  ansible.builtin.service:
-    name: systemd-journal-upload
-    state: restarted
-
 - name: Audit_immutable_fact
   when: discovered_auditd_immutable_check.rc == 0
   ansible.builtin.debug:
@@ -187,3 +182,7 @@
 - name: Change_requires_reboot
   ansible.builtin.set_fact:
     change_requires_reboot: true
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload
+  changed_when: true

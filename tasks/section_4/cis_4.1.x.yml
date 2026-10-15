@@ -1,0 +1,253 @@
+---
+
+- name: "4.1.1 | PATCH | Ensure firewalld is installed"
+  when: amazon2cis_rule_4_1_1
+  tags:
+    - level2-server
+    - automated
+    - patch
+    - rule_4.1.1
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  vars:
+    ansible_python_interpreter: /bin/python
+  ansible.builtin.package:
+    name: firewalld
+    state: present
+
+- name: "4.1.2 | PATCH | Ensure firewalld.service state is configured"
+  when: amazon2cis_rule_4_1_2
+  tags:
+    - level2-server
+    - automated
+    - patch
+    - rule_4.1.2
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  ansible.builtin.systemd:
+    name: firewalld
+    state: started
+    enabled: true
+    masked: false
+
+- name: "4.1.3 | PATCH | Ensure network interface zone is configured"
+  when: amazon2cis_rule_4_1_3
+  tags:
+    - level2-server
+    - automated
+    - patch
+    - rule_4.1.3
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  block:
+    - name: "4.1.3 | AUDIT | Ensure network interface zone is configured | Discover unassigned interfaces"
+      ansible.builtin.shell: |
+        set -o pipefail
+        for netint in $(find /sys/class/net/* -maxdepth 1 | awk -F"/" '{print $NF}'); do
+          [ "$netint" = "lo" ] && continue
+          firewall-cmd --get-zone-of-interface="$netint" >/dev/null 2>&1 || echo "$netint"
+        done
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_unzoned_interfaces.rc not in [ 0, 1 ]
+      register: discovered_unzoned_interfaces
+
+    - name: "4.1.3 | PATCH | Ensure network interface zone is configured | Assign interfaces to zone"
+      when:
+        - amazon2cis_disruption_high
+        - discovered_unzoned_interfaces.stdout | length > 0
+      ansible.posix.firewalld:
+        zone: "{{ amazon2cis_active_firewall_zone }}"
+        interface: "{{ item }}"
+        permanent: true
+        state: enabled
+      loop: "{{ discovered_unzoned_interfaces.stdout_lines }}"
+      notify: Reload firewalld
+
+    - name: "4.1.3 | AUDIT | Ensure network interface zone is configured | Warn if not remediated"
+      when:
+        - not amazon2cis_disruption_high
+        - discovered_unzoned_interfaces.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "{{ ['Warning!! The following network interfaces are not assigned to a firewalld zone'] + discovered_unzoned_interfaces.stdout_lines }}"
+
+    - name: "4.1.3 | AUDIT | Ensure network interface zone is configured | Capture Warning"
+      when:
+        - not amazon2cis_disruption_high
+        - discovered_unzoned_interfaces.stdout | length > 0
+      vars:
+        warn_control_id: '4.1.3'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "4.1.4 | PATCH | Ensure firewalld active zone target is configured"
+  when: amazon2cis_rule_4_1_4
+  tags:
+    - level2-server
+    - automated
+    - patch
+    - rule_4.1.4
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  block:
+    - name: "4.1.4 | AUDIT | Ensure firewalld active zone target is configured | Get active zone target"
+      ansible.builtin.shell: |
+        set -o pipefail
+        firewall-cmd --list-all --zone="{{ amazon2cis_active_firewall_zone }}" | grep -E '^\s*target:'
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_active_zone_target.rc not in [ 0, 1 ]
+      register: discovered_active_zone_target
+
+    - name: "4.1.4 | PATCH | Ensure firewalld active zone target is configured | Set zone target"
+      when:
+        - amazon2cis_disruption_high
+        - "'ACCEPT' in discovered_active_zone_target.stdout"
+      ansible.posix.firewalld:
+        zone: "{{ amazon2cis_active_firewall_zone }}"
+        target: "{{ amazon2cis_firewalld_zone_target }}"
+        permanent: true
+        state: enabled
+      notify: Reload firewalld
+
+    - name: "4.1.4 | AUDIT | Ensure firewalld active zone target is configured | Warn if not remediated"
+      when:
+        - not amazon2cis_disruption_high
+        - "'ACCEPT' in discovered_active_zone_target.stdout"
+      ansible.builtin.debug:
+        msg: "Warning!! The active firewalld zone target is ACCEPT and needs investigation to match requirements"
+
+    - name: "4.1.4 | AUDIT | Ensure firewalld active zone target is configured | Capture Warning"
+      when:
+        - not amazon2cis_disruption_high
+        - "'ACCEPT' in discovered_active_zone_target.stdout"
+      vars:
+        warn_control_id: '4.1.4'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "4.1.5 | PATCH | Ensure firewalld loopback traffic is configured"
+  when: amazon2cis_rule_4_1_5
+  tags:
+    - level2-server
+    - manual
+    - patch
+    - rule_4.1.5
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  block:
+    - name: "4.1.5 | PATCH | Ensure firewalld loopback traffic is configured | Assign lo to the trusted zone"
+      ansible.posix.firewalld:
+        zone: trusted
+        interface: lo
+        permanent: true
+        state: enabled
+      notify: Reload firewalld
+
+    - name: "4.1.5 | PATCH | Ensure firewalld loopback traffic is configured | Set trusted zone target to ACCEPT"
+      ansible.posix.firewalld:
+        zone: trusted
+        target: ACCEPT
+        permanent: true
+        state: enabled
+      notify: Reload firewalld
+
+- name: "4.1.6 | PATCH | Ensure firewalld loopback source address traffic is configured"
+  when: amazon2cis_rule_4_1_6
+  tags:
+    - level2-server
+    - manual
+    - patch
+    - rule_4.1.6
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  ansible.posix.firewalld:
+    rich_rule: "{{ item }}"
+    zone: "{{ amazon2cis_active_firewall_zone }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop:
+    - rule family="ipv4" source address="127.0.0.1" destination not address="127.0.0.1" drop
+    - rule family="ipv6" source address="::1" destination not address="::1" drop
+  notify: Reload firewalld
+
+- name: "4.1.7 | AUDIT | Ensure firewalld services and ports are configured"
+  when: amazon2cis_rule_4_1_7
+  tags:
+    - level2-server
+    - manual
+    - audit
+    - rule_4.1.7
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  block:
+    - name: "4.1.7 | AUDIT | Ensure firewalld services and ports are configured | Get list of services and ports"
+      ansible.builtin.shell: |
+        set -o pipefail
+        firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      register: discovered_services_and_ports
+
+    - name: "4.1.7 | AUDIT | Ensure firewalld services and ports are configured | Show services and ports"
+      ansible.builtin.debug:
+        msg:
+          - "The items below are the services and ports that are accepted, please correct as needed"
+          - "{{ discovered_services_and_ports.stdout_lines }}"
+
+    - name: "4.1.7 | AUDIT | Ensure firewalld services and ports are configured | Warn Count"
+      when: discovered_services_and_ports.stdout | length > 0
+      vars:
+        warn_control_id: '4.1.7'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "4.1.8 | PATCH | Configure firewall to drop all traffic"
+  when: amazon2cis_rule_4_1_8
+  tags:
+    - level2-server
+    - manual
+    - patch
+    - rule_4.1.8
+    - firewall
+    - firewalld
+    - NIST800-53R5_CA-9
+  block:
+    - name: "4.1.8 | PATCH | Configure firewall to drop all traffic | Set the default zone to drop"
+      when: amazon2cis_firewalld_drop_all_traffic
+      ansible.posix.firewalld:
+        zone: drop
+        permanent: true
+        state: enabled
+      notify: Reload firewalld
+
+    - name: "4.1.8 | PATCH | Configure firewall to drop all traffic | Make drop the default zone"
+      when: amazon2cis_firewalld_drop_all_traffic
+      ansible.builtin.command: firewall-cmd --set-default-zone=drop
+      changed_when: discovered_default_zone_set.stdout is search('success')
+      register: discovered_default_zone_set
+      notify: Reload firewalld
+
+    - name: "4.1.8 | AUDIT | Configure firewall to drop all traffic | Warn if not applied"
+      when: not amazon2cis_firewalld_drop_all_traffic
+      ansible.builtin.debug:
+        msg: "Warning!! Control 4.1.8 sets the default firewalld zone to drop, which will block all traffic that is not explicitly allowed. Set amazon2cis_firewalld_drop_all_traffic to true once the required services and ports are configured"
+
+    - name: "4.1.8 | AUDIT | Configure firewall to drop all traffic | Capture Warning"
+      when: not amazon2cis_firewalld_drop_all_traffic
+      vars:
+        warn_control_id: '4.1.8'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml

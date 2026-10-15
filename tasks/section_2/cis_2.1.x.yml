@@ -3,7 +3,7 @@
 - name: "2.1.1 | PATCH | Ensure time synchronization is in use"
   when: amazon2cis_rule_2_1_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_2.1.1
@@ -48,7 +48,7 @@
     - amazon2cis_rule_2_1_2
     - amazon2cis_time_synchronization == "chrony"
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_2.1.2
@@ -68,7 +68,7 @@
     - amazon2cis_rule_2_1_3
     - amazon2cis_time_synchronization == "chrony"
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_2.1.3

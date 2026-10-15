@@ -1,18 +1,17 @@
 ---
 
-- name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled"
-  when: amazon2cis_rule_4_4_2_3_1
+- name: "5.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled"
+  when: amazon2cis_rule_5_4_2_3_1
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - pam
     - pam_pwhistory
-    - rule_4.4.2.3.1
+    - rule_5.4.2.3.1
     - NIST800-53R5_IA-5
   block:
-    - name: "4.4.2.3.1 | AUDIT | Ensure pam_pwhistory module is enabled | check if exists"
+    - name: "5.4.2.3.1 | AUDIT | Ensure pam_pwhistory module is enabled | check if exists"
       ansible.builtin.shell: |
         set -o pipefail
         grep -P "^auth\s+(sufficient|required|requisite)\s+pam_pwhistory.so" /etc/pam.d/{system,password}-auth | wc -l
@@ -22,7 +21,7 @@
       failed_when: discovered_pwhistory_exists.rc not in [ 0, 1 ]
       register: discovered_pwhistory_exists
 
-    - name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | present"
+    - name: "5.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | present"
       when: discovered_pwhistory_exists.stdout|int < 2
       community.general.pamd:
         name: "{{ item }}"
@@ -38,7 +37,7 @@
         - system-auth
         - password-auth
 
-    - name: "4.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | updated"
+    - name: "5.4.2.3.1 | PATCH | Ensure pam_pwhistory module is enabled | updated"
       when: discovered_pwhistory_exists.stdout | int < 2
       community.general.pamd:
         name: "{{ item }}"
@@ -51,16 +50,15 @@
         - system-auth
         - password-auth
 
-- name: "4.4.2.3.2 | PATCH | Ensure password history remember is configured"
-  when: amazon2cis_rule_4_4_2_3_2
+- name: "5.4.2.3.2 | PATCH | Ensure password history remember is configured"
+  when: amazon2cis_rule_5_4_2_3_2
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - pam
     - pam_pwhistory
-    - rule_4.4.2.3.2
+    - rule_5.4.2.3.2
     - NIST800-53R5_IA-5
   community.general.pamd:
     name: "{{ item }}"
@@ -73,16 +71,15 @@
     - system-auth
     - password-auth
 
-- name: "4.4.2.3.3 | PATCH | Ensure password history is enforced for the root user"
-  when: amazon2cis_rule_4_4_2_3_3
+- name: "5.4.2.3.3 | PATCH | Ensure password history is enforced for the root user"
+  when: amazon2cis_rule_5_4_2_3_3
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - pam
     - pam_pwhistory
-    - rule_4.4.2.3.3
+    - rule_5.4.2.3.3
     - NIST800-53R5_IA-5
   community.general.pamd:
     name: "{{ item }}"
@@ -95,16 +92,15 @@
     - system-auth
     - password-auth
 
-- name: "4.4.2.3.4 | PATCH | Ensure pam_pwhistory includes use_authtok"
-  when: amazon2cis_rule_4_4_2_3_4
+- name: "5.4.2.3.4 | PATCH | Ensure pam_pwhistory includes use_authtok"
+  when: amazon2cis_rule_5_4_2_3_4
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - pam
     - pam_pwhistory
-    - rule_4.4.2.3.4
+    - rule_5.4.2.3.4
     - NIST800-53R5_IA-5
   community.general.pamd:
     name: "{{ item }}"

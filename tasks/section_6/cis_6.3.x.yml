@@ -1,0 +1,99 @@
+---
+
+- name: "6.3.1 | PATCH | Ensure AIDE is installed"
+  when:
+    - amazon2cis_config_aide
+    - amazon2cis_rule_6_3_1
+  tags:
+    - level1-server
+    - automated
+    - aide
+    - NIST800-53R5_AU-2
+    - patch
+    - rule_6.3.1
+  block:
+    - name: "6.3.1 | PATCH | Ensure AIDE is installed | Install AIDE"
+      ansible.builtin.package:
+        name: aide
+        state: present
+
+    - name: "6.3.1 | PATCH | Ensure AIDE is installed | Configure AIDE"
+      ansible.builtin.command: /usr/sbin/aide --init
+      changed_when: false
+      failed_when: false
+      async: 45
+      poll: 0
+      args:
+        creates: /var/lib/aide/aide.db.new.gz
+      when: not ansible_check_mode
+
+    - name: "6.3.1 | PATCH | Ensure AIDE is installed | copy AIDE DB"
+      ansible.builtin.copy:
+        src: /var/lib/aide/aide.db.new.gz
+        dest: /var/lib/aide/aide.db.gz
+        remote_src: true
+        mode: 'o-w,g-wx,o-rwx'
+
+- name: "6.3.2 | PATCH | Ensure filesystem integrity is regularly checked"
+  when:
+    - amazon2cis_rule_6_3_2
+    - amazon2cis_config_aide
+    - not system_is_ec2
+  tags:
+    - level1-server
+    - automated
+    - aide
+    - NIST800-53R5_AU-2
+    - file_integrity
+    - patch
+    - rule_6.3.2
+  block:
+    - name: "6.3.2 | PATCH | Ensure filesystem integrity is regularly checked | cron"
+      when: amazon2cis_aide_scan == "cron"
+      ansible.builtin.cron:
+        name: Run AIDE integrity check
+        cron_file: "{{ amazon2cis_aide_cron_file }}"
+        user: "{{ amazon2cis_aide_cron_user }}"
+        minute: "{{ amazon2cis_aide_cron_minute | default('0') }}"
+        hour: "{{ amazon2cis_aide_cron_hour | default('5') }}"
+        day: "{{ amazon2cis_aide_cron_day | default('*') }}"
+        month: "{{ amazon2cis_aide_cron_month | default('*') }}"
+        weekday: "{{ amazon2cis_aide_cron_weekday | default('*') }}"
+        job: "{{ amazon2cis_aide_cron_job }}"
+
+    - name: "6.3.2 | PATCH | Ensure filesystem integrity is regularly checked | timer"
+      when: amazon2cis_aide_scan == "timer"
+      ansible.builtin.systemd:
+        name: "{{ item.name }}"
+        enabled: true
+        state: "{{ item.state | default(omit) }}"
+      loop:
+        - { name: 'aidecheck.service' }
+        - { name: 'aidecheck.timer', state: started }
+
+- name: "6.3.3 | PATCH | Ensure cryptographic mechanisms are used to protect the integrity of audit tools"
+  when: amazon2cis_rule_6_3_3
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - aide
+    - file_integrity
+    - rule_6.3.3
+    - NIST800-53R5_AU-9
+  ansible.builtin.blockinfile:
+    path: /etc/aide.conf
+    marker: "# {mark} Audit tools - CIS benchmark - Ansible-lockdown"
+    block: |
+      /sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512
+      /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
+    create: false
+    validate: aide -D --config %s
+  failed_when:
+    - not ansible_check_mode
+    - discovered_aide_audit_tools_check.failed
+  register: discovered_aide_audit_tools_check

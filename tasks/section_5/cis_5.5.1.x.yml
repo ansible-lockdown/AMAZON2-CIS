@@ -1,0 +1,246 @@
+---
+
+- name: "5.5.1.1 | PATCH | Ensure password expiration is configured"
+  when: amazon2cis_rule_5_5_1_1
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - pam
+    - pam_unix
+    - rule_5.5.1.1
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+  block:
+    - name: "5.5.1.1 | PATCH | Ensure password expiration is configured | Set /etc/login.defs PASS_MAX_DAYS"
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: "^PASS_MAX_DAYS|^#PASS_MAX_DAYS"
+        line: "PASS_MAX_DAYS {{ amazon2cis_pass_max_days }}"
+        insertafter: "# Password aging controls"
+
+    - name: "5.5.1.1 | PATCH | Ensure password expiration is configured | Get existing users PASS_MAX_DAYS"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      register: discovered_max_days
+
+    - name: "5.5.1.1 | PATCH | Ensure password expiration is configured | Set existing users PASS_MAX_DAYS"
+      when:
+        - amazon2cis_disruption_high
+        - item not in amazon2cis_user_skip_list
+      ansible.builtin.command: chage --maxdays {{ amazon2cis_pass_max_days }} {{ item }}
+      failed_when: false
+      changed_when: discovered_max_days.stdout | length > 0
+      loop: "{{ discovered_max_days.stdout_lines }}"
+
+- name: "5.5.1.2 | PATCH | Ensure minimum password days is configured"
+  when: amazon2cis_rule_5_5_1_2
+  tags:
+    - level1-server
+    - manual
+    - patch
+    - pam
+    - pam_unix
+    - rule_5.5.1.2
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+  block:
+    - name: "5.5.1.2 | PATCH | Ensure minimum password days is configured | Set /etc/login.defs PASS_MIN_DAYS"
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: "^PASS_MIN_DAYS|^#PASS_MIN_DAYS"
+        line: "PASS_MIN_DAYS {{ amazon2cis_pass_min_days }}"
+        insertafter: "# Password aging controls"
+
+    - name: "5.5.1.2 | AUDIT | Ensure minimum password days is configured | Get existing users PASS_MIN_DAYS"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '(/^[^:]+:[^!*]/ && $4 < {{ amazon2cis_pass_min_days }}){print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_min_days.rc not in [ 0, 1 ]
+      register: discovered_min_days
+
+    - name: "5.5.1.2 | PATCH | Ensure minimum password days is configured | Set existing users PASS_MIN_DAYS"
+      when:
+        - amazon2cis_disruption_high
+        - item not in amazon2cis_user_skip_list
+      ansible.builtin.command: chage --mindays {{ amazon2cis_pass_min_days }} {{ item }}
+      failed_when: false
+      changed_when: discovered_min_days.stdout | length > 0
+      loop: "{{ discovered_min_days.stdout_lines }}"
+
+- name: "5.5.1.3 | PATCH | Ensure password expiration warning days is configured"
+  when: amazon2cis_rule_5_5_1_3
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - rule_5.5.1.3
+    - accounts
+    - password
+  block:
+    - name: "5.5.1.3 | PATCH | Ensure password expiration warning days is configured"
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: "^PASS_WARN_AGE"
+        line: "PASS_WARN_AGE {{ amazon2cis_pass_warn_age }}"
+
+    - name: "5.5.1.3 | PATCH | Ensure password expiration warning days is configured | Get existing users WARN_DAYS"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '(/^[^:]+:[^!*]/ && ($5>{{ amazon2cis_pass_max_days }} || $5<{{ amazon2cis_pass_min_days }} || $5 == -1)){print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_users_warn_days.rc not in [ 0, 1 ]
+      register: discovered_users_warn_days
+
+    - name: "5.5.1.3 | PATCH | Ensure password expiration warning days is configured | change users not matching req"
+      when:
+        - discovered_users_warn_days is defined
+        - discovered_users_warn_days.stdout | length > 0
+        - item != (ansible_user | default(ansible_facts['env']['USER']))
+      ansible.builtin.command: chage --warndays {{ amazon2cis_pass_warn_age }} {{ item }}
+      changed_when: true
+      loop: "{{ discovered_users_warn_days.stdout_lines }}"
+
+- name: "5.5.1.4 | PATCH | Ensure strong password hashing algorithm is configured"
+  when: amazon2cis_rule_5_5_1_4
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - pam
+    - pam_unix
+    - rule_5.5.1.4
+    - NIST800-53R5_IA-5
+  block:
+    - name: "5.5.1.4 | PATCH | Ensure strong password hashing algorithm is configured | libuser.conf"
+      ansible.builtin.lineinfile:
+        path: /etc/libuser.conf
+        regexp: ^(?i)(#|)\s*crypt_style
+        line: "crypt_style = {{ amazon2cis_encryption }}"
+
+    - name: "5.5.1.4 | PATCH | Ensure strong password hashing algorithm is configured | login.defs"
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: ^(?i)(#|)\s*ENCRYPT_METHOD
+        line: "ENCRYPT_METHOD {{ amazon2cis_encryption | upper }}"
+
+    - name: "5.5.1.4 | PATCH | Ensure strong password hashing algorithm is configured | Captures users who need to change passwd"
+      when: amazon2cis_force_user_passwd_change
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '( $3>='{{ amazon2cis_uid_min }}' && $1 != 'nfsnobody' ) { print $1 }' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      failed_when: false
+      changed_when: false
+      register: discovered_user_crypt_password
+
+    - name: "5.5.1.4 | PATCH | Ensure strong password hashing algorithm is configured | force user password change"
+      when:
+        - amazon2cis_force_user_passwd_change
+        - discovered_user_crypt_password.stdout | length > 0
+      ansible.builtin.command: "chage -d 0 {{ item }}"
+      changed_when: true
+      loop: "{{ discovered_user_crypt_password.stdout_lines }}"
+
+- name: "5.5.1.5 | PATCH | Ensure inactive password lock is configured"
+  when: amazon2cis_rule_5_5_1_5
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - shadow_suite
+    - rule_5.5.1.5
+  block:
+    - name: "5.5.1.5 | AUDIT | Ensure inactive password lock is configured | capture default state"
+      ansible.builtin.shell: |
+        set -o pipefail
+        useradd -D | grep INACTIVE | cut -d= -f2
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_users_inactive_def.rc not in [ 0, 1 ]
+      register: discovered_users_inactive_def
+
+    - name: "5.5.1.5 | PATCH | Ensure inactive password lock is configured | change default"
+      when:
+        - discovered_users_inactive_def is defined
+        - (amazon2cis_pass_inactive | string) not in discovered_users_inactive_def.stdout
+      ansible.builtin.command: "useradd -D -f {{ amazon2cis_pass_inactive }}"
+      changed_when: true
+
+    - name: "5.5.1.5 | AUDIT | Ensure inactive password lock is configured | capture users not matching"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '/^[^#:]+:[^!*:]*:[^:]*:[^:]*:[^:]*:[^:]*:(\s*|-1|3[1-9]|[4-9][0-9]|[1-9][0-9][0-9]+):[^:]*:[^:]*\s*$/ {print $1}' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_users_inactive.rc not in [ 0, 1 ]
+      register: discovered_users_inactive
+
+    - name: "5.5.1.5 | PATCH | Ensure inactive password lock is configured | change users not matching req"
+      when:
+        - discovered_users_inactive is defined
+        - discovered_users_inactive.stdout | length > 0
+        - item != (ansible_user | default(ansible_facts['env']['USER']))
+      ansible.builtin.command: "chage --inactive {{ amazon2cis_pass_inactive }} {{ item }}"
+      changed_when: true
+      loop: "{{ discovered_users_inactive.stdout_lines }}"
+
+- name: "5.5.1.6 | PATCH | Ensure all users last password change date is in the past"
+  when: amazon2cis_rule_5_5_1_6
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - shadow_suite
+    - rule_5.5.1.6
+  block:
+    - name: "5.5.1.6 | FACT | Ensure inactive password lock is 30 days or less | set fact days since_epoch"
+      ansible.builtin.set_fact:
+        days_since_epoch: "{{ (ansible_facts['date_time']['epoch'] | int) / 86400 }}"
+
+    - name: "5.5.1.6 | AUDIT | Ensure all users last password change date is in the past | capture users date in future"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F: '{ if ($3 > "{{ days_since_epoch }}") { print $1 }  }' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_users_user_future.rc not in [ 0, 1 ]
+      register: discovered_users_user_future
+
+    - name: "5.5.1.6 | WARN | Ensure inactive password lock is 30 days or less | Warn Users in future"
+      when:
+        - discovered_users_user_future
+        - discovered_users_user_future.stdout | length > 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! - The following users have passwords set in the future please investigate"
+          - "{{ discovered_users_user_future.stdout_lines }}"
+
+    - name: "5.5.1.6 | WARN | Ensure inactive password lock is 30 days or less | Warn Users in future"
+      when:
+        - discovered_users_user_future
+        - discovered_users_user_future.stdout | length > 0
+      vars:
+        warn_control_id: '5.5.1.6'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml

@@ -6,7 +6,7 @@
     - amazon2cis_rule_3_1_1
   notify: Sysctl_flush_ipv6_routes
   tags:
-    - level1
+    - level1-server
     - manual
     - patch
     - rule_3.1.1
@@ -39,25 +39,25 @@
         line: '#\1'
         backrefs: true
 
-- name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled"
+- name: "3.1.2 | PATCH | Ensure wireless interfaces are not available"
   when:
     - amazon2cis_rule_3_1_2
     - not system_is_container
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_3.1.2
     - wireless
     - NIST800-53R5_CM-7
   block:
-    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | discover"
+    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are not available | discover"
       ansible.builtin.command: find /sys/class/net/*/ -type d -name wireless
       changed_when: false
       failed_when: discovered_wireless_adapters.rc not in [ 0, 1 ]
       register: discovered_wireless_adapters
 
-    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | capture modules"
+    - name: "3.1.2 | AUDIT | Ensure wireless interfaces are not available | capture modules"
       when: discovered_wireless_adapters.rc == 0
       ansible.builtin.shell: |
         set -o pipefail
@@ -70,17 +70,17 @@
       failed_when: discovered_wireless_modules.rc not in [ 0, 1 ]
       register: discovered_wireless_modules
 
-    - name: 3.1.2 | PATCH | Ensure wireless interfaces are disabled | if exists"
+    - name: 3.1.2 | PATCH | Ensure wireless interfaces are not available | if exists"
       when: discovered_wireless_modules.stdout is defined
       block:
-        - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if nmcli command is available"  # noqa: command-instead-of-module
+        - name: "3.1.2 | AUDIT | Ensure wireless interfaces are not available | Check if nmcli command is available"  # noqa: command-instead-of-module
           ansible.builtin.command: rpm -q NetworkManager
           changed_when: false
           failed_when: false
           check_mode: false
           register: discovered_nmcli_available
 
-        - name: "3.1.2 | AUDIT | Ensure wireless interfaces are disabled | Check if wifi is enabled"
+        - name: "3.1.2 | AUDIT | Ensure wireless interfaces are not available | Check if wifi is enabled"
           ansible.builtin.command: nmcli radio wifi
           changed_when: false
           failed_when: false
@@ -88,7 +88,7 @@
           register: discovered_wifi_enabled
           when: discovered_nmcli_available.rc == 0
 
-        - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled | Disable wifi if enabled"
+        - name: "3.1.2 | PATCH | Ensure wireless interfaces are not available | Disable wifi if enabled"
           when:
             - discovered_wifi_enabled.stdout is defined
             - "'enabled' in discovered_wifi_enabled.stdout"
@@ -99,7 +99,6 @@
   when: amazon2cis_rule_3_1_3
   tags:
     - level1-server
-    - level2-workstation
     - automated
     - patch
     - bluetooth

@@ -4,7 +4,6 @@
   when: amazon2cis_rule_2_2_1
   tags:
     - level1-server
-    - level2-workstation
     - automated
     - patch
     - NIST800-53R5_SI-3
@@ -35,7 +34,6 @@
   when: amazon2cis_rule_2_2_2
   tags:
     - level1-server
-    - level2-workstation
     - automated
     - patch
     - avahi
@@ -70,7 +68,6 @@
   when: amazon2cis_rule_2_2_3
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - dhcp
@@ -103,7 +100,6 @@
   when: amazon2cis_rule_2_2_4
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - dns
@@ -133,7 +129,6 @@
   when: amazon2cis_rule_2_2_5
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - dns
@@ -163,7 +158,6 @@
   when: amazon2cis_rule_2_2_6
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - samba
@@ -194,7 +188,6 @@
   when: amazon2cis_rule_2_2_7
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - ftp
@@ -225,7 +218,6 @@
   when: amazon2cis_rule_2_2_8
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - dovecot
@@ -263,7 +255,6 @@
   when: amazon2cis_rule_2_2_9
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - nfs
@@ -295,7 +286,6 @@
   when: amazon2cis_rule_2_2_10
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - nis
@@ -357,7 +347,6 @@
   when: amazon2cis_rule_2_2_12
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - rpc
@@ -391,7 +380,6 @@
   when: amazon2cis_rule_2_2_13
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - rsync
@@ -426,7 +414,6 @@
   when: amazon2cis_rule_2_2_14
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - snmp
@@ -456,7 +443,6 @@
   when: amazon2cis_rule_2_2_15
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - telnet
@@ -487,7 +473,6 @@
   when: amazon2cis_rule_2_2_16
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - tftp
@@ -519,7 +504,6 @@
   when: amazon2cis_rule_2_2_17
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - squid
@@ -550,7 +534,6 @@
   when: amazon2cis_rule_2_2_18
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - httpd
@@ -601,7 +584,6 @@
   when: amazon2cis_rule_2_2_19
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - xinetd
@@ -632,8 +614,7 @@
     - not amazon2cis_xwindow_server
     - amazon2cis_rule_2_2_20
   tags:
-    - level1-server
-    - level1-workstation
+    - level2-server
     - automated
     - patch
     - xwindow
@@ -649,7 +630,6 @@
     - amazon2cis_rule_2_2_21
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - postfix
@@ -665,7 +645,6 @@
   when: amazon2cis_rule_2_2_22
   tags:
     - level1-server
-    - level1-workstation
     - manual
     - audit
     - services

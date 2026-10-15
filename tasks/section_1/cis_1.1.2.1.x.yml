@@ -1,9 +1,9 @@
 ---
 
-- name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition"
+- name: "1.1.2.1.1 | AUDIT | Ensure /tmp is tmpfs or a separate partition"
   when: amazon2cis_rule_1_1_2_1_1
   tags:
-    - level1
+    - level1-server
     - automated
     - audit
     - rule_1.1.2.1.1
@@ -12,18 +12,18 @@
   vars:
     required_mount: '/tmp'
   block:
-    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | check for mount"
+    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is tmpfs or a separate partition | check for mount"
       ansible.builtin.command: findmnt -kn "{{ required_mount }}"
       changed_when: false
       failed_when: discovered_tmp_mount.rc not in [ 0, 1 ]
       register: discovered_tmp_mount
 
-    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent"
+    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is tmpfs or a separate partition | Absent"
       when: discovered_tmp_mount is undefined or discovered_tmp_mount.stdout_lines == []
       ansible.builtin.debug:
         msg: "Warning!! {{ required_mount }} is not mounted on a separate partition"
 
-    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Present"
+    - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is tmpfs or a separate partition | Present"
       when: discovered_tmp_mount is undefined or discovered_tmp_mount.stdout_lines == []
       vars:
         warn_control_id: '1.1.2.1.1'
@@ -35,9 +35,9 @@
     - prelim_mount_point_fs_and_options[mount_point] is defined
     - not prelim_mount_point_fs_and_options[mount_point]['src'] == "tmpfs"
     - amazon2cis_rule_1_1_2_1_2
-    - not amazon2cis_tmp_svc
+    - not prelim_tmp_svc
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.1.2.1.2
@@ -60,9 +60,9 @@
     - prelim_mount_point_fs_and_options[mount_point] is defined
     - not prelim_mount_point_fs_and_options[mount_point]['src'] == "tmpfs"
     - amazon2cis_rule_1_1_2_1_3
-    - not amazon2cis_tmp_svc
+    - not prelim_tmp_svc
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.1.2.1.3
@@ -82,9 +82,9 @@
     - prelim_mount_point_fs_and_options[mount_point] is defined
     - not prelim_mount_point_fs_and_options[mount_point]['src'] == "tmpfs"
     - amazon2cis_rule_1_1_2_1_4
-    - not amazon2cis_tmp_svc
+    - not prelim_tmp_svc
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.1.2.1.4
@@ -106,12 +106,11 @@
     1.1.2.1.3 | PATCH | Ensure noexec option set on /tmp partition
     1.1.2.1.4 | PATCH | Ensure nosuid option set on /tmp partition"
   when:
-    - amazon2cis_tmp_svc
+    - prelim_tmp_svc
     - required_mount in prelim_mount_names
     - amazon2cis_rule_1_1_2_1_1 or amazon2cis_rule_1_1_2_1_2 or amazon2cis_rule_1_1_2_1_3 or amazon2cis_rule_1_1_2_1_4
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.1.1

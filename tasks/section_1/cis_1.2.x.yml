@@ -3,20 +3,20 @@
 - name: "1.2.1 | PATCH | Ensure GPG keys are configured"
   when: amazon2cis_rule_1_2_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.2.1
     - gpg
     - NIST800-53R5_SI-2
-  ansible.builtin.command: gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-{{ ansible_distribution_major_version }}
+  ansible.builtin.command: gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-{{ ansible_facts['distribution_major_version'] }}
   changed_when: "'created' in discovered_gpg_status.stderr"
   register: discovered_gpg_status
 
 - name: "1.2.2 | PATCH | Ensure gpgcheck is globally activated"
   when: amazon2cis_rule_1_2_2
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.2.2
@@ -41,7 +41,7 @@
 - name: "1.2.3 | PATCH | Ensure repo_gpgcheck is globally activated"
   when: amazon2cis_rule_1_2_3
   tags:
-    - level2
+    - level2-server
     - automated
     - patch
     - rule_1.2.3
@@ -55,7 +55,7 @@
 - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured"
   when: amazon2cis_rule_1_2_4
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.2.4
@@ -81,7 +81,7 @@
 - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed"
   when: amazon2cis_rule_1_2_5
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.2.5

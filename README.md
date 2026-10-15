@@ -2,7 +2,7 @@
 
 ## Configure a Amazon 2 Linux machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [CIS Amazon 2 Linux Benchmark v3.0.0](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [CIS Amazon 2 Linux Benchmark v4.0.0](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
@@ -236,7 +236,7 @@ uses:
 
 ## Known Issues
 
-Almalinux BaseOS, EPEL and many cloud providers repositories, do not allow gpgcheck(rule_1.2.1.2) or repo_gpgcheck (rule_1.2.1.3) this will cause issues during the playbook unless or a workaround is found.
+EPEL and many cloud provider repositories do not support gpgcheck (rule_1.2.2) or repo_gpgcheck (rule_1.2.3). This will cause issues during the playbook unless those controls are disabled or a workaround is found.
 
 
 ## Local Testing

@@ -1,9 +1,9 @@
 ---
 
-- name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition"
+- name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is tmpfs"
   when: amazon2cis_rule_1_1_2_2_1
   tags:
-    - level1
+    - level1-server
     - automated
     - audit
     - rule_1.1.2.2.1
@@ -12,18 +12,18 @@
   vars:
     required_mount: '/dev/shm'
   block:
-    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | check for mount"
+    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is tmpfs | check for mount"
       ansible.builtin.command: findmnt -kn "{{ required_mount }}"
       changed_when: false
       failed_when: discovered_shm_mount.rc not in [ 0, 1 ]
       register: discovered_shm_mount
 
-    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent"
+    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is tmpfs | Absent"
       when: discovered_shm_mount is undefined
       ansible.builtin.debug:
         msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
 
-    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Present"
+    - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is tmpfs | Present"
       when: discovered_shm_mount is undefined
       vars:
         warn_control_id: '1.1.2.2.1'
@@ -36,7 +36,6 @@
     - amazon2cis_rule_1_1_2_2_2
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.2.2
@@ -59,7 +58,6 @@
     - amazon2cis_rule_1_1_2_2_3
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.2.3
@@ -79,7 +77,6 @@
     - amazon2cis_rule_1_1_2_2_4
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.2.4

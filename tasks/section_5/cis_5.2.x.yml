@@ -1,12 +1,12 @@
 ---
 
-- name: "4.2.1 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
-  when: amazon2cis_rule_4_2_1
+- name: "5.2.1 | PATCH | Ensure access to /etc/ssh/sshd_config is configured"
+  when: amazon2cis_rule_5_2_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.1
+    - rule_5.2.1
     - ssh
     - permissions
     - NIST800-53R5_AC-3
@@ -18,19 +18,19 @@
     group: root
     mode: 'u-x,go-rwx'
 
-- name: "4.2.2 | PATCH | Ensure permissions on SSH private host key files are configured"
-  when: amazon2cis_rule_4_2_2
+- name: "5.2.2 | PATCH | Ensure access to SSH private host key files is configured"
+  when: amazon2cis_rule_5_2_2
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.2
+    - rule_5.2.2
     - ssh
     - permissions
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: "4.2.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
+    - name: "5.2.2 | AUDIT | Ensure access to SSH private host key files is configured"
       ansible.builtin.find:
         paths: /etc/ssh
         patterns: 'ssh_host_*_key'
@@ -38,7 +38,7 @@
         file_type: any
       register: discovered_priv_ssh_key_results
 
-    - name: "4.2.2 | AUDIT | Ensure permissions on SSH private host key files are configured"
+    - name: "5.2.2 | AUDIT | Ensure access to SSH private host key files is configured"
       ansible.builtin.file:
         path: "{{ item.path }}"
         owner: root
@@ -48,19 +48,19 @@
       loop_control:
         label: "{{ item.path }}"
 
-- name: "4.2.3 | PATCH | Ensure permissions on SSH public host key files are configured"
-  when: amazon2cis_rule_4_2_3
+- name: "5.2.3 | PATCH | Ensure access to SSH public host key files is configured"
+  when: amazon2cis_rule_5_2_3
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.3
+    - rule_5.2.3
     - ssh
     - permissions
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: "4.2.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
+    - name: "5.2.3 | AUDIT | Ensure access to SSH public host key files is configured"
       ansible.builtin.find:
         paths: /etc/ssh
         patterns: 'ssh_host_*_key'
@@ -68,7 +68,7 @@
         file_type: any
       register: discovered_pub_ssh_key_results
 
-    - name: "4.2.3 | AUDIT | Ensure permissions on SSH public host key files are configured"
+    - name: "5.2.3 | AUDIT | Ensure access to SSH public host key files is configured"
       ansible.builtin.file:
         path: "{{ item.path }}"
         owner: root
@@ -78,18 +78,18 @@
       loop_control:
         label: "{{ item.path }}"
 
-- name: "4.2.4 | PATCH | Ensure sshd access is configured"
-  when: amazon2cis_rule_4_2_4
+- name: "5.2.4 | PATCH | Ensure sshd access is configured"
+  when: amazon2cis_rule_5_2_4
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.4
+    - rule_5.2.4
     - ssh
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: "4.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for allowusers"
+    - name: "5.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for allowusers"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^AllowUsers"
@@ -98,7 +98,7 @@
       notify: Restart sshd
       when: "amazon2cis_sshd_allowusers | default('') | length > 0"
 
-    - name: "4.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for allowgroups"
+    - name: "5.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for allowgroups"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^AllowGroups"
@@ -107,7 +107,7 @@
       notify: Restart sshd
       when: "amazon2cis_sshd_allowgroups | default('') | length > 0"
 
-    - name: "4.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for denyusers"
+    - name: "5.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for denyusers"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^DenyUsers"
@@ -116,7 +116,7 @@
       notify: Restart sshd
       when: "amazon2cis_sshd_denyusers | default('') | length > 0"
 
-    - name: "4.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for denygroups"
+    - name: "5.2.4 | PATCH | Ensure sshd access is configured | Add line to sshd_config for denygroups"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^DenyGroups"
@@ -125,13 +125,13 @@
       notify: Restart sshd
       when: "amazon2cis_sshd_denygroups | default('') | length > 0"
 
-- name: "4.2.5 | PATCH | Ensure sshd Banner is configured"
-  when: amazon2cis_rule_4_2_5
+- name: "5.2.5 | PATCH | Ensure sshd Banner is configured"
+  when: amazon2cis_rule_5_2_5
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.5
+    - rule_5.2.5
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -145,13 +145,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.6 | PATCH | Ensure sshd Ciphers are configured"
-  when: amazon2cis_rule_4_2_6
+- name: "5.2.6 | PATCH | Ensure sshd Ciphers are configured"
+  when: amazon2cis_rule_5_2_6
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.6
+    - rule_5.2.6
     - ssh
     - NIST800-53R5_SC-8
   ansible.builtin.lineinfile:
@@ -161,13 +161,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
-  when: amazon2cis_rule_4_2_7
+- name: "5.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
+  when: amazon2cis_rule_5_2_7
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.7
+    - rule_5.2.7
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -175,7 +175,7 @@
     - NIST800-53R5_CM-7
     - NIST800-53R5_IA-5
   block:
-    - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval"
+    - name: "5.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^ClientAliveInterval'
@@ -183,7 +183,7 @@
         validate: 'sshd -t -f %s'
       notify: Restart sshd
 
-    - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set"
+    - name: "5.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^ClientAliveCountMax'
@@ -191,13 +191,13 @@
         validate: 'sshd -t -f %s'
       notify: Restart sshd
 
-- name: "4.2.8 | PATCH | Ensure sshd DisableForwarding is enabled"
-  when: amazon2cis_rule_4_2_8
+- name: "5.2.8 | PATCH | Ensure sshd DisableForwarding is enabled"
+  when: amazon2cis_rule_5_2_8
   tags:
-    - level1
+    - level2-server
     - automated
     - patch
-    - rule_4.2.8
+    - rule_5.2.8
     - ssh
     - NIST800-53R5_CM-7
   notify: Restart sshd
@@ -207,13 +207,13 @@
     line: 'DisableForwarding yes'
     validate: 'sshd -t -f %s'
 
-- name: "4.2.9 | PATCH | Ensure sshd GSSAPIAuthentication is disabled"
-  when: amazon2cis_rule_4_2_9
+- name: "5.2.9 | PATCH | Ensure sshd GSSAPIAuthentication is disabled"
+  when: amazon2cis_rule_5_2_9
   tags:
-    - level1
+    - level2-server
     - automated
     - patch
-    - rule_4.2.9
+    - rule_5.2.9
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -227,13 +227,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.10 | PATCH | Ensure sshd HostbasedAuthentication is disabled"
-  when: amazon2cis_rule_4_2_10
+- name: "5.2.10 | PATCH | Ensure sshd HostbasedAuthentication is disabled"
+  when: amazon2cis_rule_5_2_10
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.10
+    - rule_5.2.10
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -247,13 +247,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.11 | PATCH | Ensure sshd IgnoreRhosts is enabled"
-  when: amazon2cis_rule_4_2_11
+- name: "5.2.11 | PATCH | Ensure sshd IgnoreRhosts is enabled"
+  when: amazon2cis_rule_5_2_11
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.11
+    - rule_5.2.11
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -267,13 +267,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.12 | PATCH | Ensure sshd KexAlgorithms is configured"
-  when: amazon2cis_rule_4_2_12
+- name: "5.2.12 | PATCH | Ensure sshd KexAlgorithms is configured"
+  when: amazon2cis_rule_5_2_12
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.12
+    - rule_5.2.12
     - ssh
     - NIST800-53R5_SC-8
   ansible.builtin.lineinfile:
@@ -283,13 +283,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.13 | PATCH | Ensure sshd LoginGraceTime is configured"
-  when: amazon2cis_rule_4_2_13
+- name: "5.2.13 | PATCH | Ensure sshd LoginGraceTime is configured"
+  when: amazon2cis_rule_5_2_13
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.13
+    - rule_5.2.13
     - ssh
     - NIST800-53R5_CM-6
   ansible.builtin.lineinfile:
@@ -299,13 +299,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.14 | PATCH | Ensure sshd LogLevel is configured"
-  when: amazon2cis_rule_4_2_14
+- name: "5.2.14 | PATCH | Ensure sshd LogLevel is configured"
+  when: amazon2cis_rule_5_2_14
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.14
+    - rule_5.2.14
     - ssh
     - NIST800-53R5_AU-3
     - NIST800-53R5_AU-12
@@ -317,13 +317,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.15 | PATCH | Ensure sshd MACs are configured"
-  when: amazon2cis_rule_4_2_15
+- name: "5.2.15 | PATCH | Ensure sshd MACs are configured"
+  when: amazon2cis_rule_5_2_15
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.15
+    - rule_5.2.15
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -337,13 +337,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.16 | PATCH | Ensure sshd MaxAuthTries is configured"
-  when: amazon2cis_rule_4_2_16
+- name: "5.2.16 | PATCH | Ensure sshd MaxAuthTries is configured"
+  when: amazon2cis_rule_5_2_16
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.16
+    - rule_5.2.16
     - ssh
     - NIST800-53R5_AU-3
   ansible.builtin.lineinfile:
@@ -353,13 +353,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.17 | PATCH | Ensure sshd MaxSessions is configured"
-  when: amazon2cis_rule_4_2_17
+- name: "5.2.17 | PATCH | Ensure sshd MaxSessions is configured"
+  when: amazon2cis_rule_5_2_17
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.17
+    - rule_5.2.17
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -372,13 +372,13 @@
     line: 'MaxSessions {{ amazon2cis_ssh_maxsessions }}'
     validate: 'sshd -t -f %s'
 
-- name: "4.2.18 | PATCH | Ensure sshd MaxStartups is configured"
-  when: amazon2cis_rule_4_2_18
+- name: "5.2.18 | PATCH | Ensure sshd MaxStartups is configured"
+  when: amazon2cis_rule_5_2_18
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.18
+    - rule_5.2.18
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -392,13 +392,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.19 | PATCH | Ensure sshd PermitEmptyPasswords is disabled"
-  when: amazon2cis_rule_4_2_19
+- name: "5.2.19 | PATCH | Ensure sshd PermitEmptyPasswords is disabled"
+  when: amazon2cis_rule_5_2_19
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.19
+    - rule_5.2.19
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -412,13 +412,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.20 | PATCH | Ensure sshd PermitRootLogin is disabled"
-  when: amazon2cis_rule_4_2_20
+- name: "5.2.20 | PATCH | Ensure sshd PermitRootLogin is disabled"
+  when: amazon2cis_rule_5_2_20
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.20
+    - rule_5.2.20
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -432,13 +432,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.21 | PATCH | Ensure sshd PermitUserEnvironment is disabled"
-  when: amazon2cis_rule_4_2_21
+- name: "5.2.21 | PATCH | Ensure sshd PermitUserEnvironment is disabled"
+  when: amazon2cis_rule_5_2_21
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.21
+    - rule_5.2.21
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -452,13 +452,13 @@
     validate: 'sshd -t -f %s'
   notify: Restart sshd
 
-- name: "4.2.22 | PATCH | Ensure sshd UsePAM is enabled"
-  when: amazon2cis_rule_4_2_22
+- name: "5.2.22 | PATCH | Ensure sshd UsePAM is enabled"
+  when: amazon2cis_rule_5_2_22
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.2.22
+    - rule_5.2.22
     - ssh
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
