@@ -1,103 +1,44 @@
 ---
 
-- name: "3.2.1 | PATCH | Ensure dccp kernel module is not available"
+- name: "3.2.1 | PATCH | Ensure can kernel module is not available"
   when: amazon2cis_rule_3_2_1
   tags:
-    - level2-server
-    - level2-workstation
+    - level1-server
     - automated
-    - dccp
     - patch
+    - can
     - NIST800-53R5_CM-7
     - NIST800-53R5_SI-4
     - rule_3.2.1
   block:
-    - name: "3.2.1 | PATCH | Ensure dccp kernel module is not available | CIS"
+    - name: "3.2.1 | PATCH | Ensure can kernel module is not available | CIS"
       ansible.builtin.lineinfile:
         path: /etc/modprobe.d/CIS.conf
-        regexp: "^(#)?install dccp(\\s|$)"
-        line: "install dccp /bin/true"
+        regexp: "^(#)?install can(\\s|$)"
+        line: "install can /bin/true"
         create: true
         mode: 'u-x,go-rwx'
 
-    - name: "3.2.1 | PATCH | Ensure dccp kernel module is not available | blacklist"
+    - name: "3.2.1 | PATCH | Ensure can kernel module is not available | blacklist"
       ansible.builtin.lineinfile:
         path: /etc/modprobe.d/blacklist.conf
-        regexp: "^(#)?blacklist dccp(\\s|$)"
-        line: "blacklist dccp"
+        regexp: "^(#)?blacklist can(\\s|$)"
+        line: "blacklist can"
         create: true
         mode: 'u-x,go-rwx'
 
-- name: "3.2.2 | PATCH | Ensure tipc kernel module is not available"
+- name: "3.2.2 | PATCH | Ensure sctp kernel module is not available"
   when: amazon2cis_rule_3_2_2
   tags:
-    - level2-server
-    - level2-workstation
-    - automated
-    - patch
-    - tipc
-    - NIST800-53R5_CM-7
-    - NIST800-53R5_SI-4
-    - rule_3.2.2
-
-  block:
-    - name: "3.2.2 | PATCH | Ensure tipc kernel module is not available | CIS"
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/CIS.conf
-        regexp: "^(#)?install tipc(\\s|$)"
-        line: "install tipc /bin/true"
-        create: true
-        mode: 'u-x,go-rwx'
-
-    - name: "3.2.2 | PATCH | Ensure tipc kernel module is not available | blacklist"
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/blacklist.conf
-        regexp: "^(#)?blacklist tipc(\\s|$)"
-        line: "blacklist tipc"
-        create: true
-        mode: 'u-x,go-rwx'
-
-- name: "3.2.3 | PATCH | Ensure rds kernel module is not available"
-  when: amazon2cis_rule_3_2_3
-  tags:
-    - level2-server
-    - level2-workstation
-    - automated
-    - patch
-    - rds
-    - NIST800-53R5_CM-7
-    - NIST800-53R5_SI-4
-    - rule_3.2.3
-  block:
-    - name: "3.2.3 | PATCH | Ensure rds kernel module is not available | CIS"
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/CIS.conf
-        regexp: "^(#)?install rpc(\\s|$)"
-        line: "install rds /bin/true"
-        create: true
-        mode: 'u-x,go-rwx'
-
-    - name: "3.2.3 | PATCH | Ensure rds kernel module is not available | blacklist"
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/blacklist.conf
-        regexp: "^(#)?blacklist rpc(\\s|$)"
-        line: "blacklist rds"
-        create: true
-        mode: 'u-x,go-rwx'
-
-- name: "3.2.4 | PATCH | Ensure sctp kernel module is not available"
-  when: amazon2cis_rule_3_2_4
-  tags:
-    - level2-server
-    - level2-workstation
+    - level1-server
     - automated
     - patch
     - sctp
     - NIST800-53R5_CM-7
     - NIST800-53R5_SI-4
-    - rule_3.2.4
+    - rule_3.2.2
   block:
-    - name: "3.2.4 | PATCH | Ensure sctp kernel module is not available | CIS"
+    - name: "3.2.2 | PATCH | Ensure sctp kernel module is not available | CIS"
       ansible.builtin.lineinfile:
         path: /etc/modprobe.d/CIS.conf
         regexp: "^(#)?install sctp(\\s|$)"
@@ -105,10 +46,38 @@
         create: true
         mode: 'u-x,go-rwx'
 
-    - name: "3.2.4 | PATCH | Ensure sctp kernel module is not available | blacklist"
+    - name: "3.2.2 | PATCH | Ensure sctp kernel module is not available | blacklist"
       ansible.builtin.lineinfile:
         path: /etc/modprobe.d/blacklist.conf
         regexp: "^(#)?blacklist sctp(\\s|$)"
         line: "blacklist sctp"
+        create: true
+        mode: 'u-x,go-rwx'
+
+- name: "3.2.3 | PATCH | Ensure tipc kernel module is not available"
+  when: amazon2cis_rule_3_2_3
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - tipc
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_SI-4
+    - rule_3.2.3
+
+  block:
+    - name: "3.2.3 | PATCH | Ensure tipc kernel module is not available | CIS"
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/CIS.conf
+        regexp: "^(#)?install tipc(\\s|$)"
+        line: "install tipc /bin/true"
+        create: true
+        mode: 'u-x,go-rwx'
+
+    - name: "3.2.3 | PATCH | Ensure tipc kernel module is not available | blacklist"
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/blacklist.conf
+        regexp: "^(#)?blacklist tipc(\\s|$)"
+        line: "blacklist tipc"
         create: true
         mode: 'u-x,go-rwx'

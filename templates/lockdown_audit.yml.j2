@@ -15,6 +15,7 @@ amazon2cis_section3: {{ amazon2cis_section3 }}
 amazon2cis_section4: {{ amazon2cis_section4 }}
 amazon2cis_section5: {{ amazon2cis_section5 }}
 amazon2cis_section6: {{ amazon2cis_section6 }}
+amazon2cis_section7: {{ amazon2cis_section7 }}
 
 amazon2cis_selinux_disable: {{ amazon2cis_selinux_disable }}
 amazon2cis_selinux_state: {{ amazon2cis_selinux_state }}
@@ -33,9 +34,9 @@ amazon2cis_bootloader_file: /boot/grub2/grub.cfg
 #
 ## Section 1 rules
 ##
-# Section 1 is Initial Setup (Filesystem Configuration, Configure Software Updates, Configure Sudo, Filesystem Integrity Checking, Secure Boot Settings, Additional Process Hardening, Mandatory Access Control, and Warning Banners)
-# Configure Filesystem Kernel Modules
-## Configure Filesystem Kernel Modules
+# Section 1 is Initial Setup
+
+# Configure FileSystem Kernel Modules
 amazon2cis_rule_1_1_1_1: {{ amazon2cis_rule_1_1_1_1 }}
 amazon2cis_rule_1_1_1_2: {{ amazon2cis_rule_1_1_1_2 }}
 amazon2cis_rule_1_1_1_3: {{ amazon2cis_rule_1_1_1_3 }}
@@ -43,93 +44,95 @@ amazon2cis_rule_1_1_1_4: {{ amazon2cis_rule_1_1_1_4 }}
 amazon2cis_rule_1_1_1_5: {{ amazon2cis_rule_1_1_1_5 }}
 amazon2cis_rule_1_1_1_6: {{ amazon2cis_rule_1_1_1_6 }}
 amazon2cis_rule_1_1_1_7: {{ amazon2cis_rule_1_1_1_7 }}
-amazon2cis_rule_1_1_1_8: {{ amazon2cis_rule_1_1_1_8 }}
 
-# /tmp
+# FileSystem Configuration /tmp
 amazon2cis_rule_1_1_2_1_1: {{ amazon2cis_rule_1_1_2_1_1 }}
 amazon2cis_rule_1_1_2_1_2: {{ amazon2cis_rule_1_1_2_1_2 }}
 amazon2cis_rule_1_1_2_1_3: {{ amazon2cis_rule_1_1_2_1_3 }}
 amazon2cis_rule_1_1_2_1_4: {{ amazon2cis_rule_1_1_2_1_4 }}
 
-# /dev/shm
+# FileSystem Configuration /dev/shm
 amazon2cis_rule_1_1_2_2_1: {{ amazon2cis_rule_1_1_2_2_1 }}
 amazon2cis_rule_1_1_2_2_2: {{ amazon2cis_rule_1_1_2_2_2 }}
 amazon2cis_rule_1_1_2_2_3: {{ amazon2cis_rule_1_1_2_2_3 }}
 amazon2cis_rule_1_1_2_2_4: {{ amazon2cis_rule_1_1_2_2_4 }}
 
-# /home
+# FileSystem Configuration /home
 amazon2cis_rule_1_1_2_3_1: {{ amazon2cis_rule_1_1_2_3_1 }}
 amazon2cis_rule_1_1_2_3_2: {{ amazon2cis_rule_1_1_2_3_2 }}
 amazon2cis_rule_1_1_2_3_3: {{ amazon2cis_rule_1_1_2_3_3 }}
 
-# /var
+# FileSystem Configuration /var
 amazon2cis_rule_1_1_2_4_1: {{ amazon2cis_rule_1_1_2_4_1 }}
 amazon2cis_rule_1_1_2_4_2: {{ amazon2cis_rule_1_1_2_4_2 }}
 amazon2cis_rule_1_1_2_4_3: {{ amazon2cis_rule_1_1_2_4_3 }}
 
-# /var/tmp
+# FileSystem Configuration /var/tmp
 amazon2cis_rule_1_1_2_5_1: {{ amazon2cis_rule_1_1_2_5_1 }}
 amazon2cis_rule_1_1_2_5_2: {{ amazon2cis_rule_1_1_2_5_2 }}
 amazon2cis_rule_1_1_2_5_3: {{ amazon2cis_rule_1_1_2_5_3 }}
 amazon2cis_rule_1_1_2_5_4: {{ amazon2cis_rule_1_1_2_5_4 }}
 
-# /var/log
+# FileSystem Configuration /var/log
 amazon2cis_rule_1_1_2_6_1: {{ amazon2cis_rule_1_1_2_6_1 }}
 amazon2cis_rule_1_1_2_6_2: {{ amazon2cis_rule_1_1_2_6_2 }}
 amazon2cis_rule_1_1_2_6_3: {{ amazon2cis_rule_1_1_2_6_3 }}
 amazon2cis_rule_1_1_2_6_4: {{ amazon2cis_rule_1_1_2_6_4 }}
 
-# /var/log/audit
+# FileSystem Configuration /var/log/audit
 amazon2cis_rule_1_1_2_7_1: {{ amazon2cis_rule_1_1_2_7_1 }}
 amazon2cis_rule_1_1_2_7_2: {{ amazon2cis_rule_1_1_2_7_2 }}
 amazon2cis_rule_1_1_2_7_3: {{ amazon2cis_rule_1_1_2_7_3 }}
 amazon2cis_rule_1_1_2_7_4: {{ amazon2cis_rule_1_1_2_7_4 }}
 
-# Software and Patch management
+# Configure Software Updates and Patch Management
 amazon2cis_rule_1_2_1: {{ amazon2cis_rule_1_2_1 }}
 amazon2cis_rule_1_2_2: {{ amazon2cis_rule_1_2_2 }}
 amazon2cis_rule_1_2_3: {{ amazon2cis_rule_1_2_3 }}
 amazon2cis_rule_1_2_4: {{ amazon2cis_rule_1_2_4 }}
 amazon2cis_rule_1_2_5: {{ amazon2cis_rule_1_2_5 }}
 
-# Secure boot settings
+# Configure Secure Boot Settings
 amazon2cis_rule_1_3_1: {{ amazon2cis_rule_1_3_1 }}
 
-# Additional Process Hardening
-amazon2cis_rule_1_4_1: {{ amazon2cis_rule_1_4_1 }}
-amazon2cis_rule_1_4_2: {{ amazon2cis_rule_1_4_2 }}
-amazon2cis_rule_1_4_3: {{ amazon2cis_rule_1_4_3 }}
-amazon2cis_rule_1_4_4: {{ amazon2cis_rule_1_4_4 }}
+# Mandatory Access Control
+amazon2cis_rule_1_4_1_1: {{ amazon2cis_rule_1_4_1_1 }}
+amazon2cis_rule_1_4_1_2: {{ amazon2cis_rule_1_4_1_2 }}
+amazon2cis_rule_1_4_1_3: {{ amazon2cis_rule_1_4_1_3 }}
+amazon2cis_rule_1_4_1_4: {{ amazon2cis_rule_1_4_1_4 }}
+amazon2cis_rule_1_4_1_5: {{ amazon2cis_rule_1_4_1_5 }}
+amazon2cis_rule_1_4_1_6: {{ amazon2cis_rule_1_4_1_6 }}
+amazon2cis_rule_1_4_1_7: {{ amazon2cis_rule_1_4_1_7 }}
 
-# SElinux
-amazon2cis_rule_1_5_1_1: {{ amazon2cis_rule_1_5_1_1 }}
-amazon2cis_rule_1_5_1_2: {{ amazon2cis_rule_1_5_1_2 }}
-amazon2cis_rule_1_5_1_3: {{ amazon2cis_rule_1_5_1_3 }}
-amazon2cis_rule_1_5_1_4: {{ amazon2cis_rule_1_5_1_4 }}
-amazon2cis_rule_1_5_1_5: {{ amazon2cis_rule_1_5_1_5 }}
-amazon2cis_rule_1_5_1_6: {{ amazon2cis_rule_1_5_1_6 }}
-amazon2cis_rule_1_5_1_7: {{ amazon2cis_rule_1_5_1_7 }}
-amazon2cis_rule_1_5_1_8: {{ amazon2cis_rule_1_5_1_8 }}
+# Configure Additional Process Hardening
+amazon2cis_rule_1_5_1: {{ amazon2cis_rule_1_5_1 }}
+amazon2cis_rule_1_5_2: {{ amazon2cis_rule_1_5_2 }}
+amazon2cis_rule_1_5_3: {{ amazon2cis_rule_1_5_3 }}
+amazon2cis_rule_1_5_4: {{ amazon2cis_rule_1_5_4 }}
+amazon2cis_rule_1_5_5: {{ amazon2cis_rule_1_5_5 }}
+amazon2cis_rule_1_5_6: {{ amazon2cis_rule_1_5_6 }}
+amazon2cis_rule_1_5_7: {{ amazon2cis_rule_1_5_7 }}
+amazon2cis_rule_1_5_8: {{ amazon2cis_rule_1_5_8 }}
+amazon2cis_rule_1_5_9: {{ amazon2cis_rule_1_5_9 }}
+amazon2cis_rule_1_5_10: {{ amazon2cis_rule_1_5_10 }}
 
-# Command line banner warnings
+# Configure Command Line Warning Banners
 amazon2cis_rule_1_6_1: {{ amazon2cis_rule_1_6_1 }}
 amazon2cis_rule_1_6_2: {{ amazon2cis_rule_1_6_2 }}
 amazon2cis_rule_1_6_3: {{ amazon2cis_rule_1_6_3 }}
 amazon2cis_rule_1_6_4: {{ amazon2cis_rule_1_6_4 }}
 amazon2cis_rule_1_6_5: {{ amazon2cis_rule_1_6_5 }}
 amazon2cis_rule_1_6_6: {{ amazon2cis_rule_1_6_6 }}
-
-##
 ## Section 2 rules
 ##
-# Section 2 is Services (inetd Services, Special Purpose Services, and Service Clients)
+# Section 2 is Services
 
-# Time Service (Chrony)
+# Time Synchronization
 amazon2cis_rule_2_1_1: {{ amazon2cis_rule_2_1_1 }}
 amazon2cis_rule_2_1_2: {{ amazon2cis_rule_2_1_2 }}
 amazon2cis_rule_2_1_3: {{ amazon2cis_rule_2_1_3 }}
 
-# Special purpose services
+# Special Purpose Services
 amazon2cis_rule_2_2_1: {{ amazon2cis_rule_2_2_1 }}
 amazon2cis_rule_2_2_2: {{ amazon2cis_rule_2_2_2 }}
 amazon2cis_rule_2_2_3: {{ amazon2cis_rule_2_2_3 }}
@@ -153,186 +156,73 @@ amazon2cis_rule_2_2_20: {{ amazon2cis_rule_2_2_20 }}
 amazon2cis_rule_2_2_21: {{ amazon2cis_rule_2_2_21 }}
 amazon2cis_rule_2_2_22: {{ amazon2cis_rule_2_2_22 }}
 
-# Client Services
+# Service Clients
 amazon2cis_rule_2_3_1: {{ amazon2cis_rule_2_3_1 }}
 amazon2cis_rule_2_3_2: {{ amazon2cis_rule_2_3_2 }}
 amazon2cis_rule_2_3_3: {{ amazon2cis_rule_2_3_3 }}
 amazon2cis_rule_2_3_4: {{ amazon2cis_rule_2_3_4 }}
 amazon2cis_rule_2_3_5: {{ amazon2cis_rule_2_3_5 }}
-
-##
 ## Section 3 rules
 ##
-# Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
-# ipv6, bluettoth and wireless
+# Section 3 is Network
+
+# Disable unused network protocols and devices
 amazon2cis_rule_3_1_1: {{ amazon2cis_rule_3_1_1 }}
 amazon2cis_rule_3_1_2: {{ amazon2cis_rule_3_1_2 }}
 amazon2cis_rule_3_1_3: {{ amazon2cis_rule_3_1_3 }}
 
-# network kernel modules
+# Network Kernel modules (Host Only)
 amazon2cis_rule_3_2_1: {{ amazon2cis_rule_3_2_1 }}
 amazon2cis_rule_3_2_2: {{ amazon2cis_rule_3_2_2 }}
 amazon2cis_rule_3_2_3: {{ amazon2cis_rule_3_2_3 }}
-amazon2cis_rule_3_2_4: {{ amazon2cis_rule_3_2_4 }}
 
-# network kernel parameters
-amazon2cis_rule_3_3_1: {{ amazon2cis_rule_3_3_1 }}
-amazon2cis_rule_3_3_2: {{ amazon2cis_rule_3_3_2 }}
-amazon2cis_rule_3_3_3: {{ amazon2cis_rule_3_3_3 }}
-amazon2cis_rule_3_3_4: {{ amazon2cis_rule_3_3_4 }}
-amazon2cis_rule_3_3_5: {{ amazon2cis_rule_3_3_5 }}
-amazon2cis_rule_3_3_6: {{ amazon2cis_rule_3_3_6 }}
-amazon2cis_rule_3_3_7: {{ amazon2cis_rule_3_3_7 }}
-amazon2cis_rule_3_3_8: {{ amazon2cis_rule_3_3_8 }}
-amazon2cis_rule_3_3_9: {{ amazon2cis_rule_3_3_9 }}
-amazon2cis_rule_3_3_10: {{ amazon2cis_rule_3_3_10 }}
-amazon2cis_rule_3_3_11: {{ amazon2cis_rule_3_3_11 }}
+# Network Kernel Parameters IPv4
+amazon2cis_rule_3_3_1_1: {{ amazon2cis_rule_3_3_1_1 }}
+amazon2cis_rule_3_3_1_2: {{ amazon2cis_rule_3_3_1_2 }}
+amazon2cis_rule_3_3_1_3: {{ amazon2cis_rule_3_3_1_3 }}
+amazon2cis_rule_3_3_1_4: {{ amazon2cis_rule_3_3_1_4 }}
+amazon2cis_rule_3_3_1_5: {{ amazon2cis_rule_3_3_1_5 }}
+amazon2cis_rule_3_3_1_6: {{ amazon2cis_rule_3_3_1_6 }}
+amazon2cis_rule_3_3_1_7: {{ amazon2cis_rule_3_3_1_7 }}
+amazon2cis_rule_3_3_1_8: {{ amazon2cis_rule_3_3_1_8 }}
+amazon2cis_rule_3_3_1_9: {{ amazon2cis_rule_3_3_1_9 }}
+amazon2cis_rule_3_3_1_10: {{ amazon2cis_rule_3_3_1_10 }}
+amazon2cis_rule_3_3_1_11: {{ amazon2cis_rule_3_3_1_11 }}
+amazon2cis_rule_3_3_1_12: {{ amazon2cis_rule_3_3_1_12 }}
+amazon2cis_rule_3_3_1_13: {{ amazon2cis_rule_3_3_1_13 }}
+amazon2cis_rule_3_3_1_14: {{ amazon2cis_rule_3_3_1_14 }}
+amazon2cis_rule_3_3_1_15: {{ amazon2cis_rule_3_3_1_15 }}
+amazon2cis_rule_3_3_1_16: {{ amazon2cis_rule_3_3_1_16 }}
+amazon2cis_rule_3_3_1_17: {{ amazon2cis_rule_3_3_1_17 }}
+amazon2cis_rule_3_3_1_18: {{ amazon2cis_rule_3_3_1_18 }}
 
-# Configure firewall utility
-amazon2cis_rule_3_4_1_1: {{ amazon2cis_rule_3_4_1_1 }}
-amazon2cis_rule_3_4_1_2: {{ amazon2cis_rule_3_4_1_2 }}
-
-# firewalld
-amazon2cis_rule_3_4_2_1: {{ amazon2cis_rule_3_4_2_1 }}
-amazon2cis_rule_3_4_2_2: {{ amazon2cis_rule_3_4_2_2 }}
-amazon2cis_rule_3_4_2_3: {{ amazon2cis_rule_3_4_2_3 }}
-amazon2cis_rule_3_4_2_4: {{ amazon2cis_rule_3_4_2_4 }}
-
-# nftables
-amazon2cis_rule_3_4_3_1: {{ amazon2cis_rule_3_4_3_1 }}
-amazon2cis_rule_3_4_3_2: {{ amazon2cis_rule_3_4_3_2 }}
-amazon2cis_rule_3_4_3_3: {{ amazon2cis_rule_3_4_3_3 }}
-amazon2cis_rule_3_4_3_4: {{ amazon2cis_rule_3_4_3_4 }}
-amazon2cis_rule_3_4_3_5: {{ amazon2cis_rule_3_4_3_5 }}
-amazon2cis_rule_3_4_3_6: {{ amazon2cis_rule_3_4_3_6 }}
-amazon2cis_rule_3_4_3_7: {{ amazon2cis_rule_3_4_3_7 }}
-amazon2cis_rule_3_4_3_8: {{ amazon2cis_rule_3_4_3_8 }}
-amazon2cis_rule_3_4_3_9: {{ amazon2cis_rule_3_4_3_9 }}
-
-# iptables
-amazon2cis_rule_3_4_4_1_1: {{ amazon2cis_rule_3_4_4_1_1 }}
-
-# ip4tables
-amazon2cis_rule_3_4_4_2_1: {{ amazon2cis_rule_3_4_4_2_1 }}
-amazon2cis_rule_3_4_4_2_2: {{ amazon2cis_rule_3_4_4_2_2 }}
-amazon2cis_rule_3_4_4_2_3: {{ amazon2cis_rule_3_4_4_2_3 }}
-amazon2cis_rule_3_4_4_2_4: {{ amazon2cis_rule_3_4_4_2_4 }}
-amazon2cis_rule_3_4_4_2_5: {{ amazon2cis_rule_3_4_4_2_5 }}
-amazon2cis_rule_3_4_4_2_6: {{ amazon2cis_rule_3_4_4_2_6 }}
-
-# ip6tables
-amazon2cis_rule_3_4_4_3_1: {{ amazon2cis_rule_3_4_4_3_1 }}
-amazon2cis_rule_3_4_4_3_2: {{ amazon2cis_rule_3_4_4_3_2 }}
-amazon2cis_rule_3_4_4_3_3: {{ amazon2cis_rule_3_4_4_3_3 }}
-amazon2cis_rule_3_4_4_3_4: {{ amazon2cis_rule_3_4_4_3_4 }}
-amazon2cis_rule_3_4_4_3_5: {{ amazon2cis_rule_3_4_4_3_5 }}
-amazon2cis_rule_3_4_4_3_6: {{ amazon2cis_rule_3_4_4_3_6 }}
-
-
+# Network Kernel Parameters IPv6
+amazon2cis_rule_3_3_2_1: {{ amazon2cis_rule_3_3_2_1 }}
+amazon2cis_rule_3_3_2_2: {{ amazon2cis_rule_3_3_2_2 }}
+amazon2cis_rule_3_3_2_3: {{ amazon2cis_rule_3_3_2_3 }}
+amazon2cis_rule_3_3_2_4: {{ amazon2cis_rule_3_3_2_4 }}
+amazon2cis_rule_3_3_2_5: {{ amazon2cis_rule_3_3_2_5 }}
+amazon2cis_rule_3_3_2_6: {{ amazon2cis_rule_3_3_2_6 }}
+amazon2cis_rule_3_3_2_7: {{ amazon2cis_rule_3_3_2_7 }}
+amazon2cis_rule_3_3_2_8: {{ amazon2cis_rule_3_3_2_8 }}
+## Section 4 rules
 ##
-# Section 4 rules
-##
+# Section 4 is Host Based Firewall
 
-# Crond and at
-amazon2cis_rule_4_1_1_1: {{ amazon2cis_rule_4_1_1_1 }}
-amazon2cis_rule_4_1_1_2: {{ amazon2cis_rule_4_1_1_2 }}
-amazon2cis_rule_4_1_1_3: {{ amazon2cis_rule_4_1_1_3 }}
-amazon2cis_rule_4_1_1_4: {{ amazon2cis_rule_4_1_1_4 }}
-amazon2cis_rule_4_1_1_5: {{ amazon2cis_rule_4_1_1_5 }}
-amazon2cis_rule_4_1_1_6: {{ amazon2cis_rule_4_1_1_6 }}
-amazon2cis_rule_4_1_1_7: {{ amazon2cis_rule_4_1_1_7 }}
-amazon2cis_rule_4_1_1_8: {{ amazon2cis_rule_4_1_1_8 }}
-amazon2cis_rule_4_1_2_1: {{ amazon2cis_rule_4_1_2_1 }}
-
-# SSHD
-amazon2cis_rule_4_2_1: {{ amazon2cis_rule_4_2_1 }}
-amazon2cis_rule_4_2_2: {{ amazon2cis_rule_4_2_2 }}
-amazon2cis_rule_4_2_3: {{ amazon2cis_rule_4_2_3 }}
-amazon2cis_rule_4_2_4: {{ amazon2cis_rule_4_2_4 }}
-amazon2cis_rule_4_2_5: {{ amazon2cis_rule_4_2_5 }}
-amazon2cis_rule_4_2_6: {{ amazon2cis_rule_4_2_6 }}
-amazon2cis_rule_4_2_7: {{ amazon2cis_rule_4_2_7 }}
-amazon2cis_rule_4_2_8: {{ amazon2cis_rule_4_2_8 }}
-amazon2cis_rule_4_2_9: {{ amazon2cis_rule_4_2_9 }}
-amazon2cis_rule_4_2_10: {{ amazon2cis_rule_4_2_10 }}
-amazon2cis_rule_4_2_11: {{ amazon2cis_rule_4_2_11 }}
-amazon2cis_rule_4_2_12: {{ amazon2cis_rule_4_2_12 }}
-amazon2cis_rule_4_2_13: {{ amazon2cis_rule_4_2_13 }}
-amazon2cis_rule_4_2_14: {{ amazon2cis_rule_4_2_14 }}
-amazon2cis_rule_4_2_15: {{ amazon2cis_rule_4_2_15 }}
-amazon2cis_rule_4_2_16: {{ amazon2cis_rule_4_2_16 }}
-amazon2cis_rule_4_2_17: {{ amazon2cis_rule_4_2_17 }}
-amazon2cis_rule_4_2_18: {{ amazon2cis_rule_4_2_18 }}
-amazon2cis_rule_4_2_19: {{ amazon2cis_rule_4_2_19 }}
-amazon2cis_rule_4_2_20: {{ amazon2cis_rule_4_2_20 }}
-amazon2cis_rule_4_2_21: {{ amazon2cis_rule_4_2_21 }}
-amazon2cis_rule_4_2_22: {{ amazon2cis_rule_4_2_22 }}
-
-# Privilege Escalation
-amazon2cis_rule_4_3_1: {{ amazon2cis_rule_4_3_1 }}
-amazon2cis_rule_4_3_2: {{ amazon2cis_rule_4_3_2 }}
-amazon2cis_rule_4_3_3: {{ amazon2cis_rule_4_3_3 }}
-amazon2cis_rule_4_3_4: {{ amazon2cis_rule_4_3_4 }}
-amazon2cis_rule_4_3_5: {{ amazon2cis_rule_4_3_5 }}
-amazon2cis_rule_4_3_6: {{ amazon2cis_rule_4_3_6 }}
-amazon2cis_rule_4_3_7: {{ amazon2cis_rule_4_3_7 }}
-
-## Configure Pluggable Authentication
-# software packages
-amazon2cis_rule_4_4_1_1: {{ amazon2cis_rule_4_4_1_1 }}
-amazon2cis_rule_4_4_1_2: {{ amazon2cis_rule_4_4_1_2 }}
-
-# pam_faillock
-amazon2cis_rule_4_4_2_1_1: {{ amazon2cis_rule_4_4_2_1_1 }}
-amazon2cis_rule_4_4_2_1_2: {{ amazon2cis_rule_4_4_2_1_2 }}
-amazon2cis_rule_4_4_2_1_3: {{ amazon2cis_rule_4_4_2_1_3 }}
-amazon2cis_rule_4_4_2_1_4: {{ amazon2cis_rule_4_4_2_1_4 }}
-
-# pam_pwquality
-amazon2cis_rule_4_4_2_2_1: {{ amazon2cis_rule_4_4_2_2_1 }}
-amazon2cis_rule_4_4_2_2_2: {{ amazon2cis_rule_4_4_2_2_2 }}
-amazon2cis_rule_4_4_2_2_3: {{ amazon2cis_rule_4_4_2_2_3 }}
-amazon2cis_rule_4_4_2_2_4: {{ amazon2cis_rule_4_4_2_2_4 }}
-amazon2cis_rule_4_4_2_2_5: {{ amazon2cis_rule_4_4_2_2_5 }}
-amazon2cis_rule_4_4_2_2_6: {{ amazon2cis_rule_4_4_2_2_6 }}
-amazon2cis_rule_4_4_2_2_7: {{ amazon2cis_rule_4_4_2_2_7 }}
-
-# pam pwhistory
-amazon2cis_rule_4_4_2_3_1: {{ amazon2cis_rule_4_4_2_3_1 }}
-amazon2cis_rule_4_4_2_3_2: {{ amazon2cis_rule_4_4_2_3_2 }}
-amazon2cis_rule_4_4_2_3_3: {{ amazon2cis_rule_4_4_2_3_3 }}
-amazon2cis_rule_4_4_2_3_4: {{ amazon2cis_rule_4_4_2_3_4 }}
-
-# pam pam_unix
-amazon2cis_rule_4_4_2_4_1: {{ amazon2cis_rule_4_4_2_4_1 }}
-amazon2cis_rule_4_4_2_4_2: {{ amazon2cis_rule_4_4_2_4_2 }}
-amazon2cis_rule_4_4_2_4_3: {{ amazon2cis_rule_4_4_2_4_3 }}
-amazon2cis_rule_4_4_2_4_4: {{ amazon2cis_rule_4_4_2_4_4 }}
-
-# shadow password
-amazon2cis_rule_4_5_1_1: {{ amazon2cis_rule_4_5_1_1 }}
-amazon2cis_rule_4_5_1_2: {{ amazon2cis_rule_4_5_1_2 }}
-amazon2cis_rule_4_5_1_3: {{ amazon2cis_rule_4_5_1_3 }}
-amazon2cis_rule_4_5_1_4: {{ amazon2cis_rule_4_5_1_4 }}
-amazon2cis_rule_4_5_1_5: {{ amazon2cis_rule_4_5_1_5 }}
-
-# root and system accts
-amazon2cis_rule_4_5_2_1: {{ amazon2cis_rule_4_5_2_1 }}
-amazon2cis_rule_4_5_2_2: {{ amazon2cis_rule_4_5_2_2 }}
-amazon2cis_rule_4_5_2_3: {{ amazon2cis_rule_4_5_2_3 }}
-amazon2cis_rule_4_5_2_4: {{ amazon2cis_rule_4_5_2_4 }}
-
-# user default envs
-amazon2cis_rule_4_5_3_1: {{ amazon2cis_rule_4_5_3_1 }}
-amazon2cis_rule_4_5_3_2: {{ amazon2cis_rule_4_5_3_2 }}
-amazon2cis_rule_4_5_3_3: {{ amazon2cis_rule_4_5_3_3 }}
-
-
-#
+# Configure firewalld
+amazon2cis_rule_4_1_1: {{ amazon2cis_rule_4_1_1 }}
+amazon2cis_rule_4_1_2: {{ amazon2cis_rule_4_1_2 }}
+amazon2cis_rule_4_1_3: {{ amazon2cis_rule_4_1_3 }}
+amazon2cis_rule_4_1_4: {{ amazon2cis_rule_4_1_4 }}
+amazon2cis_rule_4_1_5: {{ amazon2cis_rule_4_1_5 }}
+amazon2cis_rule_4_1_6: {{ amazon2cis_rule_4_1_6 }}
+amazon2cis_rule_4_1_7: {{ amazon2cis_rule_4_1_7 }}
+amazon2cis_rule_4_1_8: {{ amazon2cis_rule_4_1_8 }}
 ## Section 5 rules
 ##
+# Section 5 is Access Control
 
-# Rsyslog
+# Configure Job Schedulers
 amazon2cis_rule_5_1_1_1: {{ amazon2cis_rule_5_1_1_1 }}
 amazon2cis_rule_5_1_1_2: {{ amazon2cis_rule_5_1_1_2 }}
 amazon2cis_rule_5_1_1_3: {{ amazon2cis_rule_5_1_1_3 }}
@@ -340,96 +230,200 @@ amazon2cis_rule_5_1_1_4: {{ amazon2cis_rule_5_1_1_4 }}
 amazon2cis_rule_5_1_1_5: {{ amazon2cis_rule_5_1_1_5 }}
 amazon2cis_rule_5_1_1_6: {{ amazon2cis_rule_5_1_1_6 }}
 amazon2cis_rule_5_1_1_7: {{ amazon2cis_rule_5_1_1_7 }}
+amazon2cis_rule_5_1_1_8: {{ amazon2cis_rule_5_1_1_8 }}
+amazon2cis_rule_5_1_2_1: {{ amazon2cis_rule_5_1_2_1 }}
 
-# Journald
-amazon2cis_rule_5_1_2_1_1: {{ amazon2cis_rule_5_1_2_1_1 }}
-amazon2cis_rule_5_1_2_1_2: {{ amazon2cis_rule_5_1_2_1_2 }}
-amazon2cis_rule_5_1_2_1_3: {{ amazon2cis_rule_5_1_2_1_3 }}
-amazon2cis_rule_5_1_2_1_4: {{ amazon2cis_rule_5_1_2_1_4 }}
-amazon2cis_rule_5_1_2_2: {{ amazon2cis_rule_5_1_2_2 }}
-amazon2cis_rule_5_1_2_3: {{ amazon2cis_rule_5_1_2_3 }}
-amazon2cis_rule_5_1_2_4: {{ amazon2cis_rule_5_1_2_4 }}
-amazon2cis_rule_5_1_2_5: {{ amazon2cis_rule_5_1_2_5 }}
-amazon2cis_rule_5_1_2_6: {{ amazon2cis_rule_5_1_2_6 }}
-amazon2cis_rule_5_1_3: {{ amazon2cis_rule_5_1_3 }}
-amazon2cis_rule_5_1_4: {{ amazon2cis_rule_5_1_4 }}
+# Configure SSH Server
+amazon2cis_rule_5_2_1: {{ amazon2cis_rule_5_2_1 }}
+amazon2cis_rule_5_2_2: {{ amazon2cis_rule_5_2_2 }}
+amazon2cis_rule_5_2_3: {{ amazon2cis_rule_5_2_3 }}
+amazon2cis_rule_5_2_4: {{ amazon2cis_rule_5_2_4 }}
+amazon2cis_rule_5_2_5: {{ amazon2cis_rule_5_2_5 }}
+amazon2cis_rule_5_2_6: {{ amazon2cis_rule_5_2_6 }}
+amazon2cis_rule_5_2_7: {{ amazon2cis_rule_5_2_7 }}
+amazon2cis_rule_5_2_8: {{ amazon2cis_rule_5_2_8 }}
+amazon2cis_rule_5_2_9: {{ amazon2cis_rule_5_2_9 }}
+amazon2cis_rule_5_2_10: {{ amazon2cis_rule_5_2_10 }}
+amazon2cis_rule_5_2_11: {{ amazon2cis_rule_5_2_11 }}
+amazon2cis_rule_5_2_12: {{ amazon2cis_rule_5_2_12 }}
+amazon2cis_rule_5_2_13: {{ amazon2cis_rule_5_2_13 }}
+amazon2cis_rule_5_2_14: {{ amazon2cis_rule_5_2_14 }}
+amazon2cis_rule_5_2_15: {{ amazon2cis_rule_5_2_15 }}
+amazon2cis_rule_5_2_16: {{ amazon2cis_rule_5_2_16 }}
+amazon2cis_rule_5_2_17: {{ amazon2cis_rule_5_2_17 }}
+amazon2cis_rule_5_2_18: {{ amazon2cis_rule_5_2_18 }}
+amazon2cis_rule_5_2_19: {{ amazon2cis_rule_5_2_19 }}
+amazon2cis_rule_5_2_20: {{ amazon2cis_rule_5_2_20 }}
+amazon2cis_rule_5_2_21: {{ amazon2cis_rule_5_2_21 }}
+amazon2cis_rule_5_2_22: {{ amazon2cis_rule_5_2_22 }}
 
-# Auditd
-amazon2cis_rule_5_2_1_1: {{ amazon2cis_rule_5_2_1_1 }}
-amazon2cis_rule_5_2_1_2: {{ amazon2cis_rule_5_2_1_2 }}
-amazon2cis_rule_5_2_1_3: {{ amazon2cis_rule_5_2_1_3 }}
-amazon2cis_rule_5_2_1_4: {{ amazon2cis_rule_5_2_1_4 }}
-amazon2cis_rule_5_2_2_1: {{ amazon2cis_rule_5_2_2_1 }}
-amazon2cis_rule_5_2_2_2: {{ amazon2cis_rule_5_2_2_2 }}
-amazon2cis_rule_5_2_2_3: {{ amazon2cis_rule_5_2_2_3 }}
-amazon2cis_rule_5_2_2_4: {{ amazon2cis_rule_5_2_2_4 }}
-
-# auditd rules
-amazon2cis_rule_5_2_3_1: {{ amazon2cis_rule_5_2_3_1 }}
-amazon2cis_rule_5_2_3_2: {{ amazon2cis_rule_5_2_3_2 }}
-amazon2cis_rule_5_2_3_3: {{ amazon2cis_rule_5_2_3_3 }}
-amazon2cis_rule_5_2_3_4: {{ amazon2cis_rule_5_2_3_4 }}
-amazon2cis_rule_5_2_3_5: {{ amazon2cis_rule_5_2_3_5 }}
-amazon2cis_rule_5_2_3_6: {{ amazon2cis_rule_5_2_3_6 }}
-amazon2cis_rule_5_2_3_7: {{ amazon2cis_rule_5_2_3_7 }}
-amazon2cis_rule_5_2_3_8: {{ amazon2cis_rule_5_2_3_8 }}
-amazon2cis_rule_5_2_3_9: {{ amazon2cis_rule_5_2_3_9 }}
-amazon2cis_rule_5_2_3_10: {{ amazon2cis_rule_5_2_3_10 }}
-amazon2cis_rule_5_2_3_11: {{ amazon2cis_rule_5_2_3_11 }}
-amazon2cis_rule_5_2_3_12: {{ amazon2cis_rule_5_2_3_12 }}
-amazon2cis_rule_5_2_3_13: {{ amazon2cis_rule_5_2_3_13 }}
-amazon2cis_rule_5_2_3_14: {{ amazon2cis_rule_5_2_3_14 }}
-amazon2cis_rule_5_2_3_15: {{ amazon2cis_rule_5_2_3_15 }}
-amazon2cis_rule_5_2_3_16: {{ amazon2cis_rule_5_2_3_16 }}
-amazon2cis_rule_5_2_3_17: {{ amazon2cis_rule_5_2_3_17 }}
-amazon2cis_rule_5_2_3_18: {{ amazon2cis_rule_5_2_3_18 }}
-amazon2cis_rule_5_2_3_19: {{ amazon2cis_rule_5_2_3_19 }}
-amazon2cis_rule_5_2_3_20: {{ amazon2cis_rule_5_2_3_20 }}
-amazon2cis_rule_5_2_3_21: {{ amazon2cis_rule_5_2_3_21 }}
-
-# auditd file access
-amazon2cis_rule_5_2_4_1: {{ amazon2cis_rule_5_2_4_1 }}
-amazon2cis_rule_5_2_4_2: {{ amazon2cis_rule_5_2_4_2 }}
-amazon2cis_rule_5_2_4_3: {{ amazon2cis_rule_5_2_4_3 }}
-amazon2cis_rule_5_2_4_4: {{ amazon2cis_rule_5_2_4_4 }}
-amazon2cis_rule_5_2_4_5: {{ amazon2cis_rule_5_2_4_5 }}
-amazon2cis_rule_5_2_4_6: {{ amazon2cis_rule_5_2_4_6 }}
-amazon2cis_rule_5_2_4_7: {{ amazon2cis_rule_5_2_4_7 }}
-amazon2cis_rule_5_2_4_8: {{ amazon2cis_rule_5_2_4_8 }}
-amazon2cis_rule_5_2_4_9: {{ amazon2cis_rule_5_2_4_9 }}
-amazon2cis_rule_5_2_4_10: {{ amazon2cis_rule_5_2_4_10 }}
-
-# Aide
+# Configure Privilege Escalation
 amazon2cis_rule_5_3_1: {{ amazon2cis_rule_5_3_1 }}
 amazon2cis_rule_5_3_2: {{ amazon2cis_rule_5_3_2 }}
+amazon2cis_rule_5_3_3: {{ amazon2cis_rule_5_3_3 }}
+amazon2cis_rule_5_3_4: {{ amazon2cis_rule_5_3_4 }}
+amazon2cis_rule_5_3_5: {{ amazon2cis_rule_5_3_5 }}
+amazon2cis_rule_5_3_6: {{ amazon2cis_rule_5_3_6 }}
+amazon2cis_rule_5_3_7: {{ amazon2cis_rule_5_3_7 }}
 
-# Section 6
-amazon2cis_rule_6_1_1: {{ amazon2cis_rule_6_1_1 }}
-amazon2cis_rule_6_1_2: {{ amazon2cis_rule_6_1_2 }}
-amazon2cis_rule_6_1_3: {{ amazon2cis_rule_6_1_3 }}
-amazon2cis_rule_6_1_4: {{ amazon2cis_rule_6_1_4 }}
-amazon2cis_rule_6_1_5: {{ amazon2cis_rule_6_1_5 }}
-amazon2cis_rule_6_1_6: {{ amazon2cis_rule_6_1_6 }}
-amazon2cis_rule_6_1_7: {{ amazon2cis_rule_6_1_7 }}
-amazon2cis_rule_6_1_8: {{ amazon2cis_rule_6_1_8 }}
-amazon2cis_rule_6_1_9: {{ amazon2cis_rule_6_1_9 }}
-amazon2cis_rule_6_1_10: {{ amazon2cis_rule_6_1_10 }}
-amazon2cis_rule_6_1_11: {{ amazon2cis_rule_6_1_11 }}
-amazon2cis_rule_6_1_12: {{ amazon2cis_rule_6_1_12 }}
-amazon2cis_rule_6_1_13: {{ amazon2cis_rule_6_1_13 }}
-amazon2cis_rule_6_1_14: {{ amazon2cis_rule_6_1_14 }}
+# Configure PAM software
+amazon2cis_rule_5_4_1_1: {{ amazon2cis_rule_5_4_1_1 }}
+amazon2cis_rule_5_4_1_2: {{ amazon2cis_rule_5_4_1_2 }}
 
-amazon2cis_rule_6_2_1: {{ amazon2cis_rule_6_2_1 }}
-amazon2cis_rule_6_2_2: {{ amazon2cis_rule_6_2_2 }}
-amazon2cis_rule_6_2_3: {{ amazon2cis_rule_6_2_3 }}
-amazon2cis_rule_6_2_4: {{ amazon2cis_rule_6_2_4 }}
-amazon2cis_rule_6_2_5: {{ amazon2cis_rule_6_2_5 }}
-amazon2cis_rule_6_2_6: {{ amazon2cis_rule_6_2_6 }}
-amazon2cis_rule_6_2_7: {{ amazon2cis_rule_6_2_7 }}
-amazon2cis_rule_6_2_8: {{ amazon2cis_rule_6_2_8 }}
-amazon2cis_rule_6_2_9: {{ amazon2cis_rule_6_2_9 }}
-amazon2cis_rule_6_2_10: {{ amazon2cis_rule_6_2_10 }}
-amazon2cis_rule_6_2_11: {{ amazon2cis_rule_6_2_11 }}
+# Configure pam_faillock
+amazon2cis_rule_5_4_2_1_1: {{ amazon2cis_rule_5_4_2_1_1 }}
+amazon2cis_rule_5_4_2_1_2: {{ amazon2cis_rule_5_4_2_1_2 }}
+amazon2cis_rule_5_4_2_1_3: {{ amazon2cis_rule_5_4_2_1_3 }}
+amazon2cis_rule_5_4_2_1_4: {{ amazon2cis_rule_5_4_2_1_4 }}
+
+# Configure pam_pwquality
+amazon2cis_rule_5_4_2_2_1: {{ amazon2cis_rule_5_4_2_2_1 }}
+amazon2cis_rule_5_4_2_2_2: {{ amazon2cis_rule_5_4_2_2_2 }}
+amazon2cis_rule_5_4_2_2_3: {{ amazon2cis_rule_5_4_2_2_3 }}
+amazon2cis_rule_5_4_2_2_4: {{ amazon2cis_rule_5_4_2_2_4 }}
+amazon2cis_rule_5_4_2_2_5: {{ amazon2cis_rule_5_4_2_2_5 }}
+amazon2cis_rule_5_4_2_2_6: {{ amazon2cis_rule_5_4_2_2_6 }}
+
+# Configure pam_pwhistory
+amazon2cis_rule_5_4_2_3_1: {{ amazon2cis_rule_5_4_2_3_1 }}
+amazon2cis_rule_5_4_2_3_2: {{ amazon2cis_rule_5_4_2_3_2 }}
+amazon2cis_rule_5_4_2_3_3: {{ amazon2cis_rule_5_4_2_3_3 }}
+amazon2cis_rule_5_4_2_3_4: {{ amazon2cis_rule_5_4_2_3_4 }}
+
+# Configure pam_unix
+amazon2cis_rule_5_4_2_4_1: {{ amazon2cis_rule_5_4_2_4_1 }}
+amazon2cis_rule_5_4_2_4_2: {{ amazon2cis_rule_5_4_2_4_2 }}
+amazon2cis_rule_5_4_2_4_3: {{ amazon2cis_rule_5_4_2_4_3 }}
+amazon2cis_rule_5_4_2_4_4: {{ amazon2cis_rule_5_4_2_4_4 }}
+
+# Configure shadow password settings
+amazon2cis_rule_5_5_1_1: {{ amazon2cis_rule_5_5_1_1 }}
+amazon2cis_rule_5_5_1_2: {{ amazon2cis_rule_5_5_1_2 }}
+amazon2cis_rule_5_5_1_3: {{ amazon2cis_rule_5_5_1_3 }}
+amazon2cis_rule_5_5_1_4: {{ amazon2cis_rule_5_5_1_4 }}
+amazon2cis_rule_5_5_1_5: {{ amazon2cis_rule_5_5_1_5 }}
+amazon2cis_rule_5_5_1_6: {{ amazon2cis_rule_5_5_1_6 }}
+
+# Configure root and system accounts
+amazon2cis_rule_5_5_2_1: {{ amazon2cis_rule_5_5_2_1 }}
+amazon2cis_rule_5_5_2_2: {{ amazon2cis_rule_5_5_2_2 }}
+amazon2cis_rule_5_5_2_3: {{ amazon2cis_rule_5_5_2_3 }}
+amazon2cis_rule_5_5_2_4: {{ amazon2cis_rule_5_5_2_4 }}
+amazon2cis_rule_5_5_2_5: {{ amazon2cis_rule_5_5_2_5 }}
+amazon2cis_rule_5_5_2_6: {{ amazon2cis_rule_5_5_2_6 }}
+amazon2cis_rule_5_5_2_7: {{ amazon2cis_rule_5_5_2_7 }}
+amazon2cis_rule_5_5_2_8: {{ amazon2cis_rule_5_5_2_8 }}
+
+# Configure user default env
+amazon2cis_rule_5_5_3_1: {{ amazon2cis_rule_5_5_3_1 }}
+amazon2cis_rule_5_5_3_2: {{ amazon2cis_rule_5_5_3_2 }}
+amazon2cis_rule_5_5_3_3: {{ amazon2cis_rule_5_5_3_3 }}
+## Section 6 rules
+##
+# Section 6 is Logging and Auditing
+
+# Configure journald
+amazon2cis_rule_6_1_1_1: {{ amazon2cis_rule_6_1_1_1 }}
+amazon2cis_rule_6_1_1_2: {{ amazon2cis_rule_6_1_1_2 }}
+amazon2cis_rule_6_1_1_3: {{ amazon2cis_rule_6_1_1_3 }}
+amazon2cis_rule_6_1_1_4: {{ amazon2cis_rule_6_1_1_4 }}
+amazon2cis_rule_6_1_1_5: {{ amazon2cis_rule_6_1_1_5 }}
+amazon2cis_rule_6_1_1_6: {{ amazon2cis_rule_6_1_1_6 }}
+amazon2cis_rule_6_1_1_7: {{ amazon2cis_rule_6_1_1_7 }}
+
+# Configure rsyslog
+amazon2cis_rule_6_1_2_1: {{ amazon2cis_rule_6_1_2_1 }}
+amazon2cis_rule_6_1_2_2: {{ amazon2cis_rule_6_1_2_2 }}
+amazon2cis_rule_6_1_2_3: {{ amazon2cis_rule_6_1_2_3 }}
+amazon2cis_rule_6_1_2_4: {{ amazon2cis_rule_6_1_2_4 }}
+amazon2cis_rule_6_1_2_5: {{ amazon2cis_rule_6_1_2_5 }}
+amazon2cis_rule_6_1_2_6: {{ amazon2cis_rule_6_1_2_6 }}
+amazon2cis_rule_6_1_2_7: {{ amazon2cis_rule_6_1_2_7 }}
+
+# Configure logfile access
+amazon2cis_rule_6_1_3_1: {{ amazon2cis_rule_6_1_3_1 }}
+
+# Ensure auditing is enabled
+amazon2cis_rule_6_2_1_1: {{ amazon2cis_rule_6_2_1_1 }}
+amazon2cis_rule_6_2_1_2: {{ amazon2cis_rule_6_2_1_2 }}
+amazon2cis_rule_6_2_1_3: {{ amazon2cis_rule_6_2_1_3 }}
+amazon2cis_rule_6_2_1_4: {{ amazon2cis_rule_6_2_1_4 }}
+
+# Configure Data Retention
+amazon2cis_rule_6_2_2_1: {{ amazon2cis_rule_6_2_2_1 }}
+amazon2cis_rule_6_2_2_2: {{ amazon2cis_rule_6_2_2_2 }}
+amazon2cis_rule_6_2_2_3: {{ amazon2cis_rule_6_2_2_3 }}
+amazon2cis_rule_6_2_2_4: {{ amazon2cis_rule_6_2_2_4 }}
+
+# Configure auditd rules
+amazon2cis_rule_6_2_3_1: {{ amazon2cis_rule_6_2_3_1 }}
+amazon2cis_rule_6_2_3_2: {{ amazon2cis_rule_6_2_3_2 }}
+amazon2cis_rule_6_2_3_3: {{ amazon2cis_rule_6_2_3_3 }}
+amazon2cis_rule_6_2_3_4: {{ amazon2cis_rule_6_2_3_4 }}
+amazon2cis_rule_6_2_3_5: {{ amazon2cis_rule_6_2_3_5 }}
+amazon2cis_rule_6_2_3_6: {{ amazon2cis_rule_6_2_3_6 }}
+amazon2cis_rule_6_2_3_7: {{ amazon2cis_rule_6_2_3_7 }}
+amazon2cis_rule_6_2_3_8: {{ amazon2cis_rule_6_2_3_8 }}
+amazon2cis_rule_6_2_3_9: {{ amazon2cis_rule_6_2_3_9 }}
+amazon2cis_rule_6_2_3_10: {{ amazon2cis_rule_6_2_3_10 }}
+amazon2cis_rule_6_2_3_11: {{ amazon2cis_rule_6_2_3_11 }}
+amazon2cis_rule_6_2_3_12: {{ amazon2cis_rule_6_2_3_12 }}
+amazon2cis_rule_6_2_3_13: {{ amazon2cis_rule_6_2_3_13 }}
+amazon2cis_rule_6_2_3_14: {{ amazon2cis_rule_6_2_3_14 }}
+amazon2cis_rule_6_2_3_15: {{ amazon2cis_rule_6_2_3_15 }}
+amazon2cis_rule_6_2_3_16: {{ amazon2cis_rule_6_2_3_16 }}
+amazon2cis_rule_6_2_3_17: {{ amazon2cis_rule_6_2_3_17 }}
+amazon2cis_rule_6_2_3_18: {{ amazon2cis_rule_6_2_3_18 }}
+amazon2cis_rule_6_2_3_19: {{ amazon2cis_rule_6_2_3_19 }}
+amazon2cis_rule_6_2_3_20: {{ amazon2cis_rule_6_2_3_20 }}
+amazon2cis_rule_6_2_3_21: {{ amazon2cis_rule_6_2_3_21 }}
+amazon2cis_rule_6_2_3_22: {{ amazon2cis_rule_6_2_3_22 }}
+
+# Configure auditd file access
+amazon2cis_rule_6_2_4_1: {{ amazon2cis_rule_6_2_4_1 }}
+amazon2cis_rule_6_2_4_2: {{ amazon2cis_rule_6_2_4_2 }}
+amazon2cis_rule_6_2_4_3: {{ amazon2cis_rule_6_2_4_3 }}
+amazon2cis_rule_6_2_4_4: {{ amazon2cis_rule_6_2_4_4 }}
+amazon2cis_rule_6_2_4_5: {{ amazon2cis_rule_6_2_4_5 }}
+amazon2cis_rule_6_2_4_6: {{ amazon2cis_rule_6_2_4_6 }}
+amazon2cis_rule_6_2_4_7: {{ amazon2cis_rule_6_2_4_7 }}
+amazon2cis_rule_6_2_4_8: {{ amazon2cis_rule_6_2_4_8 }}
+amazon2cis_rule_6_2_4_9: {{ amazon2cis_rule_6_2_4_9 }}
+amazon2cis_rule_6_2_4_10: {{ amazon2cis_rule_6_2_4_10 }}
+
+# Configure Filesystem Integrity Checking
+amazon2cis_rule_6_3_1: {{ amazon2cis_rule_6_3_1 }}
+amazon2cis_rule_6_3_2: {{ amazon2cis_rule_6_3_2 }}
+amazon2cis_rule_6_3_3: {{ amazon2cis_rule_6_3_3 }}
+## Section 7 rules
+##
+# Section 7 is System Maintenance
+
+# System File Permissions
+amazon2cis_rule_7_1_1: {{ amazon2cis_rule_7_1_1 }}
+amazon2cis_rule_7_1_2: {{ amazon2cis_rule_7_1_2 }}
+amazon2cis_rule_7_1_3: {{ amazon2cis_rule_7_1_3 }}
+amazon2cis_rule_7_1_4: {{ amazon2cis_rule_7_1_4 }}
+amazon2cis_rule_7_1_5: {{ amazon2cis_rule_7_1_5 }}
+amazon2cis_rule_7_1_6: {{ amazon2cis_rule_7_1_6 }}
+amazon2cis_rule_7_1_7: {{ amazon2cis_rule_7_1_7 }}
+amazon2cis_rule_7_1_8: {{ amazon2cis_rule_7_1_8 }}
+amazon2cis_rule_7_1_9: {{ amazon2cis_rule_7_1_9 }}
+amazon2cis_rule_7_1_10: {{ amazon2cis_rule_7_1_10 }}
+amazon2cis_rule_7_1_11: {{ amazon2cis_rule_7_1_11 }}
+amazon2cis_rule_7_1_12: {{ amazon2cis_rule_7_1_12 }}
+amazon2cis_rule_7_1_13: {{ amazon2cis_rule_7_1_13 }}
+
+# Local User and Group Settings
+amazon2cis_rule_7_2_1: {{ amazon2cis_rule_7_2_1 }}
+amazon2cis_rule_7_2_2: {{ amazon2cis_rule_7_2_2 }}
+amazon2cis_rule_7_2_3: {{ amazon2cis_rule_7_2_3 }}
+amazon2cis_rule_7_2_4: {{ amazon2cis_rule_7_2_4 }}
+amazon2cis_rule_7_2_5: {{ amazon2cis_rule_7_2_5 }}
+amazon2cis_rule_7_2_6: {{ amazon2cis_rule_7_2_6 }}
+amazon2cis_rule_7_2_7: {{ amazon2cis_rule_7_2_7 }}
+amazon2cis_rule_7_2_8: {{ amazon2cis_rule_7_2_8 }}
+amazon2cis_rule_7_2_9: {{ amazon2cis_rule_7_2_9 }}
 
 ####
 ## Section 1
@@ -541,6 +535,7 @@ amazon2cis_iptables: {{ amazon2cis_iptables }}
 amazon2cis_firewalld: {{ amazon2cis_firewalld }}
 
 amazon2cis_firewall_interface: {{ ansible_facts['default_ipv4']['interface'] }}
+amazon2cis_active_firewall_zone: {{ amazon2cis_active_firewall_zone }}
 
 ####
 ## Section 4 Variables
@@ -559,7 +554,7 @@ amazon2cis_sshd_kex: {{ amazon2cis_sshd_kex }}
 # access for users whose user name matches one of the patterns. This is done
 # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
 # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
-amazon2cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
+amazon2cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_facts['env']['SUDO_USER'] is defined %}{{ ansible_facts['env']['SUDO_USER'] }}{% endif %}"
 
 # (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
 # for users whose primary group or supplementary group list matches one of the patterns. This is done
@@ -587,6 +582,7 @@ amazon2cis_sugroup: wheel
 amazon2cis_pwquality_minclass: true
 
 amazon2cis_pass_max_days: {{ amazon2cis_pass_max_days }}
+amazon2cis_pass_min_days: {{ amazon2cis_pass_min_days }}
 amazon2cis_pass_warn_age: {{ amazon2cis_pass_warn_age }}
 
 ####

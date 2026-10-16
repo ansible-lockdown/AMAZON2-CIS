@@ -1,12 +1,12 @@
 ---
 
-- name: "4.1.1.1 | PATCH | Ensure cron daemon is enabled and active"
-  when: amazon2cis_rule_4_1_1_1
+- name: "5.1.1.1 | PATCH | Ensure cron daemon is enabled and active"
+  when: amazon2cis_rule_5_1_1_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.1
+    - rule_5.1.1.1
     - cron
     - NIST800-53R5_CM-1
     - NIST800-53R5_CM-2
@@ -18,13 +18,13 @@
     state: started
     enabled: true
 
-- name: "4.1.1.2 | PATCH | Ensure permissions on /etc/crontab are configured"
-  when: amazon2cis_rule_4_1_1_2
+- name: "5.1.1.2 | PATCH | Ensure access to /etc/crontab is configured"
+  when: amazon2cis_rule_5_1_1_2
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.2
+    - rule_5.1.1.2
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -35,13 +35,13 @@
     group: root
     mode: 'u-x,go-rwx'
 
-- name: "4.1.1.3 | PATCH | Ensure permissions on /etc/cron.hourly are configured"
-  when: amazon2cis_rule_4_1_1_3
+- name: "5.1.1.3 | PATCH | Ensure access to /etc/cron.hourly is configured"
+  when: amazon2cis_rule_5_1_1_3
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.3
+    - rule_5.1.1.3
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -53,13 +53,13 @@
     group: root
     mode: 'u+x,go-rwx'
 
-- name: "4.1.1.4 | PATCH | Ensure permissions on /etc/cron.daily are configured"
-  when: amazon2cis_rule_4_1_1_4
+- name: "5.1.1.4 | PATCH | Ensure access to /etc/cron.daily is configured"
+  when: amazon2cis_rule_5_1_1_4
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.4
+    - rule_5.1.1.4
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -71,12 +71,12 @@
     group: root
     mode: 'u+x,go-rwx'
 
-- name: "4.1.1.5 | PATCH | Ensure permissions on /etc/cron.weekly are configured"
-  when: amazon2cis_rule_4_1_1_5
+- name: "5.1.1.5 | PATCH | Ensure access to /etc/cron.weekly is configured"
+  when: amazon2cis_rule_5_1_1_5
   tags:
-    - level1
+    - level1-server
     - patch
-    - rule_4.1.1.5
+    - rule_5.1.1.5
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -88,13 +88,13 @@
     group: root
     mode: 'u+x,go-rwx'
 
-- name: "4.1.1.6 | PATCH | Ensure permissions on /etc/cron.monthly are configured"
-  when: amazon2cis_rule_4_1_1_6
+- name: "5.1.1.6 | PATCH | Ensure access to /etc/cron.monthly is configured"
+  when: amazon2cis_rule_5_1_1_6
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.6
+    - rule_5.1.1.6
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -106,13 +106,13 @@
     group: root
     mode: 'u+x,go-rwx'
 
-- name: "4.1.1.7 | PATCH | Ensure permissions on /etc/cron.d are configured"
-  when: amazon2cis_rule_4_1_1_7
+- name: "5.1.1.7 | PATCH | Ensure access to /etc/cron.d is configured"
+  when: amazon2cis_rule_5_1_1_7
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.7
+    - rule_5.1.1.7
     - permissions
     - cron
     - NIST800-53R5_AC-3
@@ -124,29 +124,29 @@
     group: root
     mode: 'u+x,go-rwx'
 
-- name: "4.1.1.8 | PATCH | Ensure crontab is restricted to authorized users"
-  when: amazon2cis_rule_4_1_1_8
+- name: "5.1.1.8 | PATCH | Ensure access to crontab is configured"
+  when: amazon2cis_rule_5_1_1_8
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.1.8
+    - rule_5.1.1.8
     - permissions
     - cron
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users | Remove cron.deny"
+    - name: "5.1.1.8 | PATCH | Ensure access to crontab is configured | Remove cron.deny"
       ansible.builtin.file:
         dest: /etc/cron.deny
         state: absent
 
-    - name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users | Check if cron.allow exists"
+    - name: "5.1.1.8 | PATCH | Ensure access to crontab is configured | Check if cron.allow exists"
       ansible.builtin.stat:
         path: "/etc/cron.allow"
       register: discovered_cron_allow_status
 
-    - name: "4.1.1.8 | PATCH | Ensure cron is restricted to authorized users | Ensure cron.allow is restricted to authorized users"
+    - name: "5.1.1.8 | PATCH | Ensure access to crontab is configured | Ensure cron.allow is restricted to authorized users"
       ansible.builtin.file:
         dest: /etc/cron.allow
         state: '{{ "file" if discovered_cron_allow_status.stat.exists else "touch" }}'
@@ -154,28 +154,28 @@
         group: root
         mode: 'u-x,go-rwx'
 
-- name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users"
-  when: amazon2cis_rule_4_1_2_1
+- name: "5.1.2.1 | PATCH | Ensure access to at is configured"
+  when: amazon2cis_rule_5_1_2_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_4.1.2.1
+    - rule_5.1.2.1
     - at
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   block:
-    - name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users | Remove at.deny"
+    - name: "5.1.2.1 | PATCH | Ensure access to at is configured | Remove at.deny"
       ansible.builtin.file:
         dest: /etc/at.deny
         state: absent
 
-    - name: "4.1.2.1 | AUDIT | Ensure at is restricted to authorized users | Check if at.allow exists"
+    - name: "5.1.2.1 | AUDIT | Ensure access to at is configured | Check if at.allow exists"
       ansible.builtin.stat:
         path: "/etc/at.allow"
       register: discovered_at_allow_status
 
-    - name: "4.1.2.1 | PATCH | Ensure at is restricted to authorized users | Ensure at.allow is restricted to authorized users"
+    - name: "5.1.2.1 | PATCH | Ensure access to at is configured | Ensure at.allow is restricted to authorized users"
       ansible.builtin.file:
         dest: /etc/at.allow
         state: '{{ "file" if discovered_at_allow_status.stat.exists else "touch" }}'

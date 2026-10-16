@@ -3,7 +3,7 @@
 - name: "1.6.1 | PATCH | Ensure message of the day is configured properly"
   when: amazon2cis_rule_1_6_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.1
@@ -21,7 +21,7 @@
 - name: "1.6.2 | PATCH | Ensure local login warning banner is configured properly"
   when: amazon2cis_rule_1_6_2
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.2
@@ -39,7 +39,7 @@
 - name: "1.6.3 | PATCH | Ensure remote login warning banner is configured properly"
   when: amazon2cis_rule_1_6_3
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.3
@@ -57,7 +57,7 @@
 - name: "1.6.4 | PATCH | Ensure access to /etc/motd is configured"
   when: amazon2cis_rule_1_6_4
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.4
@@ -75,7 +75,7 @@
 - name: "1.6.5 | PATCH | Ensure access to /etc/issue is configured"
   when: amazon2cis_rule_1_6_5
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.5
@@ -93,7 +93,7 @@
 - name: "1.6.6 | PATCH | Ensure access to /etc/issue.net is configured"
   when: amazon2cis_rule_1_6_6
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
     - rule_1.6.6

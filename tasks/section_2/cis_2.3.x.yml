@@ -6,7 +6,6 @@
     - amazon2cis_rule_2_3_1
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - ftp
@@ -22,7 +21,6 @@
     - amazon2cis_rule_2_3_2
   tags:
     - level2-server
-    - level2-workstation
     - automated
     - patch
     - ldap
@@ -38,7 +36,6 @@
     - amazon2cis_rule_2_3_3
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - nis
@@ -54,7 +51,6 @@
     - amazon2cis_rule_2_3_4
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - telnet
@@ -70,7 +66,6 @@
     - amazon2cis_rule_2_3_5
   tags:
     - level1-server
-    - level1-workstation
     - automated
     - patch
     - tftp

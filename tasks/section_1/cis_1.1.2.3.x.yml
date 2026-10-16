@@ -3,8 +3,7 @@
 - name: "1.1.2.3.1 | AUDIT | Ensure separate partition exists for /home"
   when: amazon2cis_rule_1_1_2_3_1
   tags:
-    - level1-server
-    - level1-workstation
+    - level2-server
     - audit
     - mounts
     - rule_1.1.2.3.1
@@ -36,7 +35,6 @@
     - amazon2cis_rule_1_1_2_3_2
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.3.2
@@ -59,7 +57,6 @@
     - amazon2cis_rule_1_1_2_3_3
   tags:
     - level1-server
-    - level1-workstation
     - patch
     - mounts
     - rule_1.1.2.3.3

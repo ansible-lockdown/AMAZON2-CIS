@@ -1,19 +1,18 @@
 ---
 
 - name: "AUDITD | AUDIT | Captured auditd logfile config | discover file"
-  when: amazon2cis_rule_5_2_4_1 or
-      amazon2cis_rule_5_2_4_2 or
-      amazon2cis_rule_5_2_4_3 or
-      amazon2cis_rule_5_2_4_4
+  when: amazon2cis_rule_6_2_4_1 or
+      amazon2cis_rule_6_2_4_2 or
+      amazon2cis_rule_6_2_4_3 or
+      amazon2cis_rule_6_2_4_4
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.1
-    - rule_5.2.4.2
-    - rule_5.2.4.3
-    - rule_5.2.4.4
+    - rule_6.2.4.1
+    - rule_6.2.4.2
+    - rule_6.2.4.3
+    - rule_6.2.4.4
   ansible.builtin.shell: |
     set -o pipefail
     grep ^log_file /etc/audit/auditd.conf | awk '{ print $NF }'
@@ -23,44 +22,42 @@
   failed_when: discovered_audit_discovered_logfile.rc not in [0, 1]
   register: discovered_audit_discovered_logfile
 
-- name: "5.2.4.1 | PATCH | Ensure the audit log directory is 0750 or more restrictive"
-  when: amazon2cis_rule_5_2_4_1
+- name: "6.2.4.1 | PATCH | Ensure the audit log file directory mode is configured"
+  when: amazon2cis_rule_6_2_4_1
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.1
+    - rule_6.2.4.1
   ansible.builtin.file:
     path: "{{ discovered_audit_discovered_logfile.stdout | dirname }}"
     state: directory
     mode: 'g-w,o-rwx'
 
 - name: |
-      "5.2.4.2 | PATCH | Ensure audit log files are mode 0640 or less permissive"
-      "5.2.4.3 | PATCH | Ensure only authorized users own audit log files"
-      "5.2.4.4 | PATCH | Ensure only authorized groups are assigned ownership of audit log files"
-  when: amazon2cis_rule_5_2_4_2 or
-      amazon2cis_rule_5_2_4_3 or
-      amazon2cis_rule_5_2_4_4
+      "6.2.4.2 | PATCH | Ensure audit log files are mode 0640 or less permissive"
+      "6.2.4.3 | PATCH | Ensure only authorized users own audit log files"
+      "6.2.4.4 | PATCH | Ensure only authorized groups are assigned ownership of audit log files"
+  when: amazon2cis_rule_6_2_4_2 or
+      amazon2cis_rule_6_2_4_3 or
+      amazon2cis_rule_6_2_4_4
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.2
-    - rule_5.2.4.3
-    - rule_5.2.4.4
+    - rule_6.2.4.2
+    - rule_6.2.4.3
+    - rule_6.2.4.4
   block:
-    - name: "5.2.4.2 | AUDIT | Ensure audit log files are mode 0640 or less permissive | stat file"
+    - name: "6.2.4.2 | AUDIT | Ensure audit log files mode is configured | stat file"
       ansible.builtin.stat:
         path: "{{ discovered_audit_discovered_logfile.stdout }}"
       register: discovered_auditd_logfile
 
     - name: |
-        "5.2.4.2 | PATCH | Ensure audit log files are mode 0640 or less permissive"
-        "5.2.4.3 | PATCH | Ensure only authorized users own audit log files"
-        "5.2.4.4 | PATCH | Ensure only authorized groups are assigned ownership of audit log files"
+        "6.2.4.2 | PATCH | Ensure audit log files are mode 0640 or less permissive"
+        "6.2.4.3 | PATCH | Ensure only authorized users own audit log files"
+        "6.2.4.4 | PATCH | Ensure only authorized groups are assigned ownership of audit log files"
       ansible.builtin.file:
         path: "{{ discovered_audit_discovered_logfile.stdout }}"
         mode: "{% if discovered_auditd_logfile.stat.mode != '0600' %}0640{% endif %}"
@@ -68,17 +65,16 @@
         group: root
 
 - name: "AUDITD | AUDIT | Audit conf and rules files | list files"
-  when: amazon2cis_rule_5_2_4_5 or
-      amazon2cis_rule_5_2_4_6 or
-      amazon2cis_rule_5_2_4_7
+  when: amazon2cis_rule_6_2_4_5 or
+      amazon2cis_rule_6_2_4_6 or
+      amazon2cis_rule_6_2_4_7
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.5
-    - rule_5.2.4.6
-    - rule_5.2.4.7
+    - rule_6.2.4.5
+    - rule_6.2.4.6
+    - rule_6.2.4.7
   ansible.builtin.find:
     path: /etc/audit
     file_type: file
@@ -86,14 +82,13 @@
     patterns: '*.conf,*.rules'
   register: discovered_auditd_conf_files
 
-- name: "5.2.4.5 | PATCH | Ensure audit configuration files are 640 or more restrictive"
-  when: amazon2cis_rule_5_2_4_5
+- name: "6.2.4.5 | PATCH | Ensure audit configuration files mode is configured"
+  when: amazon2cis_rule_6_2_4_5
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.5
+    - rule_6.2.4.5
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: 'g-wx,o-rwx'
@@ -101,14 +96,13 @@
   loop_control:
     label: "{{ item.path }}"
 
-- name: "5.2.4.6 | PATCH | Ensure audit configuration files are owned by root"
-  when: amazon2cis_rule_5_2_4_6
+- name: "6.2.4.6 | PATCH | Ensure audit configuration files owner is configured"
+  when: amazon2cis_rule_6_2_4_6
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.6
+    - rule_6.2.4.6
   ansible.builtin.file:
     path: "{{ item.path }}"
     owner: root
@@ -116,14 +110,13 @@
   loop_control:
     label: "{{ item.path }}"
 
-- name: "5.2.4.7 | PATCH | Ensure audit configuration files belong to group root"
-  when: amazon2cis_rule_5_2_4_7
+- name: "6.2.4.7 | PATCH | Ensure audit configuration files group owner is configured"
+  when: amazon2cis_rule_6_2_4_7
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.7
+    - rule_6.2.4.7
   ansible.builtin.file:
     path: "{{ item.path }}"
     group: root
@@ -131,16 +124,15 @@
   loop_control:
     label: "{{ item.path }}"
 
-- name: "5.2.4.8 | PATCH | Ensure audit tools are 755 or more restrictive"
-  when: amazon2cis_rule_5_2_4_8
+- name: "6.2.4.8 | PATCH | Ensure audit tools mode is configured"
+  when: amazon2cis_rule_6_2_4_8
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.8
+    - rule_6.2.4.8
   block:
-    - name: "5.2.4.8 | AUDIT | Get audit binary file stat | get current mode"
+    - name: "6.2.4.8 | AUDIT | Ensure audit tools mode is configured | get current mode"
       ansible.builtin.stat:
         path: "{{ item }}"
       register: discovered_audit_bins
@@ -152,7 +144,7 @@
         - /sbin/auditd
         - /sbin/augenrules
 
-    - name: "5.2.4.8 | PATCH | Ensure audit tools are 755 or more restrictive | set if required"
+    - name: "6.2.4.8 | PATCH | Ensure audit tools mode is configured | set if required"
       ansible.builtin.file:
         path: "{{ item.item }}"
         mode: 'g-w,o-w'
@@ -160,14 +152,13 @@
       loop_control:
         label: "{{ item.item }}"
 
-- name: "5.2.4.9 | PATCH | Ensure audit tools are owned by root"
-  when: amazon2cis_rule_5_2_4_9
+- name: "6.2.4.9 | PATCH | Ensure audit tools owner is configured"
+  when: amazon2cis_rule_6_2_4_9
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.9
+    - rule_6.2.4.9
   ansible.builtin.file:
     path: "{{ item }}"
     owner: root
@@ -180,14 +171,13 @@
     - /sbin/auditd
     - /sbin/augenrules
 
-- name: "5.2.4.10 | PATCH | Ensure audit tools belong to group root"
-  when: amazon2cis_rule_5_2_4_10
+- name: "6.2.4.10 | PATCH | Ensure audit tools group owner is configured"
+  when: amazon2cis_rule_6_2_4_10
   tags:
     - level2-server
-    - level2-workstation
     - patch
     - auditd
-    - rule_5.2.4.10
+    - rule_6.2.4.10
   ansible.builtin.file:
     path: "{{ item }}"
     group: root

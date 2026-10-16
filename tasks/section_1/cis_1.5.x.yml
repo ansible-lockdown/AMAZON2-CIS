@@ -1,144 +1,204 @@
 ---
 
-- name: "1.5.1.1 | PATCH | Ensure SELinux is installed"
-  when:
-    - not amazon2cis_selinux_disable
-    - amazon2cis_rule_1_5_1_1
+- name: "1.5.1 | PATCH | Ensure core file size is configured"
+  when: amazon2cis_rule_1_5_1
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_1.5.1.1
-    - selinux
-    - NIST800-53R5_AC-3
-    - NIST800-53R5_MP-2
-  vars:
-    ansible_python_interpreter: /bin/python
-  ansible.builtin.package:
-    name: libselinux
-    state: present
-
-- name: "1.5.1.2 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
-  when:
-    - not amazon2cis_selinux_disable
-    - amazon2cis_rule_1_5_1_2
-  tags:
-    - level1
-    - automated
-    - patch
-    - rule_1.5.1.2
-    - selinux
-    - NIST800-53R5_AC-3
-    - NIST800-53R5_MP-2
-  notify: Rebuild_grub
-  ansible.builtin.replace:
-    path: /etc/default/grub
-    regexp: '{{ item }}'
-    replace: ''
-  loop:
-    - selinux=0
-    - enforcing=0
-
-- name: |
-    "1.5.1.3 | PATCH | Ensure SELinux policy is configured
-     1.5.1.4 | PATCH | Ensure the SELinux state is enforcing or permissive"
-  when:
-    - not amazon2cis_selinux_disable
-    - amazon2cis_rule_1_5_1_3
-    - amazon2cis_rule_1_5_1_4
-  tags:
-    - level1
-    - automated
-    - patch
-    - rule_1.5.1.3
-    - rule_1.5.1.4
-    - selinux
-    - NIST800-53R5_AC-3
-    - NIST800-53R5_MP-2
-  vars:
-    ansible_python_interpreter: "{{ python2_bin }}"
-  ansible.posix.selinux:
-    conf: /etc/selinux/config
-    policy: "{{ amazon2cis_selinux_pol }}"
-    state: "{{ amazon2cis_selinux_state }}"
-
-- name: "1.5.1.5 | PATCH | Ensure the SELinux mode is enforcing"
-  when:
-    - not amazon2cis_selinux_disable
-    - not amazon2cis_selinux_state == "permissive"
-    - amazon2cis_rule_1_5_1_5
-  tags:
-    - level2
-    - automated
-    - patch
-    - rule_1.5.1.5
-    - selinux
-    - NIST800-53R5_AC-3
-    - NIST800-53R5_SI-6
-  vars:
-    ansible_python_interpreter: "{{ python2_bin }}"
-  ansible.posix.selinux:
-    conf: /etc/selinux/config
-    policy: "{{ amazon2cis_selinux_pol }}"
-    state: enforcing
-
-- name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist"
-  when: amazon2cis_rule_1_5_1_6
-  tags:
-    - level1
-    - automated
-    - audit
-    - rule_1.5.1.6
-    - selinux
-    - NIST800-53R5_AC-3
-    - NIST800-53R5_MP-2
+    - rule_1.5.1
+    - limits
+    - NIST800-53R5_CM-6
   block:
-    - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Find the unconfined services"
-      ansible.builtin.shell: |
-        set -o pipefail
-        ps -eZ | grep unconfined_service_t
-      args:
-        executable: "{{ amazon2cis_shell_executable }}"
-      changed_when: false
-      failed_when: false
-      register: discovered_unconfined_services
+    - name: "1.5.1 | AUDIT | Ensure core file size is configured | Discover limits.d files with a hard core limit"
+      ansible.builtin.find:
+        paths: /etc/security/limits.d
+        contains: '^\s*[^#\n\r]+\s+hard\s+core\s+([1-9][0-9]*)'
+      register: discovered_security_limits_files
 
-    - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Message on unconfined services"
-      ansible.builtin.debug:
-        msg: "Warning! You have unconfined services: {{ discovered_unconfined_services.stdout_lines }}"
-      when: discovered_unconfined_services.stdout | length > 0
+    - name: "1.5.1 | PATCH | Ensure core file size is configured | Comment out hard core limits in limits.conf"
+      ansible.builtin.replace:
+        path: /etc/security/limits.conf
+        regexp: '^(\s*[^#\n\r]+\s+hard\s+core\s+[1-9][0-9]*.*)$'
+        replace: '# \1'
 
-    - name: "1.5.1.6 | AUDIT | Ensure no unconfined services exist | Warn Count"
-      vars:
-        warn_control_id: '1.5.1.6'
-      ansible.builtin.import_tasks:
-        file: warning_facts.yml
+    - name: "1.5.1 | PATCH | Ensure core file size is configured | Comment out hard core limits in limits.d"
+      when:
+        - discovered_security_limits_files.files is defined
+        - item.path != '/etc/security/limits.d/60-limits.conf'
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(\s*[^#\n\r]+\s+hard\s+core\s+[1-9][0-9]*.*)$'
+        replace: '# \1'
+      loop: "{{ discovered_security_limits_files.files }}"
 
-- name: "1.5.1.7 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
-  when: amazon2cis_rule_1_5_1_7
+    - name: "1.5.1 | PATCH | Ensure core file size is configured | Set hard core limit"
+      ansible.builtin.lineinfile:
+        path: /etc/security/limits.d/60-limits.conf
+        regexp: '^\s*\*\s+hard\s+core'
+        line: "* hard core 0"
+        create: true
+        owner: root
+        group: root
+        mode: 'u-x,go-wx'
+
+- name: "1.5.2 | PATCH | Ensure fs.protected_hardlinks is configured"
+  when: amazon2cis_rule_1_5_2
   tags:
-    - level1
+    - level1-server
     - automated
     - patch
-    - rule_1.5.1.7
-    - mcstrans
-    - NIST800-53R5_SI-4
-  vars:
-    ansible_python_interpreter: /bin/python
-  ansible.builtin.package:
-    name: mcstrans
-    state: absent
-
-- name: "1.5.1.8 | PATCH | Ensure SETroubleshoot is not installed"
-  when: amazon2cis_rule_1_5_1_8
-  tags:
-    - level1
-    - automated
-    - patch
-    - rule_1.5.1.8
-    - selinux
+    - sysctl
+    - rule_1.5.2
     - NIST800-53R5_AC-3
-    - NIST800-53R5_MP-2
-  ansible.builtin.package:
-    name: setroubleshoot
-    state: absent
+    - NIST800-53R5_AC-6
+  ansible.posix.sysctl:
+    name: fs.protected_hardlinks
+    value: '1'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ amazon2cis_fs_sysctl_file }}"
+
+- name: "1.5.3 | PATCH | Ensure fs.protected_symlinks is configured"
+  when: amazon2cis_rule_1_5_3
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.3
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_AC-6
+  ansible.posix.sysctl:
+    name: fs.protected_symlinks
+    value: '1'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ amazon2cis_fs_sysctl_file }}"
+
+- name: "1.5.4 | PATCH | Ensure fs.suid_dumpable is configured"
+  when: amazon2cis_rule_1_5_4
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.4
+    - NIST800-53R5_CM-6
+  ansible.posix.sysctl:
+    name: fs.suid_dumpable
+    value: '0'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ amazon2cis_fs_sysctl_file }}"
+
+- name: "1.5.5 | PATCH | Ensure kernel.dmesg_restrict is configured"
+  when: amazon2cis_rule_1_5_5
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.5
+    - NIST800-53R5_SC-2
+    - NIST800-53R5_SC-4
+  ansible.posix.sysctl:
+    name: kernel.dmesg_restrict
+    value: '1'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ kernel_sysctl_file }}"
+
+- name: "1.5.6 | PATCH | Ensure kernel.kptr_restrict is configured"
+  when: amazon2cis_rule_1_5_6
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.6
+    - NIST800-53R5_CM-6
+  ansible.posix.sysctl:
+    name: kernel.kptr_restrict
+    value: '1'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ kernel_sysctl_file }}"
+
+- name: "1.5.7 | PATCH | Ensure kernel.yama.ptrace_scope is configured"
+  when: amazon2cis_rule_1_5_7
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.7
+  ansible.posix.sysctl:
+    name: kernel.yama.ptrace_scope
+    value: '1'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ kernel_sysctl_file }}"
+
+- name: "1.5.8 | PATCH | Ensure kernel.randomize_va_space is configured"
+  when: amazon2cis_rule_1_5_8
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - sysctl
+    - rule_1.5.8
+    - NIST800-53R5_CM-6
+  ansible.posix.sysctl:
+    name: kernel.randomize_va_space
+    value: '2'
+    state: present
+    reload: true
+    sysctl_set: true
+    ignoreerrors: true
+    sysctl_file: "{{ kernel_sysctl_file }}"
+
+- name: "1.5.9 | PATCH | Ensure systemd-coredump ProcessSizeMax is configured"
+  when: amazon2cis_rule_1_5_9
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - rule_1.5.9
+    - coredump
+    - NIST800-53R5_CM-6b
+  notify: Systemd_daemon_reload
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/coredump.conf
+    regexp: ^ProcessSizeMax
+    line: ProcessSizeMax=0
+    create: true
+    mode: 'u-x,go-wx'
+
+- name: "1.5.10 | PATCH | Ensure systemd-coredump Storage is configured"
+  when: amazon2cis_rule_1_5_10
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - rule_1.5.10
+    - coredump
+  notify: Systemd_daemon_reload
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/coredump.conf
+    regexp: ^Storage
+    line: Storage=none
+    create: true
+    mode: 'u-x,go-wx'

@@ -1,14 +1,23 @@
 ---
 
-- name: PRELIM | Include audit specific variables
-  when:
-    - run_audit or audit_only
-    - setup_audit
-  tags:
-    - setup_audit
-    - run_audit
-  ansible.builtin.include_vars:
-    file: audit.yml
+- name: PRELIM | AUDIT | Set facts based on boot type
+  tags: always
+  block:
+    - name: "PRELIM | AUDIT | Check whether machine is UEFI-based"
+      ansible.builtin.stat:
+        path: /sys/firmware/efi
+      register: prelim_efi_boot
+
+    - name: "PRELIM | AUDIT | Set fact if UEFI boot | Amazon Linux 2"
+      when: prelim_efi_boot.stat.exists and ansible_facts['distribution'] == 'Amazon'
+      ansible.builtin.set_fact:
+        amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
+
+    - name: "PRELIM | AUDIT | Set fact if not UEFI boot"
+      when: not prelim_efi_boot.stat.exists
+      ansible.builtin.set_fact:
+        amazon2cis_bootloader_file: /boot/grub2/grub.cfg
+        amazon2cis_legacy_boot: true
 
 - name: PRELIM | Include pre-remediation audit tasks
   when:
@@ -64,24 +73,6 @@
         amazon2cis_uid_min: "{{ prelim_min_uid.stdout | string }}"
         amazon2cis_uid_max: "{{ prelim_max_uid.stdout | string }}"
 
-- name: "PRELIM | Check whether machine is UEFI-based"
-  ansible.builtin.stat:
-    path: /sys/firmware/efi
-  register: prelim_efi_boot
-
-- name: Set bootloader type
-  block:
-    - name: "PRELIM | Set fact if UEFI boot | Amazon Linux 2"
-      when: prelim_efi_boot.stat.exists and ansible_distribution == 'Amazon'
-      ansible.builtin.set_fact:
-        amazon2cis_bootloader_file: /boot/efi/EFI/amzn/grub.cfg
-
-    - name: "PRELIM | Set fact if not UEFI boot"
-      when: not prelim_efi_boot.stat.exists
-      ansible.builtin.set_fact:
-        amazon2cis_bootloader_file: /boot/grub2/grub.cfg
-        amazon2cis_legacy_boot: true
-
 - name: PRELIM | AUDIT | Section 1.1 | Create list of mount points
   tags: always
   ansible.builtin.set_fact:
@@ -114,6 +105,23 @@
       ansible.builtin.debug:
         msg: "{{ prelim_mount_point_fs_and_options }}"
 
+- name: PRELIM | AUDIT | Section 1.1.2.1 | Discover how /tmp is mounted
+  when: amazon2cis_tmp_svc == 'auto'
+  tags: always
+  ansible.builtin.systemd_service:
+    name: tmp.mount
+  check_mode: false
+  register: prelim_tmp_mount_source
+
+- name: PRELIM | AUDIT | Section 1.1.2.1 | Set /tmp management method
+  tags: always
+  ansible.builtin.set_fact:
+    prelim_tmp_svc: >-
+      {{ (prelim_tmp_mount_source.status.ActiveState == 'active' and
+          prelim_tmp_mount_source.status.SourcePath | default('') != '/etc/fstab')
+         if amazon2cis_tmp_svc == 'auto'
+         else amazon2cis_tmp_svc | bool }}
+
 - name: "PRELIM | SELinux"
   when: not amazon2cis_selinux_disable
   vars:
@@ -142,7 +150,7 @@
       changed_when: true
 
 - name: "PRELIM | Find all sudoers files."
-  when: amazon2cis_rule_4_3_4 or amazon2cis_rule_4_3_5
+  when: amazon2cis_rule_5_3_4 or amazon2cis_rule_5_3_5
   tags: always
   ansible.builtin.shell: |
     set -o pipefail
@@ -184,7 +192,11 @@
   when:
     - amazon2cis_ipv6_sshd_disable
     - not amazon2cis_ipv6_required
-  tags: always
+  tags:
+    - level1-server
+    - patch
+    - ipv6
+    - rule_3.1.1
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: ^AddressFamily
@@ -195,7 +207,11 @@
   when:
     - amazon2cis_ipv6_chrony_disable
     - not amazon2cis_ipv6_required
-  tags: always
+  tags:
+    - level1-server
+    - patch
+    - ipv6
+    - rule_3.1.1
   notify: Restart_chronyd
   block:
     - name: "PRELIM | Optional | If IPv6 disable to stop chronyd listening | Check existence"
@@ -223,7 +239,10 @@
   when:
     - amazon2cis_auditd_extra_conf.keys() | length > 0
     - amazon2cis_level_2
-  tags: always
+  tags:
+    - level2-server
+    - patch
+    - auditd
   ansible.builtin.lineinfile:
     path: /etc/audit/auditd.conf
     regexp: "^{{ item }}( |=)"

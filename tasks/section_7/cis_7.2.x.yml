@@ -1,0 +1,360 @@
+---
+
+- name: "7.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords"
+  when: amazon2cis_rule_7_2_1
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - NIST800-53R5_IA-5
+    - rule_7.2.1
+    - user_accounts
+  block:
+    - name: "7.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      register: discovered_nonshadowed_users
+
+    - name: "7.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings"
+      when: discovered_nonshadowed_users.stdout | length > 0
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have users that are not using a shadowed password. Please convert the below accounts to use a shadowed password"
+          - "{{ discovered_nonshadowed_users.stdout_lines }}"
+
+    - name: "7.2.1 | WARN | Ensure accounts in /etc/passwd use shadowed passwords | warn_count"
+      when: discovered_nonshadowed_users.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.1'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.2 | PATCH | Ensure /etc/shadow password fields are not empty"
+  when:
+    - amazon2cis_rule_7_2_2
+    - prelim_empty_password_accounts.stdout | length > 0
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - rule_7.2.2
+    - NIST800-53R5_IA-5
+    - user
+    - permissions
+  block:
+    - name: "7.2.2 | AUDIT | Ensure /etc/shadow password fields are not empty | Find users with no password"
+      ansible.builtin.shell: |
+        set -o pipefail
+        awk -F":" '($2 == "" ) { print $1 }' /etc/shadow
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      check_mode: false
+      register: discovered_empty_password_acct
+
+    - name: "7.2.2 | PATCH | Ensure /etc/shadow password fields are not empty | Lock users with empty password"
+      ansible.builtin.user:
+        name: "{{ item }}"
+        password_lock: true
+      loop: "{{ discovered_empty_password_acct.stdout_lines }}"
+
+- name: "7.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group"
+  when: amazon2cis_rule_7_2_3
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - rule_7.2.3
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - groups
+  block:
+    - name: "7.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Check /etc/passwd entries"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_passwd_gid_check
+
+    - name: "7.2.3 | AUDIT | Ensure all groups in /etc/passwd exist in /etc/group | Print warning about users with invalid GIDs missing GID entries in /etc/group"
+      when: discovered_passwd_gid_check.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "Warning!! The following users have non-existent GIDs (Groups): {{ discovered_passwd_gid_check.stdout_lines | join(', ') }}"
+
+    - name: "7.2.3 | WARN | Ensure all groups in /etc/passwd exist in /etc/group | warn_count"
+      when: discovered_passwd_gid_check.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.3'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.4 | AUDIT | Ensure no duplicate UIDs exist"
+  when: amazon2cis_rule_7_2_4
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - rule_7.2.4
+    - user
+  block:
+    - name: "7.2.4 | AUDIT | Ensure no duplicate UIDs exist | Check for duplicate UIDs"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_user_uid_check
+
+    - name: "7.2.4 | AUDIT | Ensure no duplicate UIDs exist | Print warning about users with duplicate UIDs"
+      when: discovered_user_uid_check.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "Warning!! The following users have UIDs that are duplicates: {{ discovered_user_uid_check.stdout_lines }}"
+
+    - name: "7.2.4 | AUDIT | Ensure no duplicate UIDs exist | Set warning count"
+      when: discovered_user_uid_check.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.4'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.5 | AUDIT | Ensure no duplicate GIDs exist"
+  when: amazon2cis_rule_7_2_5
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - rule_7.2.5
+    - groups
+  block:
+    - name: "7.2.5 | AUDIT | Ensure no duplicate GIDs exist | Check for duplicate GIDs"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($3 in users) print $1 ; else users[$3]}' /etc/group
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_user_user_check
+
+    - name: "7.2.5 | AUDIT | Ensure no duplicate GIDs exist | Print warning about users with duplicate GIDs"
+      when: discovered_user_user_check.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "Warning!! The following groups have duplicate GIDs: {{ discovered_user_user_check.stdout_lines }}"
+
+    - name: "7.2.5 | AUDIT | Ensure no duplicate GIDs exist | Set warning count"
+      when: discovered_user_user_check.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.5'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.6 | AUDIT | Ensure no duplicate user names exist"
+  when: amazon2cis_rule_7_2_6
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - rule_7.2.6
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - user
+  block:
+    - name: "7.2.6 | AUDIT | Ensure no duplicate user names exist | Check for duplicate User Names"
+      ansible.builtin.shell: |
+        set -o pipefail
+        pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_username_check
+
+    - name: "7.2.6 | WARN | Ensure no duplicate user names exist | Print warning about users with duplicate User Names"
+      when: discovered_username_check.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "Warning!! The following user names are duplicates: {{ discovered_username_check.stdout_lines }}"
+
+    - name: "7.2.6 | WARN | Ensure no duplicate user names exist | Set warning count"
+      when: discovered_username_check.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.6'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.7 | AUDIT | Ensure no duplicate group names exist"
+  when: amazon2cis_rule_7_2_7
+  tags:
+    - level1-server
+    - automated
+    - audit
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - rule_7.2.7
+    - groups
+  block:
+    - name: "7.2.7 | AUDIT | Ensure no duplicate group names exist | Check for duplicate group names"
+      ansible.builtin.shell: |
+        set -o pipefail
+        getent passwd | cut -d: -f1 | sort -n | uniq -d
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: discovered_group_check
+
+    - name: "7.2.7 | AUDIT | Ensure no duplicate group names exist | Print warning about users with duplicate group names"
+      when: discovered_group_check.stdout | length > 0
+      ansible.builtin.debug:
+        msg: "Warning!! The following group names are duplicates: {{ discovered_group_check.stdout_lines }}"
+
+    - name: "7.2.7 | AUDIT | Ensure no duplicate group names exist | Set warning count"
+      when: discovered_group_check.stdout | length > 0
+      vars:
+        warn_control_id: '7.2.7'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+- name: "7.2.8 | PATCH | Ensure local interactive user home directories are configured"
+  when: amazon2cis_rule_7_2_8
+  tags:
+    - level1-server
+    - patch
+    - users
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - rule_7.2.8
+  block:
+    - name: "7.2.8 | PATCH | Ensure local interactive user home directories are configured | Create dir if absent"  # noqa risky-file-permissions
+      ansible.builtin.file:
+        path: "{{ item.dir }}"
+        state: directory
+        owner: "{{ item.id }}"
+        group: "{{ item.gid }}"
+      register: discovered_home_dir
+      loop: "{{ prelim_captured_passwd_data | selectattr('uid', '>=', amazon2cis_uid_min | int) | selectattr('uid', '<=', amazon2cis_uid_max | int) | list }}"
+      loop_control:
+        label: "{{ item.id }}"
+
+    - name: "7.2.8 | AUDIT | Ensure local interactive user home directories are configured | get perms stat"
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      register: discovered_home_dir_perms
+      loop: "{{ prelim_interactive_users_home.stdout_lines }}"
+
+    - name: "7.2.8 | PATCH | Ensure local interactive user home directories are configured | set perms if needed"
+      ansible.builtin.file:
+        path: "{{ item.stat.path }}"
+        state: directory
+        mode: 'g-w,o-rwx'
+      loop: "{{ discovered_home_dir_perms.results }}"
+      loop_control:
+        label: "{{ item }}"
+
+    # set default ACLs so the homedir has an effective umask of 0027
+    - name: "7.2.8 | PATCH | Ensure local interactive user home directories are configured | Set group ACL"
+      ansible.posix.acl:
+        path: "{{ item }}"
+        default: true
+        etype: group
+        permissions: rx
+        state: present
+      loop: "{{ prelim_interactive_users_home.stdout_lines }}"
+
+    - name: "7.2.8 | PATCH | Ensure local interactive user home directories are configured | Set other ACL"
+      ansible.posix.acl:
+        path: "{{ item }}"
+        default: true
+        etype: other
+        permissions: 0
+        state: present
+      loop: "{{ prelim_interactive_users_home.stdout_lines }}"
+
+- name: "7.2.9 | PATCH | Ensure local interactive user dot files access is configured"
+  when:
+    - amazon2cis_rule_7_2_9
+    - amazon2cis_disruption_high
+  tags:
+    - level1-server
+    - automated
+    - patch
+    - NIST800-53R5_CM-1
+    - NIST800-53R5_CM-2
+    - NIST800-53R5_CM-6
+    - NIST800-53R5_CM-7
+    - NIST800-53R5_IA-5
+    - rule_7.2.9
+    - user
+  block:
+    - name: "7.2.9 | AUDIT | Ensure local interactive user dot files access is configured | Check for files"
+      ansible.builtin.shell: |
+        set -o pipefail
+        find /home/ -name "\.*" -perm /g+w,o+w
+      args:
+        executable: "{{ amazon2cis_shell_executable }}"
+      changed_when: false
+      failed_when: discovered_dot_files_audit.rc not in [ 0, 1 ]
+      check_mode: false
+      register: discovered_dot_files_audit
+
+    - name: "7.2.9 | AUDIT | Ensure local interactive user dot files access is configured | Warning on files found"
+      when:
+        - discovered_dot_files_audit.stdout | length > 0
+        - amazon2cis_dotperm_ansiblemanaged
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have group or world-writable dot files on your system and have configured for manual intervention"
+
+    - name: "7.2.9 | PATCH | Ensure local interactive user dot files access is configured | Set warning count"
+      when:
+        - discovered_dot_files_audit.stdout | length > 0
+        - amazon2cis_dotperm_ansiblemanaged
+      vars:
+        warn_control_id: '7.2.9'
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+    - name: "7.2.9 | PATCH | Ensure local interactive user dot files access is configured | Changes files if configured"
+      when:
+        - discovered_dot_files_audit.stdout | length > 0
+        - amazon2cis_dotperm_ansiblemanaged
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: go-w
+      loop: "{{ discovered_dot_files_audit.stdout_lines }}"

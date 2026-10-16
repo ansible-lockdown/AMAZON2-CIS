@@ -40,12 +40,12 @@
   ansible.builtin.import_tasks:
     file: cis_1.3.x.yml
 
-- name: "SECTION | 1.4 | Configure Additional Process Hardening"
+- name: "SECTION | 1.4 | Mandatory Access Control"
+  when: not amazon2cis_selinux_disable
   ansible.builtin.import_tasks:
     file: cis_1.4.x.yml
 
-- name: "SECTION | 1.5 | Mandatory Access Control"
-  when: not amazon2cis_selinux_disable
+- name: "SECTION | 1.5 | Configure Additional Process Hardening"
   ansible.builtin.import_tasks:
     file: cis_1.5.x.yml
 

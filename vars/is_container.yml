@@ -1,0 +1,45 @@
+---
+# File as an example in case you are running the pipeline against a container
+
+amazon2cis_selinux_disable: true
+# Skip firewall service management (systemctl not functional in this container)
+amazon2cis_system_firewall: "none"
+# Containers don't have a root password set by default
+amazon2cis_rule_5_5_2_4: false
+
+# Kernel module tasks fail in Docker Desktop (linuxkit kernel has no AL2 modules)
+amazon2cis_rule_1_1_1_1: false
+amazon2cis_rule_1_1_1_2: false
+amazon2cis_rule_1_1_1_3: false
+amazon2cis_rule_1_1_1_4: false
+amazon2cis_rule_1_1_1_5: false
+amazon2cis_rule_1_1_1_6: false
+
+# Wireless interface discovery has no devices to act on inside a container
+amazon2cis_rule_3_1_2: false
+amazon2cis_rule_3_1_3: false
+
+# Service start/enable/mask tasks require a working systemctl D-Bus connection,
+# which the container does not provide; they are tested on a real server.
+amazon2cis_rule_2_1_1: false
+amazon2cis_rule_2_2_1: false
+amazon2cis_rule_2_2_2: false
+amazon2cis_rule_2_2_3: false
+amazon2cis_rule_2_2_4: false
+amazon2cis_rule_2_2_5: false
+amazon2cis_rule_2_2_6: false
+amazon2cis_rule_2_2_7: false
+amazon2cis_rule_2_2_8: false
+amazon2cis_rule_2_2_9: false
+amazon2cis_rule_2_2_10: false
+amazon2cis_rule_2_2_11: false
+amazon2cis_rule_2_2_12: false
+amazon2cis_rule_2_2_13: false
+amazon2cis_rule_2_2_14: false
+amazon2cis_rule_2_2_15: false
+amazon2cis_rule_2_2_16: false
+amazon2cis_rule_2_2_17: false
+amazon2cis_rule_2_2_18: false
+amazon2cis_rule_2_2_19: false
+amazon2cis_rule_5_1_1_1: false
+amazon2cis_rule_6_1_2_2: false

@@ -7,6 +7,7 @@ amazon2cis_section3: true
 amazon2cis_section4: true
 amazon2cis_section5: true
 amazon2cis_section6: true
+amazon2cis_section7: true
 
 ## Python Binary
 ## This is used for python3 Installations where python2 OS modules are used in ansible
@@ -15,7 +16,7 @@ python2_bin: /bin/python2.7
 ## Benchmark name used by auditing control role
 # The audit variable found at the base
 benchmark: AMAZON2-CIS
-benchmark_version: v3.0.0
+benchmark_version: v4.0.0
 
 ## Ability to skip the os check
 os_check: true
@@ -24,7 +25,7 @@ os_check: true
 # set to true if ok to reboot
 skip_reboot: true
 
-# Change to false if using EFI boot changes 1.1.1.4 to stop vfat
+# Change to false if using EFI boot changes 1.1.1.3 to stop vfat
 amazon2cis_legacy_boot: true
 
 # Create managed not custom local_facts files
@@ -55,41 +56,10 @@ amazon2cis_level_2: true
 
 ###########################################
 ### Goss is required on the remote host ###
-### vars/auditd.yml for other settings  ###
 
-# If the any of the following are set the variables used by them are loaded in vars/audit.yml these can be overridden by your
-# preferred method of variable management (e.g., vault, group_vars, host_vars, inventory etc.)
-
-# Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
-setup_audit: false
-
-# enable audits to run - this runs the audit and get the latest content
-run_audit: false
-
-## Only run Audit do not remediate
-audit_only: false
-
-# Run heavy tests - some tests can have more impact on a system enabling these can have greater impact on a system
-audit_run_heavy_tests: true
-
-# Fetch audit output files back to the controller
-fetch_audit_output: false
-
-# Method of getting,uploading the summary files
-## Ensure access and permissions are available for these to occur.
-## options are
-# fetch - fetches from server and moves to location on the ansible controller (could be a mount point available to controller)
-# copy - copies file to a location available to the managed node
-audit_output_collection_method: fetch
-
-# Where the audit logs are stored
-audit_log_dir: '/opt'
-
-# Location to put the audit files
-audit_output_destination: "{{ audit_log_dir }}/audit_summaries/"
+# Moved to defaults/main/audit.yml
 
 #############################
-
 ### Goss Settings ##
 ####### END ########
 
@@ -101,8 +71,9 @@ audit_output_destination: "{{ audit_log_dir }}/audit_summaries/"
 ##
 ## Section 1 rules
 ##
-# Section 1 is Initial Setup (Filesystem Configuration, Configure Software Updates, Configure Sudo, Filesystem Integrity Checking, Secure Boot Settings, Additional Process Hardening, Mandatory Access Control, and Warning Banners)
-# Configure Filesystem Kernel Modules
+# Section 1 is Initial Setup
+
+# Configure FileSystem Kernel Modules
 amazon2cis_rule_1_1_1_1: true
 amazon2cis_rule_1_1_1_2: true
 amazon2cis_rule_1_1_1_3: true
@@ -110,93 +81,95 @@ amazon2cis_rule_1_1_1_4: true
 amazon2cis_rule_1_1_1_5: true
 amazon2cis_rule_1_1_1_6: true
 amazon2cis_rule_1_1_1_7: true
-amazon2cis_rule_1_1_1_8: true
 
-# /tmp
+# FileSystem Configuration /tmp
 amazon2cis_rule_1_1_2_1_1: true
 amazon2cis_rule_1_1_2_1_2: true
 amazon2cis_rule_1_1_2_1_3: true
 amazon2cis_rule_1_1_2_1_4: true
 
-# /dev/shm
+# FileSystem Configuration /dev/shm
 amazon2cis_rule_1_1_2_2_1: true
 amazon2cis_rule_1_1_2_2_2: true
 amazon2cis_rule_1_1_2_2_3: true
 amazon2cis_rule_1_1_2_2_4: true
 
-# /home
+# FileSystem Configuration /home
 amazon2cis_rule_1_1_2_3_1: true
 amazon2cis_rule_1_1_2_3_2: true
 amazon2cis_rule_1_1_2_3_3: true
 
-# /var
+# FileSystem Configuration /var
 amazon2cis_rule_1_1_2_4_1: true
 amazon2cis_rule_1_1_2_4_2: true
 amazon2cis_rule_1_1_2_4_3: true
 
-# /var/tmp
+# FileSystem Configuration /var/tmp
 amazon2cis_rule_1_1_2_5_1: true
 amazon2cis_rule_1_1_2_5_2: true
 amazon2cis_rule_1_1_2_5_3: true
 amazon2cis_rule_1_1_2_5_4: true
 
-# /var/log
+# FileSystem Configuration /var/log
 amazon2cis_rule_1_1_2_6_1: true
 amazon2cis_rule_1_1_2_6_2: true
 amazon2cis_rule_1_1_2_6_3: true
 amazon2cis_rule_1_1_2_6_4: true
 
-# /var/log/audit
+# FileSystem Configuration /var/log/audit
 amazon2cis_rule_1_1_2_7_1: true
 amazon2cis_rule_1_1_2_7_2: true
 amazon2cis_rule_1_1_2_7_3: true
 amazon2cis_rule_1_1_2_7_4: true
 
-# Software and Patch management
+# Configure Software Updates and Patch Management
 amazon2cis_rule_1_2_1: true
 amazon2cis_rule_1_2_2: true
 amazon2cis_rule_1_2_3: true
 amazon2cis_rule_1_2_4: true
 amazon2cis_rule_1_2_5: true
 
-# Secure boot settings
+# Configure Secure Boot Settings
 amazon2cis_rule_1_3_1: true
 
-# Additional Process Hardening
-amazon2cis_rule_1_4_1: true
-amazon2cis_rule_1_4_2: true
-amazon2cis_rule_1_4_3: true
-amazon2cis_rule_1_4_4: true
+# Mandatory Access Control
+amazon2cis_rule_1_4_1_1: true
+amazon2cis_rule_1_4_1_2: true
+amazon2cis_rule_1_4_1_3: true
+amazon2cis_rule_1_4_1_4: true
+amazon2cis_rule_1_4_1_5: true
+amazon2cis_rule_1_4_1_6: true
+amazon2cis_rule_1_4_1_7: true
 
-# SElinux
-amazon2cis_rule_1_5_1_1: true
-amazon2cis_rule_1_5_1_2: true
-amazon2cis_rule_1_5_1_3: true
-amazon2cis_rule_1_5_1_4: true
-amazon2cis_rule_1_5_1_5: true
-amazon2cis_rule_1_5_1_6: true
-amazon2cis_rule_1_5_1_7: true
-amazon2cis_rule_1_5_1_8: true
+# Configure Additional Process Hardening
+amazon2cis_rule_1_5_1: true
+amazon2cis_rule_1_5_2: true
+amazon2cis_rule_1_5_3: true
+amazon2cis_rule_1_5_4: true
+amazon2cis_rule_1_5_5: true
+amazon2cis_rule_1_5_6: true
+amazon2cis_rule_1_5_7: true
+amazon2cis_rule_1_5_8: true
+amazon2cis_rule_1_5_9: true
+amazon2cis_rule_1_5_10: true
 
-# Command line banner warnings
+# Configure Command Line Warning Banners
 amazon2cis_rule_1_6_1: true
 amazon2cis_rule_1_6_2: true
 amazon2cis_rule_1_6_3: true
 amazon2cis_rule_1_6_4: true
 amazon2cis_rule_1_6_5: true
 amazon2cis_rule_1_6_6: true
-
-##
 ## Section 2 rules
 ##
-# Section 2 is Services (inetd Services, Special Purpose Services, and Service Clients)
+# Section 2 is Services
 
-# Time Service (Chrony)
+# Time Synchronization
 amazon2cis_rule_2_1_1: true
 amazon2cis_rule_2_1_2: true
 amazon2cis_rule_2_1_3: true
 
-# Special purpose services
+# Special Purpose Services
 amazon2cis_rule_2_2_1: true
 amazon2cis_rule_2_2_2: true
 amazon2cis_rule_2_2_3: true
@@ -220,186 +193,73 @@ amazon2cis_rule_2_2_20: true
 amazon2cis_rule_2_2_21: true
 amazon2cis_rule_2_2_22: true
 
-# Client Services
+# Service Clients
 amazon2cis_rule_2_3_1: true
 amazon2cis_rule_2_3_2: true
 amazon2cis_rule_2_3_3: true
 amazon2cis_rule_2_3_4: true
 amazon2cis_rule_2_3_5: true
-
-##
 ## Section 3 rules
 ##
-# Section 3 is Network Configuration (Disable unused network protocols, Network parameters (host), Network parameters (Host and Router), Uncommon Network Protocols, Firewall Configuration, and Configure iptables)
-# ipv6, bluetooth and wireless
+# Section 3 is Network
+
+# Disable unused network protocols and devices
 amazon2cis_rule_3_1_1: true
 amazon2cis_rule_3_1_2: true
 amazon2cis_rule_3_1_3: true
 
-# network kernel modules
+# Network Kernel modules (Host Only)
 amazon2cis_rule_3_2_1: true
 amazon2cis_rule_3_2_2: true
 amazon2cis_rule_3_2_3: true
-amazon2cis_rule_3_2_4: true
 
-# network kernel parameters
-amazon2cis_rule_3_3_1: true
-amazon2cis_rule_3_3_2: true
-amazon2cis_rule_3_3_3: true
-amazon2cis_rule_3_3_4: true
-amazon2cis_rule_3_3_5: true
-amazon2cis_rule_3_3_6: true
-amazon2cis_rule_3_3_7: true
-amazon2cis_rule_3_3_8: true
-amazon2cis_rule_3_3_9: true
-amazon2cis_rule_3_3_10: true
-amazon2cis_rule_3_3_11: true
+# Network Kernel Parameters IPv4
+amazon2cis_rule_3_3_1_1: true
+amazon2cis_rule_3_3_1_2: true
+amazon2cis_rule_3_3_1_3: true
+amazon2cis_rule_3_3_1_4: true
+amazon2cis_rule_3_3_1_5: true
+amazon2cis_rule_3_3_1_6: true
+amazon2cis_rule_3_3_1_7: true
+amazon2cis_rule_3_3_1_8: true
+amazon2cis_rule_3_3_1_9: true
+amazon2cis_rule_3_3_1_10: true
+amazon2cis_rule_3_3_1_11: true
+amazon2cis_rule_3_3_1_12: true
+amazon2cis_rule_3_3_1_13: true
+amazon2cis_rule_3_3_1_14: true
+amazon2cis_rule_3_3_1_15: true
+amazon2cis_rule_3_3_1_16: true
+amazon2cis_rule_3_3_1_17: true
+amazon2cis_rule_3_3_1_18: true
 
-# Configure firewall utility
-amazon2cis_rule_3_4_1_1: true
-amazon2cis_rule_3_4_1_2: true
-
-# firewalld
-amazon2cis_rule_3_4_2_1: true
-amazon2cis_rule_3_4_2_2: true
-amazon2cis_rule_3_4_2_3: true
-amazon2cis_rule_3_4_2_4: true
-
-# nftables
-amazon2cis_rule_3_4_3_1: true
-amazon2cis_rule_3_4_3_2: true
-amazon2cis_rule_3_4_3_3: true
-amazon2cis_rule_3_4_3_4: true
-amazon2cis_rule_3_4_3_5: true
-amazon2cis_rule_3_4_3_6: true
-amazon2cis_rule_3_4_3_7: true
-amazon2cis_rule_3_4_3_8: true
-amazon2cis_rule_3_4_3_9: true
-
-# iptables
-amazon2cis_rule_3_4_4_1_1: true
-
-# ip4tables
-amazon2cis_rule_3_4_4_2_1: true
-amazon2cis_rule_3_4_4_2_2: true
-amazon2cis_rule_3_4_4_2_3: true
-amazon2cis_rule_3_4_4_2_4: true
-amazon2cis_rule_3_4_4_2_5: true
-amazon2cis_rule_3_4_4_2_6: true
-
-# ip6tables
-amazon2cis_rule_3_4_4_3_1: true
-amazon2cis_rule_3_4_4_3_2: true
-amazon2cis_rule_3_4_4_3_3: true
-amazon2cis_rule_3_4_4_3_4: true
-amazon2cis_rule_3_4_4_3_5: true
-amazon2cis_rule_3_4_4_3_6: true
-
-##
+# Network Kernel Parameters IPv6
+amazon2cis_rule_3_3_2_1: true
+amazon2cis_rule_3_3_2_2: true
+amazon2cis_rule_3_3_2_3: true
+amazon2cis_rule_3_3_2_4: true
+amazon2cis_rule_3_3_2_5: true
+amazon2cis_rule_3_3_2_6: true
+amazon2cis_rule_3_3_2_7: true
+amazon2cis_rule_3_3_2_8: true
 ## Section 4 rules
 ##
-# Section 4 is Job Schedulers, SSH and privilege PAM
-# Job Schedulers
-## Cron
-amazon2cis_rule_4_1_1_1: true
-amazon2cis_rule_4_1_1_2: true
-amazon2cis_rule_4_1_1_3: true
-amazon2cis_rule_4_1_1_4: true
-amazon2cis_rule_4_1_1_5: true
-amazon2cis_rule_4_1_1_6: true
-amazon2cis_rule_4_1_1_7: true
-amazon2cis_rule_4_1_1_8: true
-# At
-amazon2cis_rule_4_1_2_1: true
+# Section 4 is Host Based Firewall
 
-# SSH Server
-amazon2cis_rule_4_2_1: true
-amazon2cis_rule_4_2_2: true
-amazon2cis_rule_4_2_3: true
-amazon2cis_rule_4_2_4: true
-amazon2cis_rule_4_2_5: true
-amazon2cis_rule_4_2_6: true
-amazon2cis_rule_4_2_7: true
-amazon2cis_rule_4_2_8: true
-amazon2cis_rule_4_2_9: true
-amazon2cis_rule_4_2_10: true
-amazon2cis_rule_4_2_11: true
-amazon2cis_rule_4_2_12: true
-amazon2cis_rule_4_2_13: true
-amazon2cis_rule_4_2_14: true
-amazon2cis_rule_4_2_15: true
-amazon2cis_rule_4_2_16: true
-amazon2cis_rule_4_2_17: true
-amazon2cis_rule_4_2_18: true
-amazon2cis_rule_4_2_19: true
-amazon2cis_rule_4_2_20: true
-amazon2cis_rule_4_2_21: true
-amazon2cis_rule_4_2_22: true
-
-# Privilege escalation
-amazon2cis_rule_4_3_1: true
-amazon2cis_rule_4_3_2: true
-amazon2cis_rule_4_3_3: true
-amazon2cis_rule_4_3_4: true
-amazon2cis_rule_4_3_5: true
-amazon2cis_rule_4_3_6: true
-amazon2cis_rule_4_3_7: true
-
-## Configure Pluggable Authentication
-# software packages
-amazon2cis_rule_4_4_1_1: true
-amazon2cis_rule_4_4_1_2: true
-
-# pam_faillock
-amazon2cis_rule_4_4_2_1_1: true
-amazon2cis_rule_4_4_2_1_2: true
-amazon2cis_rule_4_4_2_1_3: true
-amazon2cis_rule_4_4_2_1_4: true
-
-# pam_pwquality
-amazon2cis_rule_4_4_2_2_1: true
-amazon2cis_rule_4_4_2_2_2: true
-amazon2cis_rule_4_4_2_2_3: true
-amazon2cis_rule_4_4_2_2_4: true
-amazon2cis_rule_4_4_2_2_5: true
-amazon2cis_rule_4_4_2_2_6: true
-amazon2cis_rule_4_4_2_2_7: true
-
-# pam pwhistory
-amazon2cis_rule_4_4_2_3_1: true
-amazon2cis_rule_4_4_2_3_2: true
-amazon2cis_rule_4_4_2_3_3: true
-amazon2cis_rule_4_4_2_3_4: true
-
-# pam pam_unix
-amazon2cis_rule_4_4_2_4_1: true
-amazon2cis_rule_4_4_2_4_2: true
-amazon2cis_rule_4_4_2_4_3: true
-amazon2cis_rule_4_4_2_4_4: true
-
-# shadow password
-amazon2cis_rule_4_5_1_1: true
-amazon2cis_rule_4_5_1_2: true
-amazon2cis_rule_4_5_1_3: true
-amazon2cis_rule_4_5_1_4: true
-amazon2cis_rule_4_5_1_5: true
-
-# root and system accts
-amazon2cis_rule_4_5_2_1: true
-amazon2cis_rule_4_5_2_2: true
-amazon2cis_rule_4_5_2_3: true
-amazon2cis_rule_4_5_2_4: true
-
-# user default envs
-amazon2cis_rule_4_5_3_1: true
-amazon2cis_rule_4_5_3_2: true
-amazon2cis_rule_4_5_3_3: true
-
-##
+# Configure firewalld
+amazon2cis_rule_4_1_1: true
+amazon2cis_rule_4_1_2: true
+amazon2cis_rule_4_1_3: true
+amazon2cis_rule_4_1_4: true
+amazon2cis_rule_4_1_5: true
+amazon2cis_rule_4_1_6: true
+amazon2cis_rule_4_1_7: true
+amazon2cis_rule_4_1_8: true
 ## Section 5 rules
 ##
+# Section 5 is Access Control
 
-# Rsyslog
+# Configure Job Schedulers
 amazon2cis_rule_5_1_1_1: true
 amazon2cis_rule_5_1_1_2: true
 amazon2cis_rule_5_1_1_3: true
@@ -407,98 +267,218 @@ amazon2cis_rule_5_1_1_4: true
 amazon2cis_rule_5_1_1_5: true
 amazon2cis_rule_5_1_1_6: true
 amazon2cis_rule_5_1_1_7: true
+amazon2cis_rule_5_1_1_8: true
+amazon2cis_rule_5_1_2_1: true
 
-# Journald
-amazon2cis_rule_5_1_2_1_1: true
-amazon2cis_rule_5_1_2_1_2: true
-amazon2cis_rule_5_1_2_1_3: true
-amazon2cis_rule_5_1_2_1_4: true
-amazon2cis_rule_5_1_2_2: true
-amazon2cis_rule_5_1_2_3: true
-amazon2cis_rule_5_1_2_4: true
-amazon2cis_rule_5_1_2_5: true
-amazon2cis_rule_5_1_2_6: true
-amazon2cis_rule_5_1_3: true
-amazon2cis_rule_5_1_4: true
+# Configure SSH Server
+amazon2cis_rule_5_2_1: true
+amazon2cis_rule_5_2_2: true
+amazon2cis_rule_5_2_3: true
+amazon2cis_rule_5_2_4: true
+amazon2cis_rule_5_2_5: true
+amazon2cis_rule_5_2_6: true
+amazon2cis_rule_5_2_7: true
+amazon2cis_rule_5_2_8: true
+amazon2cis_rule_5_2_9: true
+amazon2cis_rule_5_2_10: true
+amazon2cis_rule_5_2_11: true
+amazon2cis_rule_5_2_12: true
+amazon2cis_rule_5_2_13: true
+amazon2cis_rule_5_2_14: true
+amazon2cis_rule_5_2_15: true
+amazon2cis_rule_5_2_16: true
+amazon2cis_rule_5_2_17: true
+amazon2cis_rule_5_2_18: true
+amazon2cis_rule_5_2_19: true
+amazon2cis_rule_5_2_20: true
+amazon2cis_rule_5_2_21: true
+amazon2cis_rule_5_2_22: true
 
-# Auditd
-amazon2cis_rule_5_2_1_1: true
-amazon2cis_rule_5_2_1_2: true
-amazon2cis_rule_5_2_1_3: true
-amazon2cis_rule_5_2_1_4: true
-amazon2cis_rule_5_2_2_1: true
-amazon2cis_rule_5_2_2_2: true
-amazon2cis_rule_5_2_2_3: true
-amazon2cis_rule_5_2_2_4: true
-
-# auditd rules
-amazon2cis_rule_5_2_3_1: true
-amazon2cis_rule_5_2_3_2: true
-amazon2cis_rule_5_2_3_3: true
-amazon2cis_rule_5_2_3_4: true
-amazon2cis_rule_5_2_3_5: true
-amazon2cis_rule_5_2_3_6: true
-amazon2cis_rule_5_2_3_7: true
-amazon2cis_rule_5_2_3_8: true
-amazon2cis_rule_5_2_3_9: true
-amazon2cis_rule_5_2_3_10: true
-amazon2cis_rule_5_2_3_11: true
-amazon2cis_rule_5_2_3_12: true
-amazon2cis_rule_5_2_3_13: true
-amazon2cis_rule_5_2_3_14: true
-amazon2cis_rule_5_2_3_15: true
-amazon2cis_rule_5_2_3_16: true
-amazon2cis_rule_5_2_3_17: true
-amazon2cis_rule_5_2_3_18: true
-amazon2cis_rule_5_2_3_19: true
-amazon2cis_rule_5_2_3_20: true
-amazon2cis_rule_5_2_3_21: true
-
-# auditd file access
-amazon2cis_rule_5_2_4_1: true
-amazon2cis_rule_5_2_4_2: true
-amazon2cis_rule_5_2_4_3: true
-amazon2cis_rule_5_2_4_4: true
-amazon2cis_rule_5_2_4_5: true
-amazon2cis_rule_5_2_4_6: true
-amazon2cis_rule_5_2_4_7: true
-amazon2cis_rule_5_2_4_8: true
-amazon2cis_rule_5_2_4_9: true
-amazon2cis_rule_5_2_4_10: true
-
-# Aide
+# Configure Privilege Escalation
 amazon2cis_rule_5_3_1: true
 amazon2cis_rule_5_3_2: true
+amazon2cis_rule_5_3_3: true
+amazon2cis_rule_5_3_4: true
+amazon2cis_rule_5_3_5: true
+amazon2cis_rule_5_3_6: true
+amazon2cis_rule_5_3_7: true
 
+# Configure PAM software
+amazon2cis_rule_5_4_1_1: true
+amazon2cis_rule_5_4_1_2: true
+
+# Configure pam_faillock
+amazon2cis_rule_5_4_2_1_1: true
+amazon2cis_rule_5_4_2_1_2: true
+amazon2cis_rule_5_4_2_1_3: true
+amazon2cis_rule_5_4_2_1_4: true
+
+# Configure pam_pwquality
+amazon2cis_rule_5_4_2_2_1: true
+amazon2cis_rule_5_4_2_2_2: true
+amazon2cis_rule_5_4_2_2_3: true
+amazon2cis_rule_5_4_2_2_4: true
+amazon2cis_rule_5_4_2_2_5: true
+amazon2cis_rule_5_4_2_2_6: true
+
+# Configure pam_pwhistory
+amazon2cis_rule_5_4_2_3_1: true
+amazon2cis_rule_5_4_2_3_2: true
+amazon2cis_rule_5_4_2_3_3: true
+amazon2cis_rule_5_4_2_3_4: true
+
+# Configure pam_unix
+amazon2cis_rule_5_4_2_4_1: true
+amazon2cis_rule_5_4_2_4_2: true
+amazon2cis_rule_5_4_2_4_3: true
+amazon2cis_rule_5_4_2_4_4: true
+
+# Configure shadow password settings
+amazon2cis_rule_5_5_1_1: true
+amazon2cis_rule_5_5_1_2: true
+amazon2cis_rule_5_5_1_3: true
+amazon2cis_rule_5_5_1_4: true
+amazon2cis_rule_5_5_1_5: true
+amazon2cis_rule_5_5_1_6: true
+
+# Configure root and system accounts
+amazon2cis_rule_5_5_2_1: true
+amazon2cis_rule_5_5_2_2: true
+amazon2cis_rule_5_5_2_3: true
+amazon2cis_rule_5_5_2_4: true
+amazon2cis_rule_5_5_2_5: true
+amazon2cis_rule_5_5_2_6: true
+amazon2cis_rule_5_5_2_7: true
+amazon2cis_rule_5_5_2_8: true
+
+# Configure user default env
+amazon2cis_rule_5_5_3_1: true
+amazon2cis_rule_5_5_3_2: true
+amazon2cis_rule_5_5_3_3: true
 ## Section 6 rules
-## Section 6 is System Maintenance (System File Permissions and User and Group Settings)
-amazon2cis_rule_6_1_1: true
-amazon2cis_rule_6_1_2: true
-amazon2cis_rule_6_1_3: true
-amazon2cis_rule_6_1_4: true
-amazon2cis_rule_6_1_5: true
-amazon2cis_rule_6_1_6: true
-amazon2cis_rule_6_1_7: true
-amazon2cis_rule_6_1_8: true
-amazon2cis_rule_6_1_9: true
-amazon2cis_rule_6_1_10: true
-amazon2cis_rule_6_1_11: true
-amazon2cis_rule_6_1_12: true
-amazon2cis_rule_6_1_13: true
-amazon2cis_rule_6_1_14: true
-amazon2cis_rule_6_2_1: true
-amazon2cis_rule_6_2_2: true
-amazon2cis_rule_6_2_3: true
-amazon2cis_rule_6_2_4: true
-amazon2cis_rule_6_2_5: true
-amazon2cis_rule_6_2_6: true
-amazon2cis_rule_6_2_7: true
-amazon2cis_rule_6_2_8: true
-amazon2cis_rule_6_2_9: true
-amazon2cis_rule_6_2_10: true
-amazon2cis_rule_6_2_11: true
+##
+# Section 6 is Logging and Auditing
+
+# Configure journald
+amazon2cis_rule_6_1_1_1: true
+amazon2cis_rule_6_1_1_2: true
+amazon2cis_rule_6_1_1_3: true
+amazon2cis_rule_6_1_1_4: true
+amazon2cis_rule_6_1_1_5: true
+amazon2cis_rule_6_1_1_6: true
+amazon2cis_rule_6_1_1_7: true
+
+# Configure rsyslog
+amazon2cis_rule_6_1_2_1: true
+amazon2cis_rule_6_1_2_2: true
+amazon2cis_rule_6_1_2_3: true
+amazon2cis_rule_6_1_2_4: true
+amazon2cis_rule_6_1_2_5: true
+amazon2cis_rule_6_1_2_6: true
+amazon2cis_rule_6_1_2_7: true
+
+# Configure logfile access
+amazon2cis_rule_6_1_3_1: true
+
+# Ensure auditing is enabled
+amazon2cis_rule_6_2_1_1: true
+amazon2cis_rule_6_2_1_2: true
+amazon2cis_rule_6_2_1_3: true
+amazon2cis_rule_6_2_1_4: true
+
+# Configure Data Retention
+amazon2cis_rule_6_2_2_1: true
+amazon2cis_rule_6_2_2_2: true
+amazon2cis_rule_6_2_2_3: true
+amazon2cis_rule_6_2_2_4: true
+
+# Configure auditd rules
+amazon2cis_rule_6_2_3_1: true
+amazon2cis_rule_6_2_3_2: true
+amazon2cis_rule_6_2_3_3: true
+amazon2cis_rule_6_2_3_4: true
+amazon2cis_rule_6_2_3_5: true
+amazon2cis_rule_6_2_3_6: true
+amazon2cis_rule_6_2_3_7: true
+amazon2cis_rule_6_2_3_8: true
+amazon2cis_rule_6_2_3_9: true
+amazon2cis_rule_6_2_3_10: true
+amazon2cis_rule_6_2_3_11: true
+amazon2cis_rule_6_2_3_12: true
+amazon2cis_rule_6_2_3_13: true
+amazon2cis_rule_6_2_3_14: true
+amazon2cis_rule_6_2_3_15: true
+amazon2cis_rule_6_2_3_16: true
+amazon2cis_rule_6_2_3_17: true
+amazon2cis_rule_6_2_3_18: true
+amazon2cis_rule_6_2_3_19: true
+amazon2cis_rule_6_2_3_20: true
+amazon2cis_rule_6_2_3_21: true
+amazon2cis_rule_6_2_3_22: true
+
+# Configure auditd file access
+amazon2cis_rule_6_2_4_1: true
+amazon2cis_rule_6_2_4_2: true
+amazon2cis_rule_6_2_4_3: true
+amazon2cis_rule_6_2_4_4: true
+amazon2cis_rule_6_2_4_5: true
+amazon2cis_rule_6_2_4_6: true
+amazon2cis_rule_6_2_4_7: true
+amazon2cis_rule_6_2_4_8: true
+amazon2cis_rule_6_2_4_9: true
+amazon2cis_rule_6_2_4_10: true
+
+# Configure Filesystem Integrity Checking
+amazon2cis_rule_6_3_1: true
+amazon2cis_rule_6_3_2: true
+amazon2cis_rule_6_3_3: true
+## Section 7 rules
+##
+# Section 7 is System Maintenance
+
+# System File Permissions
+amazon2cis_rule_7_1_1: true
+amazon2cis_rule_7_1_2: true
+amazon2cis_rule_7_1_3: true
+amazon2cis_rule_7_1_4: true
+amazon2cis_rule_7_1_5: true
+amazon2cis_rule_7_1_6: true
+amazon2cis_rule_7_1_7: true
+amazon2cis_rule_7_1_8: true
+amazon2cis_rule_7_1_9: true
+amazon2cis_rule_7_1_10: true
+amazon2cis_rule_7_1_11: true
+amazon2cis_rule_7_1_12: true
+amazon2cis_rule_7_1_13: true
+
+# Local User and Group Settings
+amazon2cis_rule_7_2_1: true
+amazon2cis_rule_7_2_2: true
+amazon2cis_rule_7_2_3: true
+amazon2cis_rule_7_2_4: true
+amazon2cis_rule_7_2_5: true
+amazon2cis_rule_7_2_6: true
+amazon2cis_rule_7_2_7: true
+amazon2cis_rule_7_2_8: true
+amazon2cis_rule_7_2_9: true
 
 ## Section 1 variables
+
+# 1.1.1.7 - filesystem kernel modules the benchmark reviews as unused.
+# Loaded modules in this list raise a warning; unloading a filesystem in use may be FATAL,
+# so remediation is deliberately left as a manual task.
+amazon2cis_unused_filesystem_modules:
+  - afs
+  - ceph
+  - cifs
+  - exfat
+  - fat
+  - fscache
+  - fuse
+  - gfs2
+  - nfs_common
+  - nfsd
+  - smbfs_common
 
 ## Ability to enable debug on mounts to assist in troubleshooting
 # Mount point changes are set based upon facts created in Prelim
@@ -506,11 +486,18 @@ amazon2cis_rule_6_2_11: true
 # mount point for the controls in section1.
 amazon2cis_debug_mount_data: false
 
-# If set true uses the tmp.mount service else using fstab configuration
+# How /tmp mount options are managed:
+#  - true:  use the tmp.mount systemd unit
+#  - false: use /etc/fstab
+#  - auto:  discover it - a tmp.mount unit if /tmp is mounted by one, otherwise /etc/fstab
+# Either way /tmp must already be a separate mount; 1.1.2.1.1 only warns when it is not.
+# These /tmp settings will include nosuid,nodev,noexec to conform to CIS standards.
 amazon2cis_tmp_svc: true
 
-# cis 1.4.1
+# cis 1.5.8
 kernel_sysctl_file: /etc/sysctl.d/60-kernel_sysctl.conf
+# 1.5.2 - 1.5.4 filesystem sysctl settings
+amazon2cis_fs_sysctl_file: /etc/sysctl.d/60-fs_sysctl.conf
 
 # Warning Banner Content (issue, issue.net, motd)
 amazon2cis_warning_banner: |
@@ -609,27 +596,25 @@ amazon2cis_bluetooth_mask: false
 amazon2cis_is_router: false
 amazon2cis_ipv4_sysctl_file: /etc/sysctl.d/60-ipv4.conf
 
-# Firewall Service - either firewalld, iptables or nftables
-# multiple options for removal or masking of services
+# Firewall Service
+# The v4.0.0 benchmark covers firewalld only - the nftables and iptables controls were retired.
 # The firewall to be configured
 amazon2cis_system_firewall: firewalld
-# Set the following to remove or mask - note will not effect system_firewall # set to none
+# Set the following to remove or mask - note will not effect system_firewall # set to none
 amazon2cis_nftables: mask
 amazon2cis_iptables: mask
 amazon2cis_firewalld: none
 
-# give that table a name
-amazon2cis_nft_tables_tablename: cis
+# 4.1.3 - 4.1.6 the firewalld zone the system interfaces are assigned to
+amazon2cis_active_firewall_zone: public
 
-# Allow creation of chains
-amazon2cis_nft_tables_autochaincreate: false
+# 4.1.4 - target for the active zone, one of default, ACCEPT, DROP or REJECT
+amazon2cis_firewalld_zone_target: DROP
 
-# Allow automated creation of nftables table
-amazon2cis_nft_tables_autonewtable: false
-
-# Permanently save iptables and ip6tables rules
-amazon2cis_save_iptables_cis_rules: true
-amazon2cis_save_ip6tables_cis_rules: true
+# 4.1.8 - sets the default firewalld zone to drop, blocking all traffic that is not
+# explicitly allowed. Left false by default - enable only once the services and ports
+# required by the host (SSH included) are configured, or the host will become unreachable.
+amazon2cis_firewalld_drop_all_traffic: false
 ##
 ## Section 4 Variables
 ##
@@ -654,19 +639,19 @@ amazon2cis_sshd_logingracetime: 60
 # access for users whose user name matches one of the patterns. This is done
 # by setting the value of `AllowUsers` option in `/etc/ssh/sshd_config` file.
 # If an USER@HOST format will be used, the specified user will be allowed only on that particular host.
-amazon2cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_env.SUDO_USER is defined %}{{ ansible_env.SUDO_USER }}{% endif %}"
-## Control 4.2.4 - Ensure sshd access is configured
+amazon2cis_sshd_allowusers: "{% if ansible_facts['user_id'] != 'root' %}{{ ansible_facts['user_id'] }}{% elif ansible_facts['env']['SUDO_USER'] is defined %}{{ ansible_facts['env']['SUDO_USER'] }}{% endif %}"
+## Control 5.2.4 - Ensure sshd access is configured
 # (String) This variable, if specified, configures a list of GROUP name patterns, separated by spaces, to allow SSH access
 # for users whose primary group or supplementary group list matches one of the patterns. This is done
 # by setting the value of `AllowGroups` option in `/etc/ssh/sshd_config` file.
 amazon2cis_sshd_allowgroups: ""
-## Control 4.2.4 - Ensure sshd access is configured
+## Control 5.2.4 - Ensure sshd access is configured
 # This variable, if specified, configures a list of USER name patterns, separated by spaces, to prevent SSH access
 # for users whose user name matches one of the patterns. This is done
 # by setting the value of `DenyUsers` option in `/etc/ssh/sshd_config` file.
 # If an USER@HOST format will be used, the specified user will be restricted only on that particular host.
 amazon2cis_sshd_denyusers: "nobody"
-## Control 4.2.4 - Ensure sshd access is configured
+## Control 5.2.4 - Ensure sshd access is configured
 # This variable, if specified, configures a list of GROUP name patterns, separated by spaces,
 # to prevent SSH access for users whose primary group or supplementary group list matches one of the patterns. This is done
 # by setting the value of `DenyGroups` option in `/etc/ssh/sshd_config` file.
@@ -683,7 +668,7 @@ amazon2cis_ipv6_sshd_disable: false
 amazon2cis_sudolog_location: "/var/log/sudo.log"
 amazon2cis_sudo_timestamp_timeout: 15
 
-# 4.3.4 sudoers NOPASSWD
+# 5.3.4 sudoers NOPASSWD
 # Accounts listed below will skip the NOPASSWD check and leave NOPASSWD set
 amazon2cis_sudoers_exclude_nopasswd_list:
   - ec2-user
@@ -705,7 +690,6 @@ amazon2cis_pam_faillock:
 
 amazon2cis_pwquality_difok: 2  # 2 or more required
 amazon2cis_pwquality_maxrepeat: 3  # 3 or less not 0 required
-amazon2cis_pwquality_maxsequence: 3  # 3 or less not 0 required
 amazon2cis_pwquality_minlen: 14  # 14 or more required
 # Setting minclass true - mincalls used instead of separated values
 amazon2cis_pwquality_minclass: true
@@ -737,7 +721,7 @@ amazon2cis_uid_info_dynamic: true
 amazon2cis_uid_min: 1000
 amazon2cis_uid_max: 60000
 
-## 4.5.1.2 Add users to be skipped if required
+## 5.5.1.1 Add users to be skipped if required
 amazon2cis_user_skip_list:
   root
 
@@ -774,10 +758,6 @@ amazon2cis_remote_log_retrycount: 100
 amazon2cis_remote_log_queuesize: 1000
 
 # Journald
-amazon2cis_journal_upload_url: https://logagg.example.com
-amazon2cis_journal_upload_serverkeyfile: /etc/ssl/private/journal-upload.pem
-amazon2cis_journal_servercertificatefile: /etc/ssl/certs/journal-upload.pem
-amazon2cis_journal_trustedcertificatefile: /etc/ssl/ca/trusted.pem
 
 amazon2cis_journald_systemmaxuse: 10M
 amazon2cis_journald_systemkeepfree: 100G
@@ -785,7 +765,7 @@ amazon2cis_journald_runtimemaxuse: 10M
 amazon2cis_journald_runtimekeepfree: 100G
 amazon2cis_journald_maxfilesec: 1month
 
-# 5.2.3.6 exclude listed mountpoints from the find command to locate privileged binaries
+# 6.2.3.6 exclude listed mountpoints from the find command to locate privileged binaries
 # Allows operator to exclude mounted devices from being considered as within scope to find privileged binaries; mainly in the case of
 # external/temporary mounted USB drives.
 #   amazon2cis_priv_command_excluded_mounts: ["/mnt/backup_disk", "/mnt/usb_external_storage"]
@@ -833,12 +813,11 @@ amazon2cis_aide_cron_weekday: '*'
 ##
 
 #
-amazon2cis_rpm_audit_file: /var/tmp/rpm_file_check
 
 # Allow ansible to adjust world-writable files. False will just display world-writable files, True will remove world-writable
 amazon2cis_no_world_write_adjust: true
 
-## Control 6.1.12 - Ensure no unowned or ungrouped files or directories exist
+## Control 7.1.12 - Ensure no unowned or ungrouped files or directories exist
 # This variable is a toggle for enabling/disabling the automated
 # setting of an owner (specified in variable `amazon2cis_unowned_owner`)
 # for all unowned files and directories.
